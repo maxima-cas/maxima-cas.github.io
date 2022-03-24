@@ -1,0 +1,249 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="en">
+<head>
+  <title>Maxima Tutorial</title>
+  <meta content="text/html; charset=windows-1252"
+ http-equiv="Content-Type">
+  <link href="defstyle.css" rel="stylesheet" type="text/css">
+</head>
+<body bgcolor="#ffffbb">
+<table bgcolor="#ffffff" border="0" cellpadding="2">
+  <tbody>
+    <tr bgcolor="#ccffcc">
+      <td>
+      <center><a href="../Contents.htm">Índice</a></center>
+      </td>
+      <td>
+      <center><a href="./Programming0002.htm">Seguinte</a></center>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p></p>
+<h2>Programação no Maxima</h2>
+<p></p>
+<hr class="endOfHeader">
+<p>Programação no Maxima tem dois diferentes aspectos:</p>
+<ul>
+  <li>Primeiro, Maxima tem sua própria linguagem de programação, a qual
+pode ser usada para extender o Maxima. Partes importantes do Maxima
+foram escritas nessa linguagem. Código que é escrito em linguagem do
+Maxima está armazenado e, arquivos com extensões&nbsp; <b>.mac</b> ou <b>.mc</b>.
+Muitos desses tais arquivos podem ser encontrados em subdiretórios do
+diretório<br>
+    <pre>~/Maxima-5.9.2/share/maxima/5.9.2/share</pre>
+  </li>
+  <li>Maxima em si mesmo é escrito em Lisp. O código do Maxima está
+disponível também; é armazenado em arquivos com a extensão <b>.lisp</b>&nbsp;
+podem ser encontrados no diretório<br>
+    <pre>~/Maxima-5.9.2/share/maxima/5.9.2/src</pre>
+  </li>
+</ul>
+<p>O uso da liguagem de programação do Maxima é fortemente recomendado
+para trabalhos sérios. Programar&nbsp; em Lisp é trabalho para usuários
+avançados.
+Ocasionalmente, pode ser necessário usar ambas as linguagens de
+programaçã para resolver um problema. O uso de arquivos é um candidato
+a programação nas duas linguagens.</p>
+<hr width="80%">
+<p>Um programa simples do Maxima nada mais é que uma seqüência de
+comando do Maxima.
+Para estar apto a reproduzir uma computação longa mais tarde, é muitas
+vezes prudente gravar esses comandos em um arquivo de lote. Tal arquivo
+de protocolo é de fato um programa do Maxima.</p>
+<p>No capítulo sobre&nbsp; <a href="FnDef0002.htm">Tubos abraçando
+Curvas Espaciais</a>
+usamos essa definição para calcular a tangente de uma curva espacial:</p>
+<pre class="mInput">tangent(fn, x) :=<br>       diff(fn(x), x) / ((diff(fn(x), x) . diff(fn (x), x))^(1/2))$</pre>
+<p>Isso é uma definição direta, mas tem uma falha séria:
+calcula a derivada de <b>f</b> três vezes. Pode ser muito melhor
+calcular a derivada somente uma vez e guardá-la para usaromais tarde.</p>
+<pre class="mInput">tangent(fn, x) :=<br>  block ( [df: diff(fn(x), x)],<br>           df / (df . df)^(1/2)<br>        )$</pre>
+<p>Explanações:</p>
+<ul>
+  <li>Um <b>block</b> é maior ou menor que um corpo produzido em uma
+linguagem como Pascal ou Ada. Esse bloco contém uma lista de variáveis
+locais e uma ou muitas expressões. Os nomes de variáveis locais são
+sensíveis (diferenciam) à caixa alta ou baixa.</li>
+  <li>A declaração
+    <pre class="mInput">[df: diff(fn(x), x)]</pre>
+    <br>
+introduz a variável temporária <b>df</b> e atribui essa variável ao
+valor de <b>diff(fn(x),&nbsp;x)</b> como valor inicial.</li>
+  <li>A expressão
+    <pre class="mInput">df / (df . df)^(1/2)</pre>
+    <br>
+usa o valor de <b>df</b> para calcular o vetor tangente. Essa
+expressão é a última expressão do bloco; seu valor é respondido como o
+resultado da avaliação do bloco.</li>
+</ul>
+<hr ,="" color="lightBlue" width="80%">
+<h3>A Estrutura de Expressões</h3>
+<p>Uma expressão é ou um átomo ou uma estrutura que é construída com um
+operador e uma lista de argumentos. A função <b>op</b> é usada para
+acessar o operador de uma expressão, a função <b>args</b> é usada para
+obter uma lista de todos os argumentos. Alguns exemplos mostram isso:</p>
+<pre class="mInput"> op (a + b + c);<br><span class="response">    +</span>
+ args(a + b + c);
+<span class="response">    [c, b, a]</span>
+ op (sin(3*x));
+<span class="response">    sin</span>
+ args (sin(3*x));
+<span class="response">    [3 x]</span>
+ op (f(a, b, g(c), d));
+<span class="response">    f</span>
+ args (f(a, b, g(c), d));
+<span class="response">    [a, b, g(c), d]</span></pre>
+<p>Note que <b>exp(x)</b> é traduzida em um expoente para a constante <b>%e</b>:</p>
+<pre class="mInput"> op(exp(2*x));<br><span style="color: black;">  ^</span>
+ args(exp(2*x));
+<span style="color: black;">  [%e, 2 x]</span></pre>
+<h3>Uma Função que coleta os Operadores de uma Expressão</h3>
+<p>A expressão não atômica contém sempre exatamente um operador e uma
+coleção de argumentos que estão em uma expressão anterior. uma
+expressão é dessa forma uma árvore. Isso é algumas vezes útil para
+percorrer aquela árvore&nbsp; e coletar todos os operadores. O
+conhecimento de todos os operadores usados pode ser usado para
+selecionar simplificações promissoras e omitir simplificações que
+obviamente são desnecessárias no contexto de alguns operadores.</p>
+<p>Essa seção faz uma explanação como tal função é programada.</p>
+<h4>Resumo da Solução desejada</h4>
+<p>Queremos uma função que receba uma expressão e retorne uma lista com
+todos os operadores da expressão:</p>
+<pre class="mInput">allOps(a);<br><span style="color: black;">[]</span>
+allOps(sin(x) + cos(x));
+<span style="color: black;">[cos, sin, +]</span>
+allOps(sin(x) + 2*sin(2*x));
+<span style="color: black;">[sin, *, +]</span></pre>
+<p>A lista respondida pode conter todo operador encontrado pelo menos
+uma vez.
+Repetições não são sesejadas. A última expressão exemplifica esse
+requerimento.</p>
+<p>A função <b>allOps</b> é muito simples: delega o exame da expressão
+a uma função que recebe uma subexpressão e uma lista de operadores que
+forem encontrados então:</p>
+<pre class="mInput">allOps(expression):=<br> block( [ ],<br>        allOpsPriv (expression, [])<br>       );</pre>
+<p>A função <b>allOpsPriv</b> requer mais trabalho.
+Uma primeira tentativa de manusear somente casos simples:</p>
+<pre class="mInput">  <b>/* incomplete preliminary version  */</b>
+allOpsPriv(expression, opList) :=
+ block ( [x],
+        if atom(expression)
+           then opList
+           else
+             (x: op(expression),
+              cons(x, opList)
+             ) 
+        );</pre>
+<p>Essa definição maneja dois casos simples:</p>
+<ul>
+  <li>Para uma expressão atômica a função responde a lista inalterada
+de operadores conhecidos. Isso é correto&nbsp; porque uma expressão
+atômica não tem operadores.</li>
+  <li>Para expressões não atômicas a função <b>cons</b> é usada para
+adicionar o operador daquela expressã à lista de operadores conhecidos.
+Subexpressões não são processadas, esse é o tópico da próxima
+redefinição do algorítmo.</li>
+</ul>
+<p>A definição usa uma declaração <span style="font-weight: bold;">if</span>
+para identificar e manusear ambos os casos. Uma declaração <span
+ style="font-weight: bold;">if</span> sempre responde o valor de sua
+alternativa avaliada como seu resultado. Para uma expressão atômica, a
+declaração <span style="font-weight: bold;">if</span> acima&nbsp;
+responde o valor de <b>opList</b>. o ramo <span
+ style="font-weight: bold;">else</span> da declaração <span
+ style="font-weight: bold;">if</span> contém duas declarações que são
+escritas entre parêntesis.
+O resultado de <b>cons(x,&nbsp;opList)</b> é o resultado completo da
+declaração <span style="font-weight: bold;">if</span> quando o ramo <span
+ style="font-weight: bold;">else</span> é selecionado para avaliação.</p>
+<p>Note que a definição de <b>allOpsPriv</b> usa uma variável
+temporária para armazenar o operador de uma expressão não atômica. Isso
+não é realmente necessário, isso pode ser escrito:</p>
+<pre class="codeFragment">cons(op(expression), opList)</pre>
+<p>Quando tentamos a definição que temos agora, obtemos:</p>
+<pre class="mInput">allOps(a);<br><span style="color: black;">[]</span>
+allOps(sin(x) + cos(x));
+<span style="color: black;">[+]</span></pre>
+<p>O exame de uma subexpressão é obviamente omitida. Para uma solução
+completa temos que:</p>
+<ul>
+  <li>capturar a lista de argumentos de uma expressão não atômica</li>
+  <li>processar todas as expressões na lista de argumento</li>
+</ul>
+<p>Um refinamento dessa definição requer ações adicionais no ramo <span
+ style="font-weight: bold;">else</span> da declaração <span
+ style="font-weight: bold;">if</span>. </p>
+<p>O código adicionado é mostrado em <span style="font-weight: bold;">negrito</span>:</p>
+<pre class="mInput">allOpsPriv(expression, opList) :=<br> block ( [x<b>, args, newList</b>],<br>        if atom(expression)<br>           then opList<br>           else<br>             (x:    op(expression),<br>              <b>args: args(expression),<br>              newList:</b> cons(x, opList),<br>              <b>for arg in args do<br>                newList: allOpsPriv(arg, newList),<br>              newList</b>
+             ) 
+        );</pre>
+<p>Aqui usamos o elemento da linguagem
+</p>
+<pre class="codeFragment">for arg in args do<br>   <i>&lt;statement&gt;</i></pre>
+<br>
+o qual iterage sobre todos os elementos <b>arg</b> na lista <b>args</b>.
+Note que a variável <b>arg</b> não é declarada como uma&nbsp; variável
+local de bloco: A declaração daquela variável local de bloco está
+implícita e sua abrangência é a <i>declaração</i> que é avaliada
+abaixo dela por meio do iterador.
+<p>Um rápido teste revela ambas as consideráveis melhorias e uma
+imperfeição do algorítmo:</p>
+<pre class="mInput">allOps(a);<br><span style="color: black;">[]</span>
+allOps(sin(x) + cos(x));
+<span style="color: black;">[cos, sin, +]</span>
+allOps(sin(x) + 2*sin(2*x));
+<span style="color: black;">[sin, *, sin, *, +]</span></pre>
+<p>Os operadores <b>sin</b> e <b>*</b> são emncionados duas vezes.
+Isso não é realmente uma surpresa, uma vez que nós não verificamos se
+um operador já se encontra na lista antes de adicioná-lo. Isso é
+todavia facilmente corrigido aqui:</p>
+<pre class="mInput">allOpsPriv(expression, opList) :=<br> block ( [x, args, newList],<br>        if atom(expression)<br>           then opList<br>           else<br>             (x:    op(expression),<br>              args: args(expression),<br>              newList: <b>if member (x, opList)<br>                          then opList<br>                          else</b> cons(x, opList),<br>              for arg in args do<br>                newList: allOpsPriv(arg, newList),<br>              newList<br>             ) <br>        );</pre>
+<p>Você encontra esse código no arquivo&nbsp; <a
+ href="./sources/allOps.mc">allOps.mc</a>.
+Quando você copiar aquele arquivo no subdiretório <b>user</b> de sua
+instalação do Maxima,
+você pode chamá-lo com</p>
+<pre class="mInput">batch("allOps");</pre>
+<hr color="lightBlue" width="80%">
+<p>A função <b>allOps</b> coleta todos os operaadores de uma
+expressão.
+Para fazer isso,
+ela tem que percorrer completamente uma expressão. Para um problema
+similar o exame completo da expressão não é sempre necessário:</p>
+<p>Quando estamos olhando pela presença de um dado operador em uma
+expressão, podemos parar o eexame da expressão tão logo encontremos o
+operador que estamos procurando.</p>
+<pre class="mInput">containsOp(expression, opList) :=<br> block ( [x, args, <b>found</b>],<br>        if atom(expression)<br>           then <b>false</b>
+           else
+             (x:    op(expression),
+              args: args(expression),
+              if member (x, opList)
+                 then <b>true</b>
+                 else 
+                  (<b>found : false,</b>
+                   for arg in args <b>while not found</b> do<br>                        found: containsOp(arg, opList),<br>                   found)<br>             ) <br>        );</pre>
+<p>Aqui usamos uma variante do elemento de linguagem usado
+anteriormente <b>for&nbsp;arg&nbsp;in&nbsp;args&nbsp;do</b>:
+</p>
+<pre class="codeFragment">for arg in args while not found do<br>   <i>&lt;statement&gt;</i></pre>
+<br>
+que iterage sobre os elementos <b>arg</b> na lista <b>args</b>
+enquanto a condição se mantiver. A iteração termina quando a condição
+tornar-se <b>nil</b> ou quando todos os elementos da lista forem
+processados processados. <br>
+<hr class="startOfFooter">
+<table bgcolor="#ffffff" border="0" cellpadding="2">
+  <tbody>
+    <tr bgcolor="#ccffcc">
+      <td>
+      <center><a href="../Contents.htm">Índice</a></center>
+      </td>
+      <td>
+      <center><a href="./Programming0002.htm">Seguinte</a></center>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

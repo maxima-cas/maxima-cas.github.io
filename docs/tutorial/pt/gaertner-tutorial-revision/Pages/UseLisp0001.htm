@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="en">
+<head>
+  <title>Maxima Tutorial</title>
+  <meta content="text/html; charset=windows-1252"
+ http-equiv="Content-Type">
+  <link href="defstyle.css" rel="stylesheet" type="text/css">
+</head>
+<body bgcolor="#ffffbb">
+<table bgcolor="#ffffff" border="0" cellpadding="2">
+  <tbody>
+    <tr bgcolor="#ccffcc">
+      <td>
+      <center><a href="../Contents.htm">Índice</a></center>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p></p>
+<h2>Uso do Lisp</h2>
+<p></p>
+<hr class="endOfHeader">
+<p>Maxima é escrito em Lisp, uma linguagem de programação realmente
+única que foi desenvolvida por John McCarthy no MIT. A mais recente
+publicação sobre Lisp é possivelmente:</p>
+<pre class="citation">McCarthy, John:<br><b>Recursive Functions of Symbolic Expressions and Their Computation, Part I</b>
+Communications of the ACM, Vol. 3, April 1960, pp. 184-195</pre>
+<p>Para inserir uma peça de Lisp, você escreve:</p>
+<pre class="mInput">:lisp (list 'a 'b 'c)<br>:q<span
+ style="color: black;">(a b c)</span></pre>
+<p>Para entrar no modo Lisp, você escreve <b>:lisp</b>, para completar
+o modo Lisp e retornar ao
+Maxima, você escreve <b>:q</b> em uma nova linha. O texto Lisp por si
+mesmo não deve conter um encerramento de linha.</p>
+<p>Alternativamente, você pode inserir
+</p>
+<pre class="mInput">to_lisp();</pre>
+<br>
+para entrar no modo lista. Aqui está a transcrição completa de uma
+sessão curta de Lisp:
+<p></p>
+<pre class="mInput"><span class="response">(%i1)</span> to_lisp();<br><span
+ class="response">Type (to-maxima) to restart</span>
+
+<span class="response">MAXIMA&gt;</span> (cons 'a 'b)<br><span
+ class="response">(A . B)</span>
+<span class="response">MAXIMA&gt;</span> (append '(a b c) '(d e f))<br><span
+ class="response">(A B C D E F)</span>
+<span class="response">MAXIMA&gt;</span> (reverse '(a b c))<br><span
+ class="response">(C B A)</span>
+<span class="response">MAXIMA&gt;</span> (mapcar '(lambda(x) (list x)) '(a b c))<br><span
+ class="response">((A) (B) (C))</span>
+<span class="response">MAXIMA&gt;</span> (run)<br><span class="response">Maxima restarted.</span></pre>
+<p>Essas são expressões Lisp realmente muito simples. Elas podem trazer
+para você conhecimento Lisp
+volta para a vida e fornece a você umas poucas dicas sobre o dialeto
+usado pelo Maxima.</p>
+<h3>A representação interna de expressões</h3>
+<p>No modo Lisp, você pode acessar a representação interna de
+expressões
+armazenadas em células de resultado. Para obter um resultado, você
+insere o rótulo de célula de resultado escrita entre barras verticais e
+com um sinal de dólar prefixado:</p>
+<pre class="mInput"><span class="response">(%i1)</span> (sin(x) + cos(x) + sin(x)/sec(x));<br><span
+ class="response">			   sin(x)<br>(%o1) 			   ------ + sin(x) + cos(x)<br>			   sec(x)<br>(%i2)</span> to_lisp();<br><span
+ class="response">Type (to-maxima) to restart<br><br>MAXIMA&gt;</span> $%o1<br><span
+ class="response">((MPLUS SIMP) ((%COS SIMP) $X) ((%SIN SIMP) $X)<br>         ((MTIMES SIMP) ((MEXPT SIMP) ((%SEC SIMP) $X) -1)<br>          ((%SIN SIMP) $X)))<br>MAXIMA&gt;</span> (to-maxima)</pre>
+<p><b>$%o1</b> responde a representação interna da expressão na
+célula de valor <b>%o1</b>. Para melhor legibilidade, esse resultado é
+fornecido aqui na forma formatada:</p>
+<pre class="codeFragment">((MPLUS SIMP) <br>      ((%COS SIMP) $X)<br>      ((%SIN SIMP) $X)<br>      ((MTIMES SIMP)<br>           ((MEXPT SIMP) <br>                ((%SEC SIMP) $X)<br>                  -1<br>           )<br>           ((%SIN SIMP) $X)<br>)     )</pre>
+<pre class="mInput"><span class="response">(%i1)</span> 'integrate(sin(x)*exp(x), x);<br><span
+ class="response">				/<br>				[   x<br>(%o1) 			        I %e  sin(x) dx<br>				]<br>				/<br>(%i2)</span> to_lisp();<br><span
+ class="response">Type (to-maxima) to restart<br><br>MAXIMA&gt;</span> $%o1<br><span
+ class="response">((%INTEGRATE SIMP)<br>         ((MTIMES SIMP) ((MEXPT SIMP) $%E $X) ((%SIN SIMP) $X))<br>         $X)</span></pre>
+<p>O segundo elemento do nível mais alto <b>(cadr $%o1)</b> é o
+integrando, o terceiro elemento do nível mais alto <b>(caddr $%o1)</b>
+é a variável de integração.
+Com esse conhecimento podemos realizar a integração em Lisp:</p>
+<pre class="mInput"><span class="response">MAXIMA&gt;</span> ($INTEGRATE (cadr $%o1) (caddr $%o1))<br><span
+ class="response">((MTIMES SIMP) ((RAT SIMP) 1 2) ((MEXPT SIMP) $%E $X)<br>         ((MPLUS SIMP) ((MTIMES SIMP) -1 ((%COS SIMP) $X))<br>          ((%SIN SIMP) $X))) <br>MAXIMA&gt;</span> (to-maxima)</pre>
+<br>
+<hr class="startOfFooter">
+<table bgcolor="#ffffff" border="0" cellpadding="2">
+  <tbody>
+    <tr bgcolor="#ccffcc">
+      <td>
+      <center><a href="../Contents.htm">Índice<br>
+      </a></center>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,401 @@
+<html lang="en">
+<head>
+<title>Maxima Tutorial</title>
+
+<META content="text/html; charset=windows-1252" http-equiv=Content-Type>
+<LINK href="defstyle.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<TABLE bgColor=#ffffff border=0 cellPadding=2>
+  <TBODY>
+  <TR bgColor=#ccffcc>
+    <TD><CENTER><a href="FnDef0001.htm">Previous</a></CENTER></TD>
+    <TD><CENTER><a href="../Contents.htm">Contents</a></Center></TD>
+    <TD><CENTER><a href="FnDef0003.htm">Next</a></CENTER></TD>
+  </TR>
+  </TBODY>
+</TABLE>
+
+<h2>Geometry: Tubes around Spacial Curves</h2>
+<hr class="endOfHeader">
+
+<p><b>Outline of the example:</b></p>
+<p>For an arbitrary curve in three-dimensional space, we use Frenet's
+formulas to compute a tube around that curve. A tube around a curve
+is a surface in space; a surface in space is conveniently represented
+by a vector of three functions</p>
+<pre class="codeFragment"> [ f<sub>x</sub>(u, v), f<sub>y</sub>(u, v), f<sub>z</sub>(u, v)]</pre>
+<p>where <b>u</b>, <b>v</b> are parameters.</p>
+    
+<p>To compute a tube around a curve, we need the normal and the binormal for
+every curve point. These vectors are obtained by the Frenet formulas:</p>
+<p>The tangent:</p>
+
+<pre class="codeFragment">      g'
+t =  ----
+     |g'|</pre>
+
+<p>The binormal:</p>
+<pre class="codeFragment">      g' × g"
+b =  ---------
+     |g' × g"|</pre>
+
+<p>The normal:</p>
+<pre class="codeFragment"> n = b × t</pre>
+
+<p>In these formulas, the cross denotes the cross product between two
+spacial vectors. Note that g is a function of a parameter; by consequence
+the vectors t, b, n are also functions of that same parameter.</p>
+
+<p>With these vectors, a tube around the curve is easily defined:</p>
+<pre class="codeFragment">tube(g, r, u, v) :=
+    g(u) + r*(cos(v)*n(u) + sin(v)*b(u))</pre>
+
+<p>where <b>r</b> is the radius of the tube, <b>u</b> is the parameter
+of the spacial curve and <b>v</b> is
+a parameter that runs from  0 to 2*pi.</p>
+<p>Note that for the tube we need only the normal and the binormal. Nevertheless
+we need all the Frenet formulas: The tangent is needed to compute the normal.</p>
+
+
+<p>We will need the cross product of two vectors a few times,
+so let us begin with a definition for it: </p>
+<pre class="mInput">cross (v1, v2) := determinant(matrix([[1, 0, 0], [0, 1, 0], [0, 0,1]], v1, v2));</pre>
+
+<p>Here is an example:</p>
+<pre class="mInput">
+ cross([12, -1, 3], [-9, -2, -2]);
+<span style="color:black">  [8, - 3, - 33]</span></pre>
+
+
+
+<p>A quite tricky definition is this one:</p>
+<p>First we define a function to rotate the elements of list one
+position to the left. Here we use our knowledge of Lisp to
+write: 
+<pre class="codeExample">  (DEFUN rotateLeft
+         (Lambda (V) (APPEND (CDR V) (LIST (CAR V))))
+  )</pre><br>
+Translated into Maxima, this is:</p>
+<pre class="mInput">rotateLeft(v1):= append(rest(v1, 1), cons(first(v1), []));</pre>
+<P>Now comes the trick:</p>
+<pre class="MInput">cross (u, v) := rotateLeft( u * rotateLeft(v) - v * rotateLeft(u));</pre>
+
+<p>We try that with two general vectors:</p>
+
+<pre class="mInput"> cross([ax, ay, az], [bx, by, bz]);
+<span style="color:black"> [ay bz - az by, az bx - ax bz, ax by - ay bx]</span></pre>
+
+<p>This is in fact the formula that we find in every textbook about
+analytical geometry.</p>
+
+<p>Now we use Frenet's formulas to compute the tangent, the normal and
+the binormal for an arbitrary point of a spacial curve:</p>
+
+<p>The tangent:</p>
+<pre class="mInput">tangent(fn, x) :=
+       diff(fn(x), x) / ((diff(fn(x), x) . diff(fn (x), x))^(1/2))$</pre>
+
+
+<p>The binormal:</p>
+<pre class="mInput">binormal (fn, x) := 
+         cross (diff(fn(x), x), 
+                diff (fn(x), x, 2)
+               )  
+           /(( cross(diff(fn(x), x), diff (fn(x), x, 2))
+               . cross(diff(fn(x), x), diff (fn(x), x, 2))
+             ) ^(1/2)
+            )$</pre>
+
+<p>And the normal:</p>
+<pre class="mInput">normal (fn, x) := cross(binormal(fn, x), tangent(fn, x))$</pre>
+
+<p>To construct a tube, we use the normal and the binormal vector to drw
+a circle around a curve point:</p>
+<pre class="mInput"> tube(fn, r, t, phi) :=
+       fn(t) + r* (cos(phi)* normal(fn, t) + sin(phi)* binormal(fn, t))$</pre>
+
+<p>You find these definitions in <a href="./sources/tubeplot1.mc">tubeplot1.mc</a>.</p>
+
+<p>Now let us try these definitions with a very beautiful spacial curve: a helix.</p>
+<pre class="mInput">helix(x) := [5*cos(x), 5*sin(x), 3*x];</pre>
+<p>Maxima answers the definition:</p>
+
+<pre class="mOutput"> helix(x) := [5 cos(x), 5 sin(x), 3 x]</pre>
+
+<p>The definition is easy to understand:<br>
+<pre class="mathExpression">[5*cos(x), 5*sin(x)]</pre><br>
+is a circle with radius 5.<br>
+The third coordinate<br>
+<pre class="mathExpression">3*x</pre><br>
+translates the points of circle into space. The translation distance for
+a full revolution of a point on the circle is  2*pi*3.</p> 
+<p>Now we can try our definitions.</p>
+
+<pre class="mInput">tangent(helix, t);</pre>
+<pre class="mOutput">		      5 sin(t)
+(%o14) [- ---------------------------------, 
+		     2		  2
+	  sqrt(25 sin (t) + 25 cos (t) + 9)
+
+		      5 cos(t)				     3
+	  ---------------------------------, ---------------------------------]
+		     2		  2		        2	     2
+	  sqrt(25 sin (t) + 25 cos (t) + 9)  sqrt(25 sin (t) + 25 cos (t) + 9)
+</pre>
+<pre class="mInput">binormal (helix, t);</pre>
+<pre class="mOutput">				 15 sin(t)
+(%o15) [------------------------------------------------------------, 
+		    2		 2    2		 2	       2
+	sqrt((25 sin (t) + 25 cos (t))  + 225 sin (t) + 225 cos (t))
+
+			   15 cos(t)
+- ------------------------------------------------------------, 
+	      2		   2    2	   2		 2
+  sqrt((25 sin (t) + 25 cos (t))  + 225 sin (t) + 225 cos (t))
+
+			2	     2
+		  25 sin (t) + 25 cos (t)
+------------------------------------------------------------]
+	    2		 2    2		 2	       2
+sqrt((25 sin (t) + 25 cos (t))  + 225 sin (t) + 225 cos (t))</pre>
+
+<pre class="mInput">(%i13) normal(helix, t);</pre>
+<pre class="mOutput">			  2	       2
+(%o16) [- 5 cos(t) (25 sin (t) + 25 cos (t))
+
+	     2		  2		        2	     2	  2
+/(sqrt(25 sin (t) + 25 cos (t) + 9) sqrt((25 sin (t) + 25 cos (t))
+
+	  2	        2
+ + 225 sin (t) + 225 cos (t))) - 45 cos(t)
+
+	     2		  2		        2	     2	  2
+/(sqrt(25 sin (t) + 25 cos (t) + 9) sqrt((25 sin (t) + 25 cos (t))
+
+	  2	        2			  2	       2
+ + 225 sin (t) + 225 cos (t))), - 5 sin(t) (25 sin (t) + 25 cos (t))
+
+	     2		  2		        2	     2	  2
+/(sqrt(25 sin (t) + 25 cos (t) + 9) sqrt((25 sin (t) + 25 cos (t))
+
+	  2	        2
+ + 225 sin (t) + 225 cos (t))) - 45 sin(t)
+
+	     2		  2		        2	     2	  2
+/(sqrt(25 sin (t) + 25 cos (t) + 9) sqrt((25 sin (t) + 25 cos (t))
+
+	  2	        2
+ + 225 sin (t) + 225 cos (t))), 0]</pre>
+
+
+<p>When we try</p>
+
+<pre class="mInput">tube(helix, 1, t, rho);</pre>
+
+<p>We get a page full of unsimplified expressions.</p>
+<p>The obvious problem is that these expressions were not simplified.
+This is not the right way to do symbolic computations. We need to
+care for simplification and, as a general rule, we should simplify
+an expression as soon as possible.</p>
+<p>For this example, simplification can be easily achieved with
+the <b>trigsimp</b> function:</p>
+
+<pre class="mInput">trigsimp(tangent(helix, t));</pre>
+<pre class="mOutput">			    5 sin(t)  5 cos(t)	   3
+      			 [- --------, --------, --------]
+			    sqrt(34)  sqrt(34)  sqrt(34)</pre>
+
+<pre class="mInput">trigsimp(binormal(helix, t));</pre>
+<pre class="mOutput">			3 sin(t)    3 cos(t)	 5
+(%o18) 		       [--------, - --------, --------]
+			sqrt(34)    sqrt(34)  sqrt(34)</pre>
+<pre class="mInput">trigsimp(normal(helix, t));</pre>
+<pre class="mOutput">  [- cos(t), - sin(t), 0]</pre>
+
+
+<p>In this example, trigonometric simplification was both
+helpful and necessary. Let us examine a different spacial
+curve before we draw our conclusions about improved
+definitions for the functions <b>tangent</b>, <b>binormal</b>,
+<b>normal</b>.</p>
+
+<pre class="mInput">w(x) := [2*t^2 - t, t^2, 2*t^2 + 4*t];</pre>
+<pre class="mOutput">				  2	  2     2
+(%o8) 		      w(x) := [2 t  - t, t , 2 t  + 4 t]</pre>
+
+<pre class="mInput">tg: tangent(w, t);</pre>
+<pre class="mOutput">		     4 t - 1
+(%o9) [------------------------------------, 
+		     2		  2	 2
+       sqrt((4 t + 4)  + (4 t - 1)  + 4 t )
+
+		    2 t				        4 t + 4
+    ------------------------------------, ------------------------------------]
+		  2	       2      2		        2	     2	    2
+    sqrt((4 t + 4)  + (4 t - 1)  + 4 t )  sqrt((4 t + 4)  + (4 t - 1)  + 4 t )</pre>
+
+<p>It is obvious that trigonometric simplification will not help here,
+but it is equally obvious that all three denominators can be simplified.
+We try <b>radcan</b>, which is often useful to rewrite radicals in canonical
+form:</p>
+<pre class="mInput">radcan(tg);</pre>
+<pre class="mOutput">		4 t - 1			   2 t
+(%o10) [-----------------------, -----------------------, 
+		 2			  2
+	sqrt(36 t  + 24 t + 17)	 sqrt(36 t  + 24 t + 17)
+
+							       4 t + 4
+						       -----------------------]
+								2
+						       sqrt(36 t  + 24 t + 17)</pre>
+
+<p>This looks a lot better.</p>
+
+
+<p>For the binormal and the normal we obtain:</p>
+
+<pre class="mInput">bn: binormal(w, t);</pre>
+<pre class="mOutput">							    2
+(%o11) [(8 t - 2 (4 t + 4))/sqrt((4 (4 t + 4) - 4 (4 t - 1))
+
+		      2			     2
+ + (8 t - 2 (4 t + 4))  + (2 (4 t - 1) - 8 t) ), 
+
+							    2
+(4 (4 t + 4) - 4 (4 t - 1))/sqrt((4 (4 t + 4) - 4 (4 t - 1))
+
+		      2			     2
+ + (8 t - 2 (4 t + 4))  + (2 (4 t - 1) - 8 t) ), 
+
+						    2			   2
+(2 (4 t - 1) - 8 t)/sqrt((4 (4 t + 4) - 4 (4 t - 1))  + (8 t - 2 (4 t + 4))
+
+		      2
+ + (2 (4 t - 1) - 8 t) )]</pre>
+
+<pre class="">radcan(bn);</pre>
+<pre class="mOutput">			  4	      10	    1
+(%o12) 		   [- ----------, ----------, - ----------]
+		      3 sqrt(13)  3 sqrt(13)    3 sqrt(13)</pre>
+
+
+<pre class="">nm: normal(w, t);</pre>
+<pre class="mOutput">(%o13) [(4 t + 4) (4 (4 t + 4) - 4 (4 t - 1))
+
+		2	     2	    2				       2
+/(sqrt((4 t + 4)  + (4 t - 1)  + 4 t ) sqrt((4 (4 t + 4) - 4 (4 t - 1))
+
+		      2			     2
+ + (8 t - 2 (4 t + 4))  + (2 (4 t - 1) - 8 t) ))
+
+					  2	       2      2
+ - 2 t (2 (4 t - 1) - 8 t)/(sqrt((4 t + 4)  + (4 t - 1)  + 4 t )
+
+				 2		        2
+ sqrt((4 (4 t + 4) - 4 (4 t - 1))  + (8 t - 2 (4 t + 4))
+
+		      2
+ + (2 (4 t - 1) - 8 t) )), (4 t - 1) (2 (4 t - 1) - 8 t)
+
+		2	     2	    2				       2
+/(sqrt((4 t + 4)  + (4 t - 1)  + 4 t ) sqrt((4 (4 t + 4) - 4 (4 t - 1))
+
+		      2			     2
+ + (8 t - 2 (4 t + 4))  + (2 (4 t - 1) - 8 t) ))
+
+						2	     2	    2
+ - (4 t + 4) (8 t - 2 (4 t + 4))/(sqrt((4 t + 4)  + (4 t - 1)  + 4 t )
+
+				 2		        2
+ sqrt((4 (4 t + 4) - 4 (4 t - 1))  + (8 t - 2 (4 t + 4))
+
+		      2
+ + (2 (4 t - 1) - 8 t) )), 2 t (8 t - 2 (4 t + 4))
+
+		2	     2	    2				       2
+/(sqrt((4 t + 4)  + (4 t - 1)  + 4 t ) sqrt((4 (4 t + 4) - 4 (4 t - 1))
+
+		      2			     2
+ + (8 t - 2 (4 t + 4))  + (2 (4 t - 1) - 8 t) ))
+
+ - (4 t - 1) (4 (4 t + 4) - 4 (4 t - 1))
+
+		2	     2	    2				       2
+/(sqrt((4 t + 4)  + (4 t - 1)  + 4 t ) sqrt((4 (4 t + 4) - 4 (4 t - 1))
+
+		      2			     2
+ + (8 t - 2 (4 t + 4))  + (2 (4 t - 1) - 8 t) ))]</pre>
+
+<pre class="">radcan(nm);</pre>
+<pre class="mOutput">					       2
+	(42 sqrt(13) t + 40 sqrt(13)) sqrt(36 t  + 24 t + 17)
+(%o14) [-----------------------------------------------------, 
+			      2
+			1404 t  + 936 t + 663
+
+				       2
+(12 sqrt(13) t + 17 sqrt(13)) sqrt(36 t  + 24 t + 17)
+-----------------------------------------------------, 
+		      2
+		1404 t  + 936 t + 663
+
+					 2
+  (48 sqrt(13) t - 10 sqrt(13)) sqrt(36 t  + 24 t + 17)
+- -----------------------------------------------------]
+			2
+		  1404 t  + 936 t + 663</pre>
+
+<p>Now let us try to improve the definitions of <b>tangent</b>,
+<b>normal</b>, <b>binormal</b>:</p>
+
+<p>We may assume that for expressions that contain trigonometric
+functions both the dot product and the cross product will frequently
+yield expressions that contain powers of trigonometric functions. It
+is therefore a good idea to apply <b>trigsimp</b> to these results.</p>
+
+<p>Here are the new definitions:</p>
+
+<pre class="mInput">tangent(fn, x) :=
+       diff(fn(x), x) / <b>radcan (trigsimp(</b>(diff(fn(x), x) . diff(fn (x), x))<b>)</b>^(1/2)<b>)</b>$</pre>
+
+<pre class="mInput">binormal (fn, x) := 
+         <b>trigsimp(</b>cross (diff(fn(x), x), 
+                         diff (fn(x), x, 2)
+                         )
+                    <b>)</b> / 
+            <b>radcan
+                 (trigsimp(</b>
+                     ( cross(diff(fn(x), x), diff (fn(x), x, 2))
+                        . cross(diff(fn(x), x), diff (fn(x), x, 2))
+                      ) ^(1/2)
+               <b>)       )</b>$</pre>
+<pre class="mInput">normal (fn, x) := <b>radcan (trigsimp(</b>cross(binormal(fn, x), tangent(fn, x))<b>))</b>$</pre>
+
+<p>You find these definitions in <a href="./sources/tubeplot2.mc">tubeplot2.mc</a>.</p>
+<p>With these definitions, we obtain reasonably well simplified results.</p>
+
+<h3>What we have Learned:</h3>
+<ul>
+<li>The application of the general formula for a tube around
+a spacial curve requires a remarkable amount of formal computations.
+This is where symbolic computation is really helpful.</li>
+<li>Without carefully performed simplification, we obtain very
+unsuitable results.</li>
+<li>Simplification should be done as early as possible. This
+rule is also valid when you compute with paper and pencil.</li>
+</ul>
+<br>
+<hr class="startOfFooter">
+<TABLE bgColor=#ffffff border=0 cellPadding=2>
+  <TBODY>
+  <TR bgColor=#ccffcc>
+    <TD><CENTER><a href="FnDef0001.htm">Previous</a></CENTER></TD>
+    <TD><CENTER><a href="../Contents.htm">Contents</a></Center></TD>
+    <TD><CENTER><a href="FnDef0003.htm">Next</a></CENTER></TD>
+  </TR>
+  </TBODY>
+</TABLE>
+</body>
+</html>

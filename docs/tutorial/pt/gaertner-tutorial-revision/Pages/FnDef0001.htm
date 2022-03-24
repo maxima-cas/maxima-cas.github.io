@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="en">
+<head>
+  <title>Maxima Tutorial</title>
+  <meta content="text/html; charset=windows-1252"
+ http-equiv="Content-Type">
+  <link href="defstyle.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<table bgcolor="#ffffff" border="0" cellpadding="2">
+  <tbody>
+    <tr bgcolor="#ccffcc">
+      <td>
+      <center><a href="../Contents.htm">Índice</a></center>
+      </td>
+      <td>
+      <center><a href="FnDef0002.htm">Seguinte</a></center>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h2>Geometria: Curvas Planas</h2>
+<hr class="endOfHeader">
+<p>Essa seção usa material do livro de Alfred Gray:
+</p>
+<pre style="margin-left: 2em;">Modern Differential Geometry of Curves and Surfaces,<br>1994 CRC Press, Florida</pre>
+<p>A representação paramétrica de uma curva plana pode ser escrita como
+um vetor em duas dimensãoes. Os elementos desse vetor são funções do
+parâmetro <b>t</b>:</p>
+<pre class="mInput">alfa(t) := [sin(t), cos(t)];</pre>
+<p>Obetemos a definição como resposta:</p>
+<pre class="mOutput">alfa(t) := [sin(t), cos(t)]</pre>
+<p>Podemos calcular a derivação:</p>
+<pre class="mInput"> diff(alfa(z), z);</pre>
+<p>E recebemos esse resultado:</p>
+<pre class="mOutput"> [cos(z), - sin(z)]</pre>
+<p>A seguir, definimos uma função, que é chamada "estrutura complexa":</p>
+<pre class="mInput">J(a) := [-a[2], a[1]];</pre>
+<pre class="mOutput">  J(a) := [- a , a ]<br>              2   1<br></pre>
+<p>Na definição de <b>J</b>, <u>assumimos</u> que <b>a</b> é um
+vetor com exatamente dois elementos. Isso não foi dclarado nem
+verificado.</p>
+<p>Aqui está como isso funciona:</p>
+<pre class="mInput">J(alfa(y));</pre>
+<pre class="mOutput">    [- cos(y), sin(y)]</pre>
+<p>Em interpretação geométrica, isso é uma rotação de 90 graus. Não é
+surpresa que o produto escalar de alpha(z) e J(alpha(z))
+seja zero:</p>
+<pre class="mInput">alfa(z).J(alfa(z));</pre>
+<pre class="mOutput"> 0</pre>
+<p>Agora definimos a curvatura de uma curva plana</p>
+<pre class="mInput">kapa(fn, t) := diff(fn(t), t, 2).J(diff(fn(t), t))/((diff(fn(t), t).diff(fn(t), t))^(3/2));</pre>
+<pre class="mOutput">                    diff(fn(t), t, 2) . j(diff(fn(t), t))<br>    kapa(fn, t) := -------------------------------------<br>                                                     3/2<br>                    (diff(fn(t), t) . diff(fn(t), t))<br></pre>
+<p>Agora vamos calcular a curvatura de <b>alpha</b>:</p>
+<pre class="mInput">kapa(alfa, t);</pre>
+<p>Maxima responde:</p>
+<pre class="mOutput">         2         2<br>    - sin (t) - cos (t)<br>   ----------------------<br>       2         2    3/2<br>   (sin (t) + cos (t))<br></pre>
+<p>Isso é um resultado surpreendentemente complicado: <b>alfa(t)</b>
+é uma representação paramétrica de um círculo e um círculo pode ter
+curvatura constante. Uma tentativa de simplificar esse resultado é
+certamente proveitoso:</p>
+<pre class="mInput">trigsimp(%);</pre>
+<p>Agora Maxima confirma o que pensávamos: um círculo tem curvatura
+constante.</p>
+<pre class="mOutput">    - 1</pre>
+<hr width="80%">
+<p>Agora, vamos examinar uma curva um pouco mais complicada, a curva em
+forma de oito:</p>
+<pre class="mInput"> oito(t) := [sin(t), sin(t)*cos(t)];</pre>
+<pre class="mOutput">oito(t) := [sin(t), sin(t) cos(t)]</pre>
+<p>Para desenhar aquela curva, podemos usar esse comando:</p>
+<pre class="mInput">plot2d(append('[parametric], oito (t), [[t, -%pi, %pi]], [[nticks, 360]]));</pre>
+<p>O diagrama é mostrado em uma janela separada.</p>
+<p>Agora podemos calcular a curvatura:</p>
+<pre class="mInput">kapa(oito, z);</pre>
+<p>e obtemos:</p>
+<pre class="mOutput">               2         2            2<br>  - sin(z) (sin (z) - cos (z)) - 4 cos (z) sin(z)<br>  -----------------------------------------------<br>	     2	       2    2      2    3/2<br>	((cos (z) - sin (z))  + cos (z))<br></pre>
+<p>A curvatura da curva oito pode ser montada graficamente com esse
+comando: </p>
+<pre class="mInput"> plot2d(kapa(oito, z), [z, -%pi, %pi]);</pre>
+<h3>O que nós Aprendemos:</h3>
+<ul>
+  <li>Os elementos de um vetor são escritos entre colchêtes.</li>
+  <li>O ponto é usado para escrever o produto escalar ou produto do
+ponto entre dois vetores.</li>
+</ul>
+<br>
+<hr class="startOfFooter">
+<table bgcolor="#ffffff" border="0" cellpadding="2">
+  <tbody>
+    <tr bgcolor="#ccffcc">
+      <td>
+      <center><a href="../Contents.htm">Índice</a></center>
+      </td>
+      <td>
+      <center><a href="FnDef0002.htm">Seguinte</a></center>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

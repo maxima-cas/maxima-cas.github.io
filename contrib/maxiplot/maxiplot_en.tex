@@ -1,0 +1,432 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[ansinew]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage[amsmath]{maxiplot}
+
+\title{Maxiplot: Maxima and Gnuplot in \LaTeX.\\}
+\date{September 21, 2013}
+
+\def\Maxima{\emph{Maxima}}
+\def\Gnuplot{\emph{Gnuplot}}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+For those who do not know \Maxima, it is a symbolic calculation
+program which can be used to compute derivatives and integrals, solve
+equations, find limits, work with vectors and matrices and create
+graphics, among many other things. It also adds the possibility to
+write programs, thus expanding its capabilities. As if all this was
+not enough, it is also released under the GNU General Public License
+and it can be downloaded for free at
+\texttt{http://maxima.sourceforge.net}, where there is also
+documentation in several languages (including Spanish).
+
+The purpose of this \LaTeX{} package is to provide ``programming''
+capabilities importing the results, without the need of working with
+various files and interfaces. Maxima code can be included within the
+\LaTeX{} document. When the document is processed, a file with
+extension \texttt{.mac} is generated, which can be directly processed
+by Maxima, creating another file with extension \texttt{.mxp}; when
+the \LaTeX{} document is processed again, that file will be
+automatically inserted.
+
+\Gnuplot{} commands can also be inserted, thanks to some additional
+commands added by J. M. Mira. Thus, in addition to the auxiliary files
+already mentioned, another file with extension \texttt{.gnp} will be
+created, which after being processed by \Gnuplot{} can be added to the
+document.
+
+\section{Installation}
+
+Just copy the file \texttt{maxiplot.sty} into a place where \LaTeX{}
+can find it, or copy it into the same directory where you have your
+document. For those who have used previous versions of
+\texttt{maxiplot}, notice that in this version \emph{no other files are
+  needed}.
+
+\section{ \LaTeX{} package \texttt{maxiplot}}
+
+\subsection{How is it used?}
+Its usage is simple. Process your document as normally done; for
+instance, write in the command line:
+
+\texttt{latex mydocument.tex}
+
+You will find out that a file \texttt{mydocument.mac} has been
+created in your working directory. Process that file with Maxima:
+
+\texttt{maxima -b mydocument.mac}
+
+And if you have used \Gnuplot{} commands in your document:
+
+\texttt{gnuplot mydocument.gnp}
+
+Process your \LaTeX{} document again, \textit{et voil\`a!}.
+
+If your distribution allows it, you can enable the command
+\texttt{write18} to have \Maxima{} and \Gnuplot{} automatically run
+when you process your \LaTeX{} document (you should previously add
+your installation directory to the executable search path in you
+operating system). 
+
+\subsection{User interface}
+\subsubsection{Maxima.}
+This section and the following ones show some examples of the use of
+package \texttt{maxiplot}. It would be convenient to have some basic
+knowledge of Maxima to follow the examples.
+
+This package has an option (for the time being) to allow compatibility
+with the \texttt{pmatrix} environment of the \texttt{amsmath}
+package. Therefore, if you are going to create matrices with that
+environment, you should add the following lines to the document preamble
+\begin{verbatim}
+\usepackage{amsmath}
+\usepackage[amsmath]{maxiplot}
+\end{verbatim}
+
+The most important environments are \texttt{maxima} and
+\texttt{maximacmd}. The contents of those environments will be passed
+to a file with extension \texttt{.mac} to be processed later on with
+Maxima. Hence, there can be no \LaTeX-style comments within those
+environments; namely, \% cannot be used to start a comment since that
+symbol has a special meaning in Maxima. Instead, comments within those
+environment should follow the C language syntax (/* \textit{comment}
+*/). Commands will be inserted as arguments for a function; therefore,
+they must be separated by commas.
+
+\pagebreak
+Let us start with a simple example:
+\begin{verbatim}
+\[   %Math mode begin
+\begin{maxima}
+  f: x/(x^3-3*x+2),     /* Integrating it */
+  tex('integrate(f,x)), /* will show its integral... */
+  print("="),
+  tex(integrate(f,x)),  /* ...and the result */
+  print("+K")
+\end{maxima}
+\]   %Math mode end
+\end{verbatim}
+
+In the place with this code is found, the result will be:
+
+\[
+\begin{maxima}
+  f: x/(x^3-3*x+2),     
+  tex('integrate(f,x)), 
+  print("="),
+  tex(integrate(f,x)),  
+  print("+K")
+\end{maxima}
+\]
+\vskip1em
+There are some environments where a \texttt{maxima} block cannot be
+included. In those cases the \texttt{maxima*}{} variant can be used,
+which gives output immediately. That output can be then inserted with
+the command \verb|\maximacurrent|, as in the following example:
+\begin{verbatim}
+\begin{maxima*}
+  suml(L):=lsum(i,i,L), 
+  printrow(L):=block(
+    [str:""],
+    for i:1 step 1 thru length(L)-1 do(
+        str:concat(str,L[i],"&")),
+    str:concat(str,L[length(L)],"\\\\"),
+    print(str)),
+  xi:[1,2,3,4,5,6],
+  fi:[3,4,7,10,8,2],
+  for i:1 while i<=length(xi) do (
+    printrow([xi[i],fi[i],(fi*xi)[i],(fi*xi^2)[i]])
+    ),
+  print("\\hline"),
+  printrow(["",N:suml(fi),fx:suml(fi*xi),fx2:suml(fi*xi^2)])
+\end{maxima*}
+                 
+\begin{center}
+  \begin{tabular}{|c|c|c|c|c|}
+  $x_i$&$n_i$&$n_i\cdot x_i$&$n_i\cdot x_i^2$\\
+  \hline
+  \maximacurrent
+  \end{tabular}
+\end{center}
+\end{verbatim}
+
+\begin{maxima*}
+  suml(L):=lsum(i,i,L), 
+  printrow(L):=block(
+    [str:""],
+    for i:1 step 1 thru length(L)-1 do(
+        str:concat(str,L[i],"&")),
+    str:concat(str,L[length(L)],"\\\\"),
+    print(str)),
+  xi:[1,2,3,4,5,6],
+  fi:[3,4,7,10,8,2],
+  for i:1 while i<=length(xi) do (
+    printrow([xi[i],fi[i],(fi*xi)[i],(fi*xi^2)[i]])
+    ),
+  print("\\hline"),
+  printrow(["",N:suml(fi),fx:suml(fi*xi),fx2:suml(fi*xi^2)])
+\end{maxima*}
+                 
+\begin{center}
+  \begin{tabular}{|c|c|c|c|c|}
+  $x_i$&$n_i$&$n_i\cdot x_i$&$n_i\cdot x_i^2$\\
+  \hline
+  \maximacurrent
+  \end{tabular}
+\end{center}
+
+It is important to keep in mind that the \verb|\maximacurrent| command
+will be replaced by the result of \emph{the last \texttt{maxima}
+  block}, so it must be used before any other \texttt{maxima} blocks.
+
+If you would like to use that result later on, or if you are going to
+use it at several places in the document, you can add an optional
+command with a variable name that will save that content. The previous
+example might as well had been implemented in the following way:
+\begin{verbatim}
+\begin{maxima*}[table]
+  suml(L):=lsum(i,i,L), 
+  printrow(L):=block(
+    [str:""],
+    for i:1 step 1 thru length(L)-1 do(
+        str:concat(str,L[i],"&")),
+    str:concat(str,L[length(L)],"\\\\"),
+    print(str)),
+  xi:[1,2,3,4,5,6],
+  fi:[3,4,7,10,8,2],
+  for i:1 while i<=length(xi) do (
+    printrow([xi[i],fi[i],(fi*xi)[i],(fi*xi^2)[i]])
+    ),
+  print("\\hline"),
+  printrow(["",N:suml(fi),fx:suml(fi*xi),fx2:suml(fi*xi^2)])
+\end{maxima*}
+                 
+\begin{center}
+  \begin{tabular}{|c|c|c|c|c|}
+  $x_i$&$n_i$&$n_i\cdot x_i$&$n_i\cdot x_i^2$\\
+  \hline
+  \table
+  \end{tabular}
+\end{center}
+\end{verbatim}
+
+Notice that when passing ``\texttt{table}'' as a parameter to
+\texttt{maxima*} \emph{there is no need to use a backslash} (\verb|\|).
+
+There is a line-mode version of the \texttt{maxima} environment,
+with similar usage and options: the command \verb|\imaxima| (from
+``inline maxima'').
+\begin{verbatim}
+  \[
+  \overline{x}=\imaxima{tex(xx:fx/N)}\qquad
+  \sigma^2=\imaxima{tex(sx2:fx2/N-xx^2)}\qquad
+  \sigma=\imaxima{tex(sqrt(sx2))}
+  \]       
+\end{verbatim}
+
+\[ 
+\overline{x}=\imaxima{tex(xx:fx/N)}\qquad
+\sigma^2=\imaxima{tex(sx2:fx2/N-xx^2)}\qquad
+\sigma=\imaxima{tex(sqrt(sx2))}
+\]
+
+In cases when no output is expected, such as defining a function or
+loading \Maxima{} packages, the \texttt{maximacmd} environment or
+\verb|\imaximacmd| command should be used. These two do not have
+\texttt{*} variant nor any options. Furthermore, the \Maxima{}
+commands inside these must be separated by a semicolon (;) or, better
+yet, a dollar sign (\$). As an example, let us look at some of the
+features of the \Maxima/\Gnuplot{} interface. This example shows the
+plots of the $\sin$ function and its tangent at $\frac{\pi}{3}$:
+
+\begin{verbatim}
+\begin{maximacmd}
+  tangent(fx,a):=expand(ev(fx,x=a)
+                  +subst(a,x,diff(fx,x))*(x-a))$
+  plot2d([sin(x),tangent(sin(x),%pi/3)], [x,-3,3],
+         [gnuplot_preamble,"set zeroaxis;"],
+         [gnuplot_term, png],
+         [gnuplot_out_file,"./\jobname2D.png"])$
+\end{maximacmd}
+\begin{center}
+  \mxpIncludegraphics[scale=0.60]{\jobname2D.png}
+\end{center}
+\end{verbatim}   
+
+\pagebreak
+This code creates a \verb|png| format file \texttt{\jobname2D.png}:
+\begin{maximacmd}
+  tangent(fx,a):=expand(ev(fx,x=a)
+                  +subst(a,x,diff(fx,x))*(x-a))$
+  plot2d([sin(x),tangent(sin(x),%pi/3)], [x,-3,3],
+         [gnuplot_preamble,"set zeroaxis;"],
+         [gnuplot_term, png],
+         [gnuplot_out_file,"./\jobname2D.png"])$
+\end{maximacmd}
+\begin{center}
+  \mxpIncludegraphics[scale=0.60]{\jobname2D.png}
+\end{center}
+
+The environments introduced so far can contain \LaTeX{} commands which
+will be replaced before passing them to the \texttt{mac}
+file. Sometimes this feature might not be desired and could lead to
+problems with certain strings. The environments \texttt{vmaxima} and
+\texttt{vmaximacmd} solve this problem; their usage is similar to the
+previous environments, but their content is passed literally. These
+environments are based on the \texttt{verbatim} \LaTeX{} package.
+
+\pagebreak
+
+\subsubsection{Gnuplot}
+While \Maxima{} can create graphics via \Gnuplot{}, sometimes it might
+be preferable to work directly with this last program. In order to do
+that, the environments \texttt{gnuplot} and its verbatim version
+\texttt{vgnuplot} are used.
+
+Here is a 3D example
+\begin{verbatim}
+\begin{gnuplot}
+  set term png crop enhanced font "calibri, 10"
+  set output "toros.png"
+  set parametric
+  set urange [0:2*pi]
+  set vrange [-pi:pi]
+  set isosamples 36,24
+  set hidden3d
+  set view 75,15,1,1
+  unset key
+  set ticslevel 0
+  x1(u,v)=cos(u)+.5*cos(u)*cos(v)
+  y1(u,v)=sin(u)+.5*sin(u)*cos(v)
+  z1(u,v)=.5*sin(v)
+  x2(u,v)=1+cos(u)+.5*cos(u)*cos(v)
+  y2(u,v)=.5*sin(v)
+  z2(u,v)=sin(u)+.5*sin(u)*cos(v)
+  set multiplot
+  splot x1(u,v), y1(u,v), z1(u,v) w pm3d, x2(u,v), y2(u,v), z2(u,v) w pm3d
+  splot x1(u,v), y1(u,v), z1(u,v) lt 3,   x2(u,v), y2(u,v), z2(u,v) lt 5 
+\end{gnuplot}
+\begin{center}
+  \mxpIncludegraphics[scale=0.75]{toros.png}
+\end{center}
+\end{verbatim}
+
+
+\begin{gnuplot}
+  set term png crop enhanced font "calibri, 10"
+  set output "toros.png"
+  set parametric
+  set urange [0:2*pi]
+  set vrange [-pi:pi]
+  set isosamples 36,24
+  set hidden3d
+  set view 75,15,1,1
+  unset key
+  set ticslevel 0
+  x1(u,v)=cos(u)+.5*cos(u)*cos(v)
+  y1(u,v)=sin(u)+.5*sin(u)*cos(v)
+  z1(u,v)=.5*sin(v)
+  x2(u,v)=1+cos(u)+.5*cos(u)*cos(v)
+  y2(u,v)=.5*sin(v)
+  z2(u,v)=sin(u)+.5*sin(u)*cos(v)
+  set multiplot
+  splot x1(u,v), y1(u,v), z1(u,v) w pm3d, x2(u,v), y2(u,v), z2(u,v) w pm3d
+  splot x1(u,v), y1(u,v), z1(u,v) lt 3,   x2(u,v), y2(u,v), z2(u,v) lt 5 
+\end{gnuplot}
+\begin{center}
+  \mxpIncludegraphics[scale=0.75]{toros.png}
+\end{center}
+
+Let us examine the \verb|\mxpIncludegraphics| command: its usage is
+the same as \verb|includegraphics| from package \verb|graphicx|; in
+fact, it just makes sure that the graphic file exists before invoking
+that macro.
+
+\subsection{Problems}
+This is an experimental version; many of the capabilities of Maxima
+have not been tested and it has not been tried with the most important
+\LaTeX{} packages. Thus, it will surely need some tweaking.
+
+However, I think that most of the problems will appear when showing
+certain outputs. For instance, if the result of a computation is too
+long, it will not be easy to break it into several lines (except if
+one works in Maxima and then copies the result to the document, of
+course).
+
+Other possible problems can be addressed from within the \LaTeX{}
+document. By default, Maxima orders expressions by inverse
+alphabetical order; hence, if we type:\\
+\verb|  $$\imaxima{tex(x+y+z+t=0)}$$|\\
+we get:
+$$\imaxima{tex(x+y+z+t=0)}$$
+
+That can be avoided by using Maxima functions \texttt{ordergreat} and
+\texttt{unorder}:
+\begin{verbatim}
+\imaximacmd{ordergreat(x,y,z,t)$}
+$$\imaxima{tex(x+y+z+t=0)}$$
+\imaximacmd{unorder()$}
+\end{verbatim}
+%\imaximacmd{ordergreat(x,y,z,t)$}
+%$$\imaxima{tex(x+y+z+t=0)}$$
+%\imaximacmd{unorder()$}
+
+Furthermore, if we would like to align several equations, we will need
+to dive a little deeper:
+\begin{verbatim}
+\begin{maximacmd}
+  ordergreat(x,y,z)$
+  :lisp(defprop mequal (&=) texsym)
+\end{maximacmd}
+
+\begin{maxima*}
+  eq1:a-2*b=x+y,
+  eq2:b=2*x-3*y+2*z,
+  tex(eq1),
+  print("\\\\"),
+  tex(eq2)
+\end{maxima*}
+
+\begin{maximacmd}
+  unorder()$
+  :lisp(defprop mequal (=) texsym)    
+\end{maximacmd}
+\end{verbatim}
+
+\begin{maximacmd}
+  ordergreat(x,y,z)$
+  :lisp(defprop mequal (&=) texsym)
+\end{maximacmd}
+
+\begin{maxima*}
+  eq1:a-2*b=x+y,
+  eq2:b=2*x-3*y+2*z,
+  tex(eq1),
+  print("\\\\"),
+  tex(eq2)
+\end{maxima*}
+
+\begin{maximacmd}
+  unorder()$
+  :lisp(defprop mequal (=) texsym)    
+\end{maximacmd}
+
+\begin{align}
+  \maximacurrent
+\end{align}
+
+\section{A few last words}
+As I mentioned before, this is an experimental package that will
+probably need some amendments and additions, so any ideas or comments
+will be welcome.
+\\
+
+\raggedleft{Jos\'e Miguel M. Planas}\\
+\raggedleft{$<$nohaim@gmail.com$>$}\\[10pt]
+\raggedleft{(English translation by Jaime Villate)}
+                  
+\end{document}

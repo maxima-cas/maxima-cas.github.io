@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="en">
+<head>
+  <title>Maxima Tutorial</title>
+  <meta content="text/html; charset=windows-1252"
+ http-equiv="Content-Type">
+  <link href="defstyle.css" rel="stylesheet" type="text/css">
+</head>
+<body bgcolor="#ffffbb">
+<table bgcolor="#ffffff" border="0" cellpadding="2">
+  <tbody>
+    <tr bgcolor="#ccffcc">
+      <td>
+      <center><a href="StepwisePF0001.htm">Anterior</a></center>
+      </td>
+      <td>
+      <center><a href="../Contents.htm">Índice</a></center>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h2>Cálculo Passo-a-Passo de uma Decomposição de Frações Parciais</h2>
+<h3>Continuação</h3>
+<hr class="endOfHeader">
+<p>O cálculo que realizamos, fornece o resultado desejado,
+mas tem uma falha séria: As equações foram manualmente montadas. Isso é
+inconveniente e facilita a ocorrência de erros, e não conduz a uma
+generalização útil. Nessa seção&nbsp; exploramos um melhor algorítmo
+para escolher as equações.</p>
+<pre class="mInput"> r:  1/(x^2*(x^2 + 1));</pre>
+<pre class="mOutput">       1<br>  -----------<br>   2   2<br>  x  (x  + 1)</pre>
+<p>Agora, informamos as três frações elementares que podem ocorrer na
+decomposição em frações parciais daquela expressão:</p>
+<pre class="mInput">p1: a/x;</pre>
+<pre class="mOutput">     a<br>     -<br>     x</pre>
+<pre class="mInput">p2: b/x^2;</pre>
+<pre class="mOutput">    b<br>    --<br>     2<br>    x</pre>
+<pre class="mInput">p3: (c*x + d)/(x^2 + 1);</pre>
+<pre class="mOutput">    c x + d<br>    -------<br>     2<br>    x  + 1</pre>
+<p>A decomposição em frações parciais é a adição dessas três frações:</p>
+<pre class="mInput">p1 + p2 + p3;</pre>
+<pre class="mOutput">      c x + d   a   b<br>      ------- + - + --<br>       2        x    2<br>      x  + 1	    x</pre>
+<p>Para comparar os coeficientes do numerador desconhecido com o
+numerador da expressão dada, temos que reescrever aquela adição sobre
+um denominador comum:
+</p>
+<pre class="mInput">ratsimp(%);</pre>
+<pre class="mOutput">               3            2<br>      (c + a) x  + (d + b) x  + a x + b<br>      ---------------------------------<br>                    4    2<br>                   x  + x<br></pre>
+<p>Agora, acessamos o numerador dessa fração:</p>
+<pre class="mInput">n: num(%);</pre>
+<pre class="mOutput">              3            2<br>     (c + a) x  + (d + b) x  + a x + b</pre>
+<p>isso é uma adição, mas precisamos transformar suas parcelas em uma
+lista. Para reescrever uma adição como uma lista de suas parcelas,
+temos que usar a função <b>maplist</b>:</p>
+<pre class="mInput"> parcelas: maplist (lambda ([item ], item), %);</pre>
+<pre class="mOutput">             3           2<br>   [(c + a) x , (d + b) x , a x, b]</pre>
+<p>A seguinte expressão transforma a lista de termos em uma lista de
+equações. Para cada termo em "parcelas", o termo coeficiente é igualado
+ao coeficiente correspondente em r</p>
+<pre class="mInput"> map(lambda ([parcelas], coeff(parcelas, x, hipow(parcelas, x)) = coeff(r, x, hipow(parcelas, x))),<br>              parcelas);</pre>
+<pre class="mOutput">   [c + a = 0, d + b = 0, a = 0, b = 1]</pre>
+<p>Que corresponde a um sistema de equações lineares. Podemos
+resolvê-lo com <b>solve</b>:</p>
+<pre class="mInput"> solve(%, [a, b, c, d]);</pre>
+<pre class="mOutput">    [[a = 0, b = 1, C = 0, d = - 1]]</pre>
+<pre class="mInput"> at(p1 + p2 + p3, first(%));</pre>
+<pre class="mOutput">   1      1<br>   -- - ------<br>    2    2<br>   x    x  + 1</pre>
+<h3>O que aprendemos:</h3>
+<ul>
+  <li>A obter o argumento de um operador n-ário em uma lista,
+a função <b>maplist pode</b> pode ser usada.</li>
+</ul>
+<br>
+<hr class="startOfFooter">
+<table bgcolor="#ffffff" border="0" cellpadding="2">
+  <tbody>
+    <tr bgcolor="#ccffcc">
+      <td>
+      <center><a href="StepwisePF0001.htm">Anterior</a></center>
+      </td>
+      <td>
+      <center><a href="../Contents.htm"></a></center>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

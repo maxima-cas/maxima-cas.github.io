@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="en">
+<head>
+  <title>Maxima Tutorial</title>
+  <meta content="text/html; charset=windows-1252"
+ http-equiv="Content-Type">
+  <link href="defstyle.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<table bgcolor="#ffffff" border="0" cellpadding="2">
+  <tbody>
+    <tr bgcolor="#ccffcc">
+      <td>
+      <center><a href="FnDef0002.htm">Anterior</a></center>
+      </td>
+      <td>
+      <center><a href="../Contents.htm">Índice</a></center>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h2>Geometria: Tubos abraçando Curvas Espaciais</h2>
+<hr class="endOfHeader">
+<p>Para usar arquivos com Maxima, você pode criar um diretório chamado <b>user</b>
+como um diretório do diretório raíz do Maxima (a saber o <b>Maxima-5.9.1</b>
+na sua distribuiçãona distribuição para Windows). Quando voê copia
+arquivos de programas naquele diretório, você pode chamá-los sem
+precisar especificar o caminho completo.</p>
+<p>Para usar o código do capítulo anterior, copie o arquivo&nbsp;
+<a href="">tubeplot2.mc</a> para o diretório <span
+ style="font-weight: bold;">user</span>, inicie o Maxima e digite<br>
+</p>
+<pre class="mInput">batch(tubeplot2);</pre>
+<p>Note que você não usa apóstrofos, aspas e não coloca a extensão do
+arquivo.</p>
+<p>Maxima executa todas as declarações no arquivo a ser chamado. As
+seguintes definições são lidas de <b>tubeplot2</b>:<br>
+rotateLeft, cross, tangent, binormal, normal, tube.</p>
+<p>Podemos dedinir uma curva espacial:</p>
+<pre class="mInput">helix(x) := [5*cos(x), 5*sin(x), 2*x];</pre>
+<pre class="mOutput">  helix(x) := [5 cos(x), 5 sin(x), 2 x]</pre>
+<p>e calcular um tubo com raio 1 em torno daquela curva:</p>
+<pre class="mInput">tube(helix, 1, t, rho);</pre>
+<pre class="mOutput">  2 sin(rho) sin(t)<br> [----------------- - cos(rho) cos(t) + 5 cos(t),<br>      sqrt(29)<br>                                 2 sin(rho) cos(t)   <br>  - cos(rho) sin(t) + 5 sin(t) - -----------------,<br>                                     sqrt(29)<br>        5 sin(rho)<br>  2 t + ----------]<br>         sqrt(29)</pre>
+<p>essa é uma representação paramétrica de uma superfície no espaço.
+Podemos tentar desenhar essa superfície com a função <b>plot3d</b>:</p>
+<pre class="mInput">plot3d(%, [t,-2*%pi, 2*%pi],[rho,0, 2*%pi], ['grid, 100, 18], [gnuplot_preamble, "unset surface"]);</pre>
+<p>Lamentavelmente,o <b>gnuplot</b> não produz gráficos muito bons.
+Para gráficos realmente bons é melhor usar outro programas gráficos.
+Essa imágem foi produzida com Squeak e OpenGL:</p>
+<img class="screenshot" src="./images/Helix01.png" alt="A Helix"> <br>
+<hr class="startOfFooter">
+<table bgcolor="#ffffff" border="0" cellpadding="2">
+  <tbody>
+    <tr bgcolor="#ccffcc">
+      <td>
+      <center><a href="FnDef0002.htm">Anterior</a></center>
+      </td>
+      <td>
+      <center><a href="../Contents.htm">Índice</a></center>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

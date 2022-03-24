@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="en">
+<head>
+  <title>Maxima Tutorial</title>
+  <meta content="text/html; charset=windows-1252"
+ http-equiv="Content-Type">
+  <link href="defstyle.css" rel="stylesheet" type="text/css">
+</head>
+<body bgcolor="#ffffbb">
+<table bgcolor="#ffffff" border="0" cellpadding="2">
+  <tbody>
+    <tr bgcolor="#ccffcc">
+      <td>
+      <center><a href="ODE0002.htm">Anterior</a></center>
+      </td>
+      <td>
+      <center><a href="../Contents.htm">Índice<br>
+      </a></center>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h2>Differential Equations - Symbolic Solutions</h2>
+<h3>Continuation</h3>
+<hr class="endOfHeader">
+<p>Para resolver a equação do exemplo anterior com a função
+<b>desolve</b>, introduzimos nomes para as duas equações:</p>
+<pre class="mInput">diff_eq1: 'diff(f(x),x,2) + 'diff(g(x),x) + 3*f(x) = 15*exp(-x);</pre>
+<pre class="mOutput">			       2<br>		  d	      d				 - x<br>(%o1) 		  -- (g(x)) + --- (f(x)) + 3 f(x) = 15 %e<br>		  dx	        2<br>			      dx</pre>
+<pre class="mInput">diff_eq2: 'diff(g(x), x, 2) - 4*'diff(f(x), x) + 3*g(x) = 15*sin(2*x);</pre>
+<pre class="mOutput">		2<br>	       d	       d<br>(%o2) 	       --- (g(x)) - 4 (-- (f(x))) + 3 g(x) = 15 sin(2 x)<br>		 2	       dx<br>	       dx</pre>
+<p>Agora formaremos um sistemas de equações chamado <span
+ style="font-weight: bold;">ode_syst</span>:</p>
+<pre class="mInput">ode_syst: [diff_eq1, diff_eq2];</pre>
+<pre class="mOutput">		    2<br>       d	   d			      - x<br>(%o3) [-- (g(x)) + --- (f(x)) + 3 f(x) = 15 %e	 , <br>       dx	     2<br>		   dx<br><br>			      2<br>			     d		     d<br>			     --- (g(x)) - 4 (-- (f(x))) + 3 g(x) = 15 sin(2 x)]<br>			       2	     dx<br>			     dx</pre>
+<p>Os valores iniciais são especificados da mesma maneira que no
+exemplo anterior:</p>
+<pre class="mInput">atvalue (f(x), x=0, 35);</pre>
+<pre class="mOutput">      35</pre>
+<pre class="mInput">atvalue ('diff(f(x),x),x=0, -48);</pre>
+<pre class="mOutput">     - 48</pre>
+<pre class="mInput">atvalue (g(x), x=0, 27);</pre>
+<pre class="mOutput">      27</pre>
+<pre class="mInput">atvalue ('diff(g(x), x), x=0, -55);</pre>
+<pre class="mOutput">     - 55</pre>
+<p>Agora chamamos <b>desolve</b>:</p>
+<pre class="mInput">desolve(ode_syst, [f(x), g(x)]);</pre>
+<p>e obtemos uma lista de duas equações, a solução do sistema dado.</p>
+<pre class="mOutput">							   - x<br>(%o8) [f(x) = - 15 sin(3 x) + 2 cos(2 x) + 30 cos(x) + 3 %e   , <br><br>									   - x<br>			   g(x) = 30 cos(3 x) + sin(2 x) - 60 sin(x) - 3 %e   ]</pre>
+<br>
+<hr class="startOfFooter">
+<table bgcolor="#ffffff" border="0" cellpadding="2">
+  <tbody>
+    <tr bgcolor="#ccffcc">
+      <td>
+      <center><a href="ODE0002.htm">Anterior<br>
+      </a></center>
+      </td>
+      <td>
+      <center><a href="../Contents.htm">Índice</a></center>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

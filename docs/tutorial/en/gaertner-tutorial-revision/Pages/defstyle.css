@@ -1,0 +1,283 @@
+body {
+    background: white;
+    color: black;
+}
+  
+a {font-weight:bold;}
+a.externalReference {
+    color: #00AA00;
+}
+a.externalReference:visited {
+    color: #008800;
+}
+a.iType {
+    color: rgb(210, 30, 10);
+}
+a.iType:visited {
+    color: rgb(160, 15, 10);
+}
+
+p {clear:left}
+br {clear:left}
+img {clear:left}
+h1 {clear:left}
+h2 {clear:left}
+h3 {clear:left}
+h4 {clear:left}
+ul {clear:left}
+li {clear:left}
+hr {clear:left}
+
+pre {clear:both;
+     margin-top : 10px;
+     margin-bottom: 10px}
+
+a.lessImportant {
+    font-weight:normal;
+}
+
+span.key {  
+    color: rgb(0,0,0);
+    background: rgb(230,230,230);
+    border: solid rgb(20,20,20); 
+    border-width: 1px; 
+    margin-left: 6px;
+    margin-right: 6px;
+}
+
+span.evaluatedResult {
+    color: #1010FF;
+}
+
+span.messageName {  
+    color: #1010FF;
+    font-weight: bold;
+}
+
+span.warning{
+    color: rgb(255,0, 0);
+}
+
+span.instanceVariable {
+    color: rgb(0,100,250);
+    font-weight: bold
+}
+
+span.instancetype {
+    color: rgb(210, 30, 10);
+    font-weight: bold
+
+}
+
+span.iVar {
+    color: rgb(0,100,250);
+    font-weight: bold
+}
+
+span.iType {
+    color: rgb(210, 30, 10);
+    font-weight: bold
+
+}
+
+span.mPar { 
+    color: rgb(10, 180, 10);
+    font-weight: bold
+}
+
+
+span.codeExample {
+    color: rgb(0,0,0);
+    background: rgb(230,230,230);
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+pre span.response { color:black}
+
+tt.example {
+    color: rgb(0,165,0);
+    margin-left: 1em;
+}
+tt.codeExample {
+    color: rgb(0,0,0);
+    background: rgb(230,230,230);
+    margin-left: 1em;
+    margin-right: 1em;
+}
+tt.key {
+    color: rgb(0,0,0);
+    background: rgb(230,230,230);
+    border: solid rgb(20,20,20); 
+    border-width: 1; 
+    margin-left: 6px;
+    margin-right: 6px;
+}
+pre.inheritance {
+    width: auto;
+    float: left;
+    color: rgb (0, 0, 0);
+    background: rgb(150,190,250);
+    padding: 12px; 
+    margin-left: 1em;
+    margin-right: 2em;
+}
+
+pre.assertion {
+    width: auto;
+    float: left;
+    color: rgb (0, 0, 0);
+    background:  rgb(210,250,140);
+    border: solid  rgb(210,250,140); 
+    padding: 12px; 
+    margin-left: 1em;
+    margin-right: 2em;
+}
+
+pre.citation {
+    width: auto;
+    float: left;
+    color: rgb (0, 0, 0);
+    background: rgb(120,230,180);
+    border: solid rgb(230,160,160); 
+    padding: 12px; 
+    margin-left: 1em;
+    margin-right: 1em;
+}
+pre.codeExample {
+    width: auto;
+    float: left;
+    color: rgb (0, 0, 0);
+    background: rgb(230,230,230);
+    border: solid rgb(230,230,230); 
+    padding: 12px; 
+    margin-left: 1em;
+    margin-right: 1em;
+}
+pre.resultOfExample {
+    float: left;
+    color: rgb(10,10,255);
+    background: rgb(230,230,230);
+    border: solid rgb(230,230,230); 
+    padding: 12px; 
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+pre.codeFragment {
+    float: left;
+    color: rgb (0, 0, 0);
+    background: rgb(230,230,230);
+    border: solid rgb(0,230,0);
+    border-width: 2px; 
+    padding: 12px; 
+    margin-left: 1em;
+    margin-right: 2em;
+}
+
+pre.redBorder {
+    width: auto;
+    float: left;
+    border: solid rgb(230,0,0); 
+    border-width: 1px;
+    margin-left: 1em;
+    margin-right: 2em; 
+}
+pre.userInput {
+    width: auto;
+    float: left;
+    color: rgb (0, 0, 0);
+    background: rgb(230,230,230);
+    border: solid rgb(230,230,230); 
+    border-width: 12px;
+}
+
+pre.borderedInput {
+    width: auto;
+    float: left;
+    border: solid rgb(0,0,230); 
+    border-width: 1px;
+    margin-left: 1em;
+    margin-right: 2em; 
+}
+pre.borderedUserInput  {
+    width: auto;
+    float: left;
+    background: rgb(230,230,230);
+    border: solid rgb(0,0,230); 
+    border-width: 1px;
+    padding: 12px;
+    margin-left: 1em;
+    margin-right: 2em; 
+}
+pre.mInput {
+    width: auto;
+    float: left;
+    color: rgb(10,10,255);
+    background: rgb(230,230,230); 
+    padding: 12; 
+    margin-left: 1em;
+}
+
+pre.mOutput {
+    width: auto;
+    float: left;
+    color: rgb(0,0,0);
+    background: rgb(230,230,230); 
+    padding: 12; 
+    margin-left: 1em;
+}
+
+pre.ruleApplication {
+    width: auto;
+    float: left;
+    color: rgb(0,0,0);
+    background: white;
+    border: solid rgb(110,230,110); 
+    padding: 12;
+    border-width: 2px; 
+    margin-left: 1em;
+}
+
+pre.lispRule {
+    width: auto;
+    float: left;
+    color: rgb(0,0,0);
+    background: rgb(255, 255, 180);
+    border: solid rgb(110,230,110); 
+    padding: 12;
+    border-width: 2px; 
+    margin-left: 1em;
+}
+
+pre.mathExpression {
+    width: auto;
+    float:left;
+    clear: both;
+    color: rgb (0, 0, 0);
+    background: rgb(255,255,180);
+    border: solid rgb(110,130,230); 
+    border-width: 2px;
+    padding: 12px; 
+    margin-left: 1em;
+}
+
+div.resumee {
+    width: 80%;
+    border: solid rgb(195,255,0); 
+    border-width: 2px;
+}
+
+div.red-border {
+    width: 80%;
+    border: solid rgb(255,0,0); 
+    border-width: 2px;
+}
+img.screenshot { margin-left:1em }
+hr.endOfHeader {
+   width: 80%
+}
+
+hr.startOfFooter {
+   width: 80%
+}

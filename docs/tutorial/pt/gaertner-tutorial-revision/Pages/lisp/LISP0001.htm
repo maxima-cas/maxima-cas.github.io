@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="en">
+<head>
+  <title>Maxima Tutorial</title>
+  <meta content="text/html; charset=windows-1252"
+ http-equiv="Content-Type">
+  <link href="defstyle.css" rel="stylesheet" type="text/css">
+</head>
+<body bgcolor="#ffffbb">
+<table bgcolor="#ffffff" border="0" cellpadding="2">
+  <tbody>
+    <tr bgcolor="#ccffcc">
+      <td>
+      <center><a href="../../Contents.htm">Índice</a></center>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p></p>
+<h2>Lisp - Fatos Básicos</h2>
+<p></p>
+<hr class="endOfHeader">
+<p>Enquanto o usuário ocasional do Maxima não precisa conhecer o Lisp,
+um bom entendimento de Lisp é necessário para aqueles que querem
+analisar o código do Maxima e adicionar seu próprio código.</p>
+<p>Esse documento descreve as propriedades fundamentais do Lisp, não
+descreve as peculiaridades das implementações atualmente disponíveis.</p>
+<h3>(LENGTH &lt;arg&gt;)</h3>
+<p>Essa função responde o comprimento de seu argumento, uma lista.</p>
+<p><b>Definição</b></p>
+<pre class="lispDef">(LAMBDA (arg)<br>  (COND ((NULL arg) 0)<br>        (T (ADD1 (LENGTH (CDR arg))))<br>) )</pre>
+<p><b>Regras</b></p>
+<pre class="lispRule">(INTEGERP (LENGTH &lt;arg&gt;))<br>       TRUE</pre>
+<pre class="lispRule">(LENGTH (LIST))<br>       0</pre>
+<pre class="lispRule">(LENGTH (APPEND &lt;a&gt;  &lt;b&gt;))  <br>       (PLUS (LENGTH &lt;a&gt;) (LENGTH &lt;b&gt;))</pre>
+<h3>(APPEND &lt;a&gt; &lt;b&gt;)</h3>
+<p>Essa função responde uma nova lista contendo os elementos de nível
+mais alto de &lt;a&gt; e &lt;b&gt;.</p>
+<p><b>Definição:</b></p>
+<pre class="lispDef">(DEFFUN APPEND<br>   (LAMBDA (A B)<br>      (COND ((NULL A) B)<br>            (T (CONS (CAR A)<br>                     (APPEND (CDR A) B)<br>)  )  )     )  )</pre>
+<p><b>Regras:</b></p>
+<pre class="lispRule">(APPEND (APPEND &lt;a&gt;  &lt;b&gt;) &lt;c&gt;)<br>       (APPEND &lt;a&gt; (APPEND &lt;b&gt;  &lt;b&gt;))</pre>
+<h3>(REVERSE &lt;arg&gt;)</h3>
+<p>Essa função responde uma lista que contém os elementos de nível mais
+alto dos argumentos na ordem reversa.</p>
+<p><b>Definição</b></p>
+<pre class="lispDef">(DEFFUN REVERSE<br>   (LAMBDA (A)<br>      (COND ((NULL A) NIL)<br>            (T (APPEND (REVERSE (CDR A))<br>                       (LIST (CAR A))<br>)  )  )     )  )<br></pre>
+<p>Uma definição recursiva final usa uma função auxiliar que pega dois
+parâmetros: uma lista de resto e a lista reversa&nbsp; que é construida
+então:</p>
+<pre class="lispDef">(DEFFUN REVERSE<br>   (LAMBDA (A)<br>      ((LABEL RV<br>          (LAMBDA (rest result)<br>             (COND ((NULL rest) result)<br>                   (T (RV (CDR rest)<br>                          (CONS (CAR rest)<br>                                result<br>       )  )  )     )  )   )<br>       A<br>       NIL<br>)  )  )</pre>
+<p><b>Regras</b></p>
+<pre class="lispRule">(REVERSE (REVERSE &lt;arg&gt;))<br>       &lt;arg&gt;</pre>
+<pre class="lispRule">(LENGTH (REVERSE &lt;arg&gt;))<br>       (LENGTH &lt;arg&gt;)</pre>
+<pre class="lispRule">(REVERSE (APPEND &lt;a&gt;  &lt;b&gt;))  <br>       (APPEND (REVERSE &lt;b&gt;) (REVERSE &lt;a&gt;))</pre>
+<h3>(MEMBER &lt;arg&gt; &lt;list&gt;)</h3>
+<p>Essa função verifica se &lt;arg&gt; é um elemento de nível mais alto
+da lista &lt;list&gt;. </p>
+<p><b>Definição</b></p>
+<pre class="lispDef">(DEFFUN MEMBER<br>   (LAMBDA (A L)<br>      (COND ((NULL L) NIL)<br>            ((EQUAL A (CAR L)) B)<br>            (T (MEMBER A (CDR A)))<br>)  )  )</pre>
+<h3>(PAIR &lt;a&gt; &lt;a&gt;)</h3>
+<p>Essa função verifica se &lt;arg&gt; é um elemento de nível mais alto
+da lista &lt;list&gt;. </p>
+<p><b>Definição</b></p>
+<pre class="lispDef">(DEFFUN MEMBER<br>   (LAMBDA (A B)<br>      (COND ((OR (NULL A) (NULL B)) NIL)<br>            (T (CONS (CONS (CAR A) (CAR B))<br>                     (PAIR (CDR A) (CDR B))<br>            )  )<br>)  )  )</pre>
+<p><b>Uma Definição recursiva de final</b></p>
+<pre class="lispDef">(DEFFUN MEMBER<br>   (LAMBDA (A B)<br>      (COND ((OR (NULL A) (NULL B)) NIL)<br>            (T (CONS (CONS (CAR A) (CAR B))<br>                     (PAIR (CDR A) (CDR B))<br>            )  )<br>)  )  )</pre>
+<br>
+<hr class="startOfFooter">
+<table bgcolor="#ffffff" border="0" cellpadding="2">
+  <tbody>
+    <tr bgcolor="#ccffcc">
+      <td>
+      <center><a href="../../Contents.htm">Índice</a></center>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

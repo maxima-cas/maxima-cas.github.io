@@ -1,0 +1,132 @@
+<html lang="en">
+<head>
+<title>Maxima Tutorial</title>
+
+<META content="text/html; charset=windows-1252" http-equiv=Content-Type>
+<LINK href="defstyle.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<TABLE bgColor=#ffffff border=0 cellPadding=2>
+  <TBODY>
+  <TR bgColor=#ccffcc>
+    <TD><CENTER><a href="../Contents.htm">Contents</a></Center></TD>
+    <TD><CENTER><a href="FnDef0002.htm">Next</a></CENTER></TD>
+  </TR>
+  </TBODY>
+</TABLE>
+
+<h2>Geometry: Planar Curves</h2>
+<hr class="endOfHeader">
+
+<p>This section uses material from Alfred Gray's book:
+<pre style="margin-left:2em">Modern Differential Geometry of Curves and Surfaces,
+1994 CRC Press, Florida</pre>
+
+<p>The parametric representation of a planar curve can be written as a vector in
+two dimensions. The elements of that vector are functions of the parameter <b>t</b>:</p>
+
+<pre class="mInput">alpha(t) := [sin(t), cos(t)];</pre>
+<p>We obtain the definition as an answer:</p>
+
+<pre class="mOutput">alpha(t) := [sin(t), cos(t)]</pre>
+
+<p>We can compute the derivation:</p>
+ 
+<pre class="mInput"> diff(alpha(z), z);</pre>
+
+<P>And we get this result:</p>
+<pre class="mOutput"> [cos(z), - sin(z)]</pre>
+
+<p>Next, we define a function, that is called the "complex structure":</p>
+
+<pre class="mInput">J(a) := [-a[2], a[1]];</pre>
+
+<pre class="mOutput">  J(a) := [- a , a ]
+              2   1
+</pre>
+
+<p>In the definition of <b>J</b>, we <u>assume</u> that <b>a</b> is a vector
+with exactly two elements. This is neither declared nor checked.</p>
+
+<p>Here is how it works:</p>
+
+<pre class="mInput">J(alpha(y));</pre>
+
+<pre class="mOutput">    [- cos(y), sin(y)]</pre>
+
+<p>In geometric interpretation, this is a rotation around 90 degrees.
+It is not a surprise that the scalar product of alpha(z) and J(alpha(z))
+is zero:</p>
+
+<pre class="mInput">alpha(z).J(alpha(z));</pre>
+
+<pre class="mOutput"> 0</pre>
+
+<p>Now we define the curvature of a plane curve</p>
+<pre class="mInput">kappa(fn, t) := diff(fn(t), t, 2).J(diff(fn(t), t))/((diff(fn(t), t).diff(fn(t), t))^(3/2));</pre>
+
+<pre class="mOutput">                    diff(fn(t), t, 2) . j(diff(fn(t), t))
+    kappa(fn, t) := -------------------------------------
+                                                     3/2
+                    (diff(fn(t), t) . diff(fn(t), t))
+</pre>
+
+<p>Now let us compute the curvature of <b>alpha</b>:</p>
+<pre class="mInput">kappa(alpha, t);</pre>
+<p>Maxima answers:</p>
+<pre class ="mOutput">         2         2
+    - sin (t) - cos (t)
+   ----------------------
+       2         2    3/2
+   (sin (t) + cos (t))
+</pre>
+<p>This is a surprisingly complicated result: <b>alpha(t)</b> is a parametric
+representation of a circle and a circle should have constant curvature.
+An attempt to simplify this result is certainly worthwile:</p>
+<pre class="mInput">trigsimp(%);</pre>
+<p>Now Maxima confirms what we think: A circle has constant curvature.</p>
+<pre class="mOutput">    - 1</pre>
+
+<hr width="80%">
+
+<p>Now, let us examine a slightly more complicated curve, the
+eight-curve:</p>
+<pre class="mInput"> eight(t) := [sin(t), sin(t)*cos(t)];</pre>
+<pre class="mOutput">eight(t) := [sin(t), sin(t) cos(t)]</pre>
+
+<p>To draw that curve, we can use this command:</p>
+<pre class="mInput">plot2d(append('[parametric], eight (z), [[z, -%pi, %pi]], [[nticks, 360]]));</pre>
+
+<p>The diagram is shown in a separate window.</p>
+<p>Now we can compute the curvature:</p>
+
+<pre class="mInput">kappa(eight, z);</pre>
+<p>and we obtain:</p>
+<pre class="mOutput">               2         2            2
+  - sin(z) (sin (z) - cos (z)) - 4 cos (z) sin(z)
+  -----------------------------------------------
+	     2	       2    2      2    3/2
+	((cos (z) - sin (z))  + cos (z))
+</pre>
+
+<p>The curvature of the eight-curve can be plotted with this command: </p>
+<pre class="mInput"> plot2d(kappa(eight, z), [z, -%pi, %pi]);</pre>
+
+<h3>What we have Learned:</h3>
+<ul>
+<li>The elements of a vector are written in square brackets.</li>
+<li>The point is used to write the dot product of two vectors.</li>
+</ul>
+<br>
+<hr class="startOfFooter">
+<TABLE bgColor=#ffffff border=0 cellPadding=2>
+  <TBODY>
+  <TR bgColor=#ccffcc>
+    <TD><CENTER><a href="../Contents.htm">Contents</a></Center></TD>
+    <TD><CENTER><a href="FnDef0002.htm">Next</a></CENTER></TD>
+  </TR>
+  </TBODY>
+</TABLE>
+</body>
+</html>

@@ -1,0 +1,280 @@
+<html lang="en">
+<head>
+<title>Maxima Tutorial</title>
+
+<META content="text/html; charset=windows-1252" http-equiv=Content-Type>
+<LINK href="defstyle.css" rel="stylesheet" type="text/css">
+</head>
+
+<body bgcolor="#ffffbb">
+<TABLE bgColor=#ffffff border=0 cellPadding=2>
+  <TBODY>
+  <TR bgColor=#ccffcc>
+    <TD><CENTER><a href="./Programming0001.htm">Previous</a></Center></TD>
+    <TD><CENTER><a href="../Contents.htm">Contents</a></Center></TD>
+    <TD><CENTER><a href="./Programming0003.htm">Next</a></Center></TD>
+  </TR>
+  </TBODY>
+</TABLE>
+
+<h2>Maxima Programming</h2>
+<h3>Additional examples</h3>
+<hr class="endOfHeader">
+
+<p>The computation of orthogonal Polynomials</p>
+
+<p>The Legendre polynomials are defined by:</p>
+<pre class="mathExpression">
+  p<sub>0</sub>(x) = 1
+  p<sub>1</sub>(x) = x
+  n*p<sub>n</sub>(x) = (2*n -1)*x*p<sub>n-1</sub>(x) - (n - 1)*p<sub>n-2</sub>(x)</pre>
+
+<p>The objective of this section is to develop programs that compute the
+Legendre polynomial for a given value of n.</p>
+
+<p>For a first attempt we try to follow the definition as close as possible:</p>
+
+<pre class="mInput">Legendre1(n, x) :=
+block ( [],
+    if n = 0 
+       then 1
+       else
+        if n = 1
+           then x
+           else  ((2*n - 1)*x*Legendre1 (n - 1, x)
+                  - (n - 1)  *Legendre1 (n - 2, x)) / n
+)</pre> 
+
+<p>A first test gives:</p>
+<pre class="mInput">Legendre1(3, z);
+<span class="response">
+						  2
+					  5 z (3 z  - 1)
+					  -------------- - 2 z
+						2
+(%o2) 					  --------------------
+						   3
+</span>Legendre1 (5, t);
+<span class="response">
+				 2
+			 5 t (3 t  - 1)
+		    7 t (-------------- - 2 t)	       2		    2
+			       2		 3 (3 t  - 1)	    5 t (3 t  - 1)
+	       9 t (-------------------------- - ------------)	 4 (-------------- - 2 t)
+				3		      2			  2
+	       ----------------------------------------------- - ------------------------
+				      4					    3
+(%o3) 	       --------------------------------------------------------------------------
+						   5</span></pre>
+
+<p>Perfect for lovers of impressive expressions, but far from perfect for
+those who prefer simplified results. What went wrong?</p>
+<p>Nothing. Simplification is a difficult thing to do and and we simply
+ignored the problem. We multiplied and added polynomials. To obtain a
+canonical representation of the polynomials we have to expand all products:</p>
+
+<pre class="mInput">Legendre2(n, x) :=
+block ( [],
+    if n = 0 
+       then 1
+       else
+        if n = 1
+           then x
+           else <b>expand(</b>((2*n - 1)*x*Legendre2 (n - 1, x)
+                        - (n - 1)  *Legendre2 (n - 2, x)) / n<b>)</b>
+)</pre>
+
+<pre class="mInput">Legendre2(3, z);
+<span class="response">						  3
+					       5 z    3 z
+(%o5) 					       ---- - ---
+						2      2
+</span>Legendre2(5, z);
+<span class="response">					      5	      3
+					  63 z	  35 z	  15 z
+(%o6) 					  ----- - ----- + ----
+					    8	    4	   8</span></pre>  
+
+<p>We expand the entire expression - this is a safe approach, but it can be quite costly.
+We may wish to ask about simplification with minimal effort. It is sufficient to expand
+the two products separately:</p>
+
+<strike>
+<p>Here we expand only the expression that contains a multiplication with the variable:</p> 
+<pre class="mInput">Legendre2(n, x) :=
+block ( [],
+    if n = 0 
+       then 1
+       else
+        if n = 1
+           then x
+           else (<b>expand(</b>(2*n - 1)*x*Legendre2 (n - 1, x)<b>)</b>
+                        - (n - 1)  *Legendre2 (n - 2, x)) / n<b></b>
+)</pre>
+
+
+<p>This is even better:</p></strike>
+<pre class="mInput">Legendre2(n, x) :=
+block ( [],
+    if n = 0 
+       then 1
+       else
+        if n = 1
+           then x
+           else <b>expand(</b>(2*n - 1)/n*x*Legendre2 (n - 1, x))
+                - expand((n - 1)/n  *Legendre2 (n - 2, x))<b></b>
+)</pre>
+
+<p>A closer look at the code reveals that it is unefficient and not even as
+elegant as one might think at first glance. The essentail flaw is that a lot
+of computations are carried out repeatedly. To see that, you can use
+the trace facility of Maxima:</p>
+
+<pre class="mInput">trace(Legendre2);
+<span class="response">     [Legendre2]</span>
+Legendre2(7, z)</pre>
+<p>This will write a message every time the function <b>Legendre2</b> is
+entered of exited.</p>
+
+<p>***</p>
+<p>The easiest way to avoid this is to avoid recursion altogether. This
+is what we will do next.</p>
+
+
+<hr width="80%">
+<p>Let us now try to write a non-recursive function that performs the same
+computation:</p>
+
+<pre class="mInput">LegendreN(n, x) :=
+block ( [p0, p1, pn, cnt],
+   if n = 0
+      then return (1)
+      else if n = 1
+              then return (x),
+   p0 : 1,
+   p1 : x,
+   cnt: 2,
+   while cnt <= n do
+    (  pn: expand(((2*cnt - 1)*x*p1
+                   - (cnt - 1)  *p0) / cnt),
+       p0: p1,
+       p1: pn,
+       cnt: cnt + 1
+    ),
+   pn      
+)</pre> 
+
+<p>Here is a variant that uses a composite statement - that is, a block - in the
+<b>while</b> clause.</p>
+
+<pre class="mInput">LegendreN(n, x) :=
+block ( [p0, p1, pn, cnt],
+   if n = 0
+      then return (1)
+      else if n = 1
+              then return (x),
+   p0 : 1,
+   p1 : x,
+   cnt: 2,
+   while block(pn: expand(((2*cnt - 1)*x*p1
+                           - (cnt - 1)  *p0) / cnt),
+               cnt: cnt + 1,
+               cnt <= n)
+   do
+    (  
+       p0: p1,
+       p1: pn
+    ),
+   pn      
+)</pre> 
+
+<p>It is also possible to program a repetition with a jump instruction.
+There a good reasons to prefer a suitable variant of the <b>do</b>
+statement, but a programmer should be able to understand Maxima programs with
+jump instructions.</p>
+<pre class="mInput">LegendreN(n, x) :=
+block ( [p0, p1, pn, cnt],
+     if n = 0
+        then return (1)
+        else if n = 1
+              then return (x),
+     p0 : 1,
+     p1 : x,
+     cnt: 2,
+   beginOfLoop,
+     pn: expand(((2*cnt - 1)*x*p1
+                 - (cnt - 1)  *p0) / cnt),
+     p0: p1,
+     p1: pn,
+     cnt: cnt + 1,
+     if cnt <= n then go(beginOfLoop),
+   pn      
+);</pre>
+
+<p>Up to now, we wrote definitions that constructed sequences of polynomials
+of increasing degree. Are all these polynomials needed? No, they are not.
+What is needed for the intermediate results are the coefficients of all
+these polynomials - nothing more.<br>
+The following example uses three lists to store the coefficients of three
+polynomials p<sub>n</sub>, p<sub>n-1</sub>, p<sub>n-2</sub>:</p>  
+
+
+<pre class="mInput">LegendreNN(n, x) :=
+block ( [cnt, pn, coeffsP0, coeffsP1, coeffsPN, oldList ],
+   if n = 0
+      then return (1)
+      else if n = 1
+              then return (x),
+   coeffsP0: makelist (0, x, 0, n),
+   coeffsP1: makelist (0, x, 0, n),
+   coeffsPN: makelist (0, x, 0, n),
+   coeffsP0[1]: 1,
+   coeffsP1[2]: 1,
+   cnt: 2,
+   while cnt <= n do
+    (coeffsPN[1]: -coeffsP0[1]*(cnt - 1)/cnt,
+       for idx : 2 thru cnt + 1 do
+          coeffsPN[idx] :  ((2*cnt - 1)*coeffsP1[idx - 1]
+                             -(cnt - 1)*coeffsP0[idx])/ cnt,
+        
+       oldList: coeffsP0,
+       coeffsP0: coeffsP1,
+       coeffsP1: coeffsPN,
+       coeffsPN: oldList,
+       cnt: cnt + 1 
+    ),
+   pn: 0,
+   for idx:1 thru n + 1 do
+     pn: pn + coeffsP1[idx]*x^(idx - 1),
+   pn      
+);</pre>
+
+<p>To compare the computation times we ask Maxima to show all
+times:</p>
+<pre class="mInput">showtime:all;</pre>
+
+<p>Now we can run the definitions that we want to compare.
+To supress the output of these huge polynomial, we finish our
+input with a dollar sign:</p>
+ 
+<pre class="mInput">(%i4) LegendreN(200, x)$
+Evaluation took 36.58 seconds (36.58 elapsed)
+(%i5) LegendreNN(200, x)$
+Evaluation took 13.62 seconds (13.62 elapsed)
+</pre>
+<p>We conclude that ploynomial arithmetic and frequent expansion of polynomials
+is quite time consuming.</p>
+
+<br>
+<hr class="startOfFooter">
+<TABLE bgColor=#ffffff border=0 cellPadding=2>
+  <TBODY>
+  <TR bgColor=#ccffcc>
+    <TD><CENTER><a href="./Programming0001.htm">Previous</a></Center></TD>
+    <TD><CENTER><a href="../Contents.htm">Contents</a></Center></TD>
+    <TD><CENTER><a href="./Programming0003.htm">Next</a></Center></TD>
+  </TR>
+  </TBODY>
+</TABLE>
+</body>
+</html>

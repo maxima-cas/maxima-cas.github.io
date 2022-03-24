@@ -1,0 +1,89 @@
+<html lang="en">
+<head>
+<title>Maxima Tutorial</title>
+
+<META content="text/html; charset=windows-1252" http-equiv=Content-Type>
+<LINK href="defstyle.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<TABLE bgColor=#ffffff border=0 cellPadding=2>
+  <TBODY>
+  <TR bgColor=#ccffcc>
+    <TD><CENTER><a href="../Contents.htm">Contents</a></Center></TD>
+  </TR>
+  </TBODY>
+</TABLE>
+
+<p><h2>Definite Integrals</h2></p>
+<hr class="endOfHeader">
+
+<p>A simple example:</p>
+
+<pre class="mInput">integrate (x*log(x), x, 1, 10);</pre>
+<pre class="mOutput">					     99
+(%o5) 			        50 log(10) - --
+					     4
+</pre>
+<p>You can use symbolic integration limits, as in:</p>
+<pre class="mInput">integrate (x*log(x), x, a, b);</pre>
+<p>but Maxima will ask you about the sign of the difference b-a:</p>
+
+<p>To avoid this, you can specify an assumption:</p>
+<pre class="mInput">assume(a > b)</pre>
+<pre class="mInput">integrate (x*log(x), x, a, b);</pre>
+<pre class="mOutput">			 2	     2	    2	        2
+		      2 b  log(b) - b	 2 a  log(a) - a
+(%o3) 		      ---------------- - ----------------
+			     4		        4</pre>
+
+<p>It would be interesting to evaluate the same integral under the assumption a < b.
+You cannot declare that assumption for as long as the assumption a > b holds. To
+introduce an assumption that contradicts to an earlier declared assumption, you have
+to remove the assumption that will be invalidated by the new assumption:</p>
+<pre class="mInput">forget(a > b);</pre>
+<pre class="mInput">assume(a < b);</pre>
+<pre class="mInput">integrate (x*log(x), x, a, b);</pre>
+<pre class="mOutput">			 2	     2	    2	        2
+		      2 b  log(b) - b	 2 a  log(a) - a
+(%o8) 		      ---------------- - ----------------
+			     4		        4</pre>
+
+
+
+<p>Examples from the Moses paper:</p>
+<pre class="codeExample">
+(%i1) integrate(cos(x)^2 - sin(x), x, 0, 2*%pi);
+(%o1) 							        %pi
+(%i2) integrate ((x^2 + a*x + b)/(x^4 + 10*x^2 + 9), x, 0, inf);
+						  4 %pi b + 12 log(3) a + 12 %pi
+(%o2) 						  ------------------------------
+								96
+(%i3) integrate ((x^2 + a*x + b)/(x^4 + 10*x^2 + 9), x, -inf, inf);
+							   %pi (2 b + 6)
+(%o3) 							   -------------
+								24
+(%i4) integrate (sin(x)/x, x, -inf, inf);
+(%o4) 							        %pi
+(%i5) integrate (cos(x)/(x^2 + a^2), x, -inf, inf);
+Is  a  positive, negative, or zero?
+
+positive
+;								   - a
+							     %pi %e
+(%o5) 							     ---------
+								 a
+(%i6) integrate (1/(sqrt(x)*(x + 1)), x, 0, inf);
+(%o6) 							        %pi
+(%i7) </pre>
+<br>
+<hr class="startOfFooter">
+<TABLE bgColor=#ffffff border=0 cellPadding=2>
+  <TBODY>
+  <TR bgColor=#ccffcc>
+    <TD><CENTER><a href="../Contents.htm">Contents</a></Center></TD>
+  </TR>
+  </TBODY>
+</TABLE>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<html lang="en">
+<head>
+<title>Maxima Tutorial</title>
+
+<META content="text/html; charset=windows-1252" http-equiv=Content-Type>
+<LINK href="defstyle.css" rel="stylesheet" type="text/css">
+</head>
+
+<body bgcolor="#ffffbb">
+<TABLE bgColor=#ffffff border=0 cellPadding=2>
+  <TBODY>
+  <TR bgColor=#ccffcc>
+    <TD><CENTER><a href="../Contents.htm">Contents</a></Center></TD>
+  </TR>
+  </TBODY>
+</TABLE>
+
+<p><h2>Trigonometric Transformations</h2></p>
+<hr class="endOfHeader">
+
+
+<p>To rewrite a product of sinuses and cosinuses as a finite Fourier sum, we
+can use the function <b>trigreduce</b>:</p>
+
+<pre class="mInput">trigreduce(sin(x)^3*cos(x));</pre>
+<p>We obtain:</p>
+
+<pre class="mOutput">   2 sin(2 x) - sin(4 x)
+   ---------------------
+            8</pre>
+
+<p>To obtain a representation that does not contain trigonometric
+functions of multiple angles, we write:</p>
+
+<pre class="mInput">trigexpand(%);</pre>
+
+<pre class="mOutput">               3           3
+   4 cos(x) sin (x) - 4 cos (x) sin(x) + 4 cos(x) sin(x)
+   -----------------------------------------------------
+                             8</pre>
+
+<p>This looks still a bit unsatisfactory, but we can now use
+<b>trigsimp</b> to perform simplifications that use the
+Pythagorean identity<br>
+sin(x)^2 + cos(x)^2 = 1:</p>
+<pre class="mInput">trigsimp(%);</pre>
+
+<pre class="mOutput">       3
+ cos(x) sin (x)
+</pre>
+
+<p>Here we obtained exactly the exression that we started with. This is
+not always possible. Let us look at this example:</p>
+
+<pre class="mInput"></pre>
+
+<hr width="80%" color="lightBlue">
+<p>A lot of questions on various mailing lists are about problems
+that require sophisticated simplification of trigonometric
+expressions. Some time ago, a maxima user ran into trouble when
+he solved this integral:</p>
+<pre class="mInput">result:integrate(9/cos(7*x)^2, x);</pre> 
+<p>Maxima answers</p>
+<pre class="mOutput">							   18 sin(14 x)
+(%o20) 					  ----------------------------------------------
+					       2	      2
+					  7 sin (14 x) + 7 cos (14 x) + 14 cos(14 x) + 7</pre>
+<p>which is not a very beautiful solution. The user knew that</p>
+<pre class="mathExpression">9*tan(7*x)
+----------
+    7</pre>
+<p>is an integral for</p>
+<pre class="mathExpression">   9
+---------
+        2
+cos(7*x)</pre>
+
+<p>but found it difficult to simplify the answer from Maxima into this form.
+He found it also difficult to prove that the derivative of the answer is in
+fact the integrand. Let us look at both problems:</p>
+<p>We can try to simplify the answer with <b>trigsimp</b>:</p>
+<pre class="mInput">simp1: trigsimp(result);</pre>
+<p>and obtain</p>
+<pre class="mOutput">			    9 sin(14 x)
+			  ---------------
+			  7 cos(14 x) + 7</pre>
+<p>The use of <b>trigexpand</b> is not helpful: This function would rewrite sin(14*x)
+and cos(14*x) in terms of sin(x) and cos(x). We would rather wish to rewrite sin(14*x)
+and cos(14*x) in terms of sin(7*x) and cos(7*x). This is possible, but only with
+a trick: We have to replace  14*x with 2*y:</p>
+
+<pre class="mInput">simp1, 14*x=2*y;</pre>
+<pre class="mOutput">			    9 sin(2 y)
+			  --------------
+			  7 cos(2 y) + 7</pre>
+<p>Now we can apply <b>trigexpand</b>:</p>
+<pre class="mInput">trigexpand(%);</pre>
+<pre class="mOutput">			 18 cos(y) sin(y)
+		     -------------------------
+			   2	     2
+		     7 (cos (y) - sin (y)) + 7</pre>
+<pre class="mInput">trigsimp(%);</pre>
+<pre class="mOutput">			     9 sin(y)
+			     --------
+			     7 cos(y)</pre>
+<p>A final <b>trigreduce</b> gives the desired result:</p>
+<pre class="mInput">trigreduce(%);</pre>
+<pre class="mOutput">		    9 tan(y)
+		    --------
+			7</pre>
+<p>To obtain the original integrand, we have to undo the variable substitution:</p>
+<pre class="mInput">%, y = 7*x;</pre>
+<pre class="mOutput">		    9 tan(7*x)
+		    ----------
+			7</pre>
+
+<p>A variable substitution is a powerful instrument to influence simplification with 
+<b>trigexpand</b>.
+<p>It should be mentioned that the given problem can be simplified much faster:</p>
+
+<pre class="mInput">trigrat(result);</pre>
+<pre class="mOutput">		    9 sin(7 x)
+		    ----------
+		    7 cos(7 x)</pre>
+
+<pre class="mInput">trigreduce(%);</pre>
+<pre class="mOutput">		    9 tan(7*x)
+		    ----------
+			7</pre>
+
+<p>Now let us look at the derivative of the result:</p>
+
+<pre class="mInput">(%i7)deriv: diff(result, x);</pre>
+<pre class="mOutput">		      252 cos(14 x)
+      ----------------------------------------------
+	   2		  2
+      7 sin (14 x) + 7 cos (14 x) + 14 cos(14 x) + 7
+
+						       2
+					       3528 sin (14 x)
+			    + -------------------------------------------------
+				    2		   2			      2
+			      (7 sin (14 x) + 7 cos (14 x) + 14 cos(14 x) + 7)</pre>
+
+<p>First let us try <b>trigrat</b>, the function that turned out to be so
+helpful in the previous example:</p>
+<pre class="mInput">trigrat(deriv);</pre>
+<pre class="mOutput">				      18
+(%o8) 				 -------------
+				 cos(14 x) + 1</pre>
+<p>Well, this is simplified, but it is still not what we hoped for.
+Let us try a variable substitution and a <b>trigexpand</b>:</p>
+<pre class="mInput"> %, 14*x = 2*y;
+<span class="response">				      18
+(%o9) 				 ------------
+				 cos(2 y) + 1</span>
+trigexpand(%);
+<span class="response">				      18
+(%o10) 			    -----------------------
+				 2	   2
+			    - sin (y) + cos (y) + 1</span>
+trigsimp(%);
+<span class="response">				       9
+(%o11) 				    -------
+				       2
+				    cos (y)</span>
+%, y = 7*x;
+<span class="response">				       9
+(%o15) 				   ---------
+				      2
+				   cos (7 x)</span></pre>
+
+
+<h3>What we have learned:</h3>
+<ul>
+<li><b>trigreduce</b> rewrites a trigonometric expression as a sum
+of terms, each of wich contains only a single <b>sin</b> or <b>cos</b>.</li>
+<li><b>trigexpand</b> simplifies the arguments of trigonometric function. The sum-of-angles formulas are used for that simplification.</li>
+<li><b>trigsimp</b> performs various simplifications of trigonometric
+expression. It uses the identity sin<sup>2</sup>(x)&nbsp;+&nbsp;cos<sup>2</sup>&nbsp;=&nbsp;1 for
+simplification.</li>
+<li><b>trigrat</b> simplifies a rational expression in trigonometric functions.</li>
+</ul>
+
+<br>
+<hr class="startOfFooter">
+<TABLE bgColor=#ffffff border=0 cellPadding=2>
+  <TBODY>
+  <TR bgColor=#ccffcc>
+    <TD><CENTER><a href="../Contents.htm">Contents</a></Center></TD>
+  </TR>
+  </TBODY>
+</TABLE>
+</body>
+</html>

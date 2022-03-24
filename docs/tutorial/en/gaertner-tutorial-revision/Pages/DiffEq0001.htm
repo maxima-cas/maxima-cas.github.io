@@ -1,0 +1,156 @@
+<html lang="en">
+<head>
+<title>Maxima Tutorial</title>
+
+<META content="text/html; charset=windows-1252" http-equiv=Content-Type>
+<LINK href="defstyle.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<TABLE bgColor=#ffffff border=0 cellPadding=2>
+  <TBODY>
+  <TR bgColor=#ccffcc>
+    <TD><CENTER><a href="../Contents.htm">Contents</a></Center></TD>
+  </TR>
+  </TBODY>
+</TABLE>
+
+<h2>Difference Equations</h2>
+<hr class="endOfHeader">
+
+<p>To solve difference equations, you have to load the package <b>solve_rec.mac</b>.
+You do this with the following command:</p>
+
+<pre class="mInput">batch(solve_rec);</pre>
+
+<p>The function to solve a difference equation is <b>solve_rec</b>, it is called with two or more arguments. The first
+argument is a difference equation, and
+the second argument is the unknown variable.
+Additional arguments, if present, are initial conditions.</p>
+
+<pre class= "mInput">
+(%i3) deq1: g[n+1] = g[n]*3/2;
+<span style="color:black">
+                                   3 g
+                                      n
+(%o3)                     g      = ----
+                           n + 1    2
+</span>
+(%i4) solve_rec (deq1, g[n]);
+<span style="color:black">
+                                     n
+                                %k  3
+                                  1
+(%o4)                      g  = ------
+                            n      n
+                                  2</span>
+</pre>
+
+<p></p>
+
+<pre class="mInput">
+(%i6) deq2: h[n+2]=h[n + 1]*2 + 3*h[n];
+<span style="color:black">
+(%o6)               h      = 2 h      + 3 h
+                     n + 2      n + 1      n
+</span>
+(%i7) sol: solve_rec(deq2, h[n]);
+<span style="color:black">
+                              n            n
+(%o7)               h  = %k  3  + %k  (- 1)
+                     n     1        2</span>
+</pre>
+
+<p>To obtain an expression for a given value of n, e.g for 5, you can
+evaluate:</p>
+<pre class="mInput">ev(sol, n = 5);</pre>
+
+<p>Initial values can be specified as optional arguments to <b>solve_rec</b>.
+Continuing the preceding example, we specify initial values of <i>h[0]</i> and <i>h[1]</i>.
+</p>
+<pre class="mInput">
+(%i8) sol: solve_rec(deq2, h[n], h[0] = h0, h[1] = h1);
+<span style="color:black">
+                             n                    n
+                  (h1 + h0) 3    (3 h0 - h1) (- 1)
+(%o8)        h  = ------------ + ------------------
+              n        4                 4</span>
+</pre>
+
+<hr width="80%">
+
+<p>Economists use two essentially different approaches to set up models of
+economic processes:</p>
+<ul>
+<li>The <b>period analysis</b>, where the flow of time is divided into
+successive periods of constant length, taken as time-unit.
+These models give difference equations.</li>
+<li>The <b>continuous analysis</b>, where time flows continuously.
+Model variables are continuous and differentiable functions of time.
+These models are differential equations.</li>
+</ul>
+
+<h3>Examples of Use:</h3>
+<p>A very simple model:</p>
+<pre class="mInput">
+eq1: y[t + 1] = z[t];
+eq2: z[t]=c[t] + i[t];
+eq3: c[t]=c*y[t];
+eq4: i[t]=a;
+eliminate([eq1, eq2, eq3, eq4], [ z[t], c[t], i[t]]);
+
+<span style="color:black">       			      [y      - c y  - a]
+                t + 1	   t
+</span>
+result: solve_rec (first(%), y[t], y[0]=y[0]);
+<span style="color:black">
+                           t
+                        a c         t     a
+(%o20)             y  = ----- + y  c  - -----
+                    t   c - 1    0      c - 1</span>
+</pre>
+<p>The letters of the model follow established conventions of macro-economic
+theory. The meanings are:</p>
+<ul>
+<li><b>c</b>: consumption
+<li><b>i</b>: investment
+<li><b>y</b>: income
+<li><b>z</b>: total demand
+</ul>
+<p>The model assumes a constant investment, and a consumption that is proportional to
+income. The equation eq2 states that the total demand is the sum of consumption and investment, eq1 is also an assumption, namely that the income of period t equals the total demand of the previous period t-1. (the spendings of a period are the available income of the next period. This assumption postulates an entirely closed system.)</p>
+
+<p>We can immediately explore the result:</p>
+<pre class="mInput">
+(%i25) assume (c < 1);
+<span style="color:black">(%o25) 				    [c < 1]</span>
+(%i26) limit(result, t, inf);
+<span style="color:black">Is  abs(c) - 1  positive, negative, or zero?</span>
+
+negative;
+<span style="color:black">Is  c  positive, negative, or zero?</span>
+
+positive;
+<span style="color:black">Is  y   positive, negative, or zero?
+     0</span>
+
+positive;
+<span style="color:black">Is  a  positive, negative, or zero?</span>
+
+positive;
+<span style="color:black">					       a
+       			     limit    y  = - -----
+			     t -> inf  t     c - 1</span>
+
+</pre>
+<br>
+<hr class="startOfFooter">
+<TABLE bgColor=#ffffff border=0 cellPadding=2>
+  <TBODY>
+  <TR bgColor=#ccffcc>
+    <TD><CENTER><a href="../Contents.htm">Contents</a></Center></TD>
+  </TR>
+  </TBODY>
+</TABLE>
+</body>
+</html>

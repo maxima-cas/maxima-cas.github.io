@@ -1,0 +1,306 @@
+<html lang="en">
+<head>
+<title>Maxima Tutorial</title>
+
+<META content="text/html; charset=windows-1252" http-equiv=Content-Type>
+<LINK href="defstyle.css" rel="stylesheet" type="text/css">
+</head>
+
+<body bgcolor="#ffffbb">
+<TABLE bgColor=#ffffff border=0 cellPadding=2>
+  <TBODY>
+  <TR bgColor=#ccffcc>
+    <TD><CENTER><a href="ODE0001.htm">Previous</a></CENTER></TD>
+    <TD><CENTER><a href="../Contents.htm">Contents</a></Center></TD>
+    <TD><CENTER><a href="ode0003.htm">Next</a></CENTER></TD>
+  </TR>
+  </TBODY>
+</TABLE>
+
+<p><h2>Differential Equations - Symbolic Solutions</h2></p>
+<hr class="endOfHeader">
+
+<h3>Computation of Solutions with the Laplace Transformation</h3>
+
+<p>The Laplace transformation is a powerful tool to solve a vast class
+of ordinary differential equations. The principle is simple:</p>
+<ul>
+<li>The differential equation is mapped onto a linear algebraic equation.</li>
+<li>That equation is solved.</li>
+<li>The solution of the algebraic equation is mapped back onto 
+the solution of the given differential equation.</li>
+</ul>
+<p>The mathematical theory of the Laplace transformation is not an
+easy one, but for practical purposes it is often sufficient to simply
+apply the transformation.<br>
+Murray R. Spiegel wrote a good tutorial about the topic, it was
+published by McGraw-Hill under the title<br>
+<b>Theory and Problems of Laplace Transforms</b>.</p>
+
+<h3>Laplace transformation and inverse Laplace-Transformation</h3>
+
+<p>The Laplace transformation maps a transcendental function onto
+a rational expression in a new variable:</p>
+
+<pre class="mInput">laplace(exp(-b*t)*cos(w*t),t,s);</pre>
+<pre class="mOutput">        s + b
+--------------------
+  2    2            2
+ w  + s  + 2 b s + b</pre>
+<pre class="mInput">assume(w > 0);</pre>
+<pre class="mOutput">[w > 0]</pre>
+<p>Without that assumption, Maxima would ask later whether w is
+zero or nonzero.</p>
+
+<p>The inverse Laplace transformation maps a rational expression onto
+a transcendental function:</p>
+<pre class="mInput">ilt(%, s, t);</pre>
+
+
+<pre class="mOutput">  - b t
+%e      cos(t w)
+</pre>
+
+<p>The knowledge of these functions is almost sufficient to solve
+an ordinary differential equation:</p>
+
+<h3>Solution of an ODE:</h3>
+
+<pre class="mInput">ode: 'diff(y(t), t, 2) + 5*'diff(y(t), t) + 4*y(t) = t;</pre>
+<p>It is important that you
+<ul>
+<li>write a quoted <b>diff</b> to represent a derivative</li>
+<li>write the function <b>y</b> with its formal argument: <b>y(t)</b>.
+It is not sufficient to write<br>'diff(y,&nbsp;t,&nbsp;2)</li>
+</ul></p>
+<pre class="mOutput"> 2
+d               d
+--- (y(t)) + 5 (-- (y(t))) + 4 y(t) = t
+  2	        dt
+dt</pre>
+<p>Next, we specify the initial conditions. We do that with the <b<MAxima</b> function
+<b>atvalue</b>:</p>
+
+<pre class="mInput">atvalue(y(t), t=0, 0);</pre>
+<pre class="mOutput"> 0</pre>
+<pre class="mInput">atvalue('diff(y(t), t), t= 0, 0);</pre>
+<pre class="mOutput"> 0</pre>
+<p>Now we can compute the Laplace transformed of the equation:</p>
+
+<pre class="mInput">lap_ode:laplace(ode,t,s);</pre>
+<pre class="mOutput"> 2                                                                          1
+s  laplace(y(t), t, s) + 5 s laplace(y(t), t, s) + 4 laplace(y(t), t, s) = --
+                                                                            2
+                                                                           s</pre>
+<p>This is a linear equation in the unknown <b>laplace(y(t), t, s)</b>. We solve it with <b>solve</b>:</p>
+<pre class="mInput"> sol: solve(%, 'laplace(y(t), t, s));</pre>
+<p>Note that you have to write the unknown with a quote. Without the quote, Maxima would
+try to evaluate the expression  laplace(y(t), t, s).</p>
+<pre class="mOutput">				1
+  [laplace(y(t), t, s) = ----------------]
+			  4	 3      2
+			 s  + 5 s  + 4 s</pre>
+
+<p>The answer is a list with one equation, the solution of the linear equation.</p>
+<p>Now, we can apply the inverse Laplace transformation. To apply apply a
+transformation to the elements of a list, we have to use <b>map</b>:</p>
+
+
+<pre class="mInput"> map( lambda( [eq], ilt(eq, s, t)), sol);</pre>
+<pre class="mOutput">		- t     - 4 t
+	      %e      %e        t   5
+      [y(t) = ----- - ------- + - - --]
+		3       48      4   16</pre>
+
+<p>This is again a list with one equation. Note that the inverse Laplace transformation
+was applied to both sides of the equation:</p>
+<ul>
+ <li>On the left hand side, the application of the inverse Laplace transformation
+     to the Laplace transformed of y(t) yields y(t).</li>
+ <li>On the right hand side, the application of the inverse Laplace transformation
+     yields the solution of the given differential equation.</li>
+</ul>
+
+<p>It is of course possible to solve this  ordinary differential equation
+with the command <b>ode2</b>: <a href="solutionWithOde2.htm">Solution of the example with ode2</a></p>
+
+
+<hr width="80%" color=red>
+<h4>Example:</h4>
+
+<p>A system of ODE's</p>
+<p>The following example is taken from Spiegel's book. It is a system of two
+ordinary differential equations</p>
+
+<p>First we define the equations:</p>
+
+<pre class="mInput">assume(s>0);</pre>
+<pre class="mOutput">	  [s > 0]</pre>
+<pre class="mInput">diff_eq1: 'diff(f(x),x,2) + 'diff(g(x),x) + 3*f(x) = 15*exp(-x);</pre>
+<pre class="mOutput">					     2
+				d	    d			       - x
+      			        -- (g(x)) + --- (f(x)) + 3 f(x) = 15 %e
+				dx	      2
+					    dx</pre>
+<pre class="mInput">diff_eq2: 'diff(g(x), x, 2) - 4*'diff(f(x), x) + 3*g(x) = 15*sin(2*x);</pre>
+<pre class="mOutput">			      2
+			     d		     d
+      			     --- (g(x)) - 4 (-- (f(x))) + 3 g(x) = 15 sin(2 x)
+			       2	     dx
+			     dx</pre>
+<p>Next, we define the initial values. For this example, we have
+initial values for both functions and their derivatives at point x = 0.</p>
+
+<pre class="mInput">atvalue (f(x), x=0, 35);</pre>
+<pre class="mOutput">	    35</pre>
+<pre class="mInput">atvalue ('diff(f(x),x),x=0, -48);</pre>
+<pre class="mOutput">	   - 48</pre>
+<pre class="mInput">atvalue (g(x), x=0, 27);</pre>
+<pre class="mOutput">	    27</pre>
+<pre class="mInput">atvalue ('diff(g(x), x), x=0, -55);</pre>
+<pre class="mOutput">	   - 55</pre>
+
+<p>Now we can compute the Laplace transforms:</p>
+<pre class="mInput">lap_eq1:laplace(diff_eq1,x,s);</pre>
+<pre class="mOutput">				 2							      15
+        s laplace(g(x), x, s) + s  laplace(f(x), x, s) + 3 laplace(f(x), x, s) - 35 s + 21 = -----
+											     s + 1</pre>
+<pre class="mInput">lap_eq2:laplace(diff_eq2,x,s);</pre>
+<pre class="mOutput">
+       2											      30
+      s  laplace(g(x), x, s) + 3 laplace(g(x), x, s) - 4 (s laplace(f(x), x, s) - 35) - 27 s + 55 = ------
+												     2
+												    s  + 4</pre>
+<p>These are two linear equations in the unknowns <b>laplace(f(x),x, s)</b> and 
+<b>laplace(g(x), x, s)</b>. We solve it with <b>solve</b>:</p>
+
+<pre class="mInput">linsolve([lap_eq1,lap_eq2],['laplace(f(x),x,s),'laplace(g(x),x,s)]);</pre>
+<pre class="mOutput">				  6	  5	   4	    3	      2
+			      35 s  - 13 s  + 407 s  + 185 s  + 1020 s  + 918 s - 72
+       [laplace(f(x), x, s) = ------------------------------------------------------, 
+				7    6	     5	     4	     3	     2
+			       s  + s  + 14 s  + 14 s  + 49 s  + 49 s  + 36 s + 36
+
+						       6       5       4        3	 2
+						   27 s  - 28 s  + 50 s  - 610 s  - 787 s  - 2022 s - 2250
+			     laplace(g(x), x, s) = -------------------------------------------------------]
+						      7	   6	   5	   4	   3	   2
+						     s  + s  + 14 s  + 14 s  + 49 s  + 49 s  + 36 s + 36</pre>
+<p>The denominators of the solutions are polynomials in <b>s</b> of degree 7.
+The computation of the inverse Laplace transform requires that the denominators
+are decomposed into linear and quadratic factors. The function <b>ilt</b>
+does not always factor denominators, so we do it:</p>
+<pre class="mInput">factored: map(lambda( [eq], factor(eq)), %);</pre>
+<pre class="mOutput">				  6	  5	   4	    3	      2
+			      35 s  - 13 s  + 407 s  + 185 s  + 1020 s  + 918 s - 72
+       [laplace(f(x), x, s) = ------------------------------------------------------, 
+						  2	   2	    2
+					(s + 1) (s  + 1) (s  + 4) (s  + 9)
+
+						       6       5       4        3	 2
+						   27 s  - 28 s  + 50 s  - 610 s  - 787 s  - 2022 s - 2250
+			     laplace(g(x), x, s) = -------------------------------------------------------]
+								       2        2	 2
+							     (s + 1) (s  + 1) (s  + 4) (s  + 9)</pre>
+<p>Now we can apply the inverse Laplace transform to both equations:</p>
+<pre class="mInput">sol: map(lambda( [eq], ilt(eq, s, x)), factored);</pre>
+
+<p>We obtain a solution for the given system of ordinary differential equations:</p>
+<pre class="mOutput">							    - x
+       [f(x) = - 15 sin(3 x) + 2 cos(2 x) + 30 cos(x) + 3 %e   , 
+
+						        - x
+        g(x) = 30 cos(3 x) + sin(2 x) - 60 sin(x) - 3 %e   ]</pre>
+
+<p>In principle we are done, but there is still one interesting technicality:
+How can we prove that the solution satisfies the given system of equations?</p>
+<p>The proof requires four additional steps.</p>
+<p>First, we write the two differential equations as a system:</p>
+<pre class="mInput">ode_system: [diff_eq1, diff_eq2];</pre>
+
+<pre class="mOutput">		     2
+	d	    d			       - x
+       [-- (g(x)) + --- (f(x)) + 3 f(x) = 15 %e	  , 
+	dx	      2
+		    dx
+
+			      2
+			     d		     d
+			     --- (g(x)) - 4 (-- (f(x))) + 3 g(x) = 15 sin(2 x)]
+			       2	     dx
+			     dx
+</pre>
+
+<p>Next we substitute the solution into that system:</p>
+<pre class="mInput">ode_system, sol;</pre>
+
+<pre class="mOutput">	 2
+	d						  - x
+       [--- (- 15 sin(3 x) + 2 cos(2 x) + 30 cos(x) + 3 %e   )
+	  2
+	dx
+
+   d					        - x
+ + -- (30 cos(3 x) + sin(2 x) - 60 sin(x) - 3 %e   )
+   dx
+
+						   - x	       - x
+ + 3 (- 15 sin(3 x) + 2 cos(2 x) + 30 cos(x) + 3 %e   ) = 15 %e	  , 
+
+     d						      - x
+- 4 (-- (- 15 sin(3 x) + 2 cos(2 x) + 30 cos(x) + 3 %e	 ))
+     dx
+
+    2
+   d						 - x
+ + --- (30 cos(3 x) + sin(2 x) - 60 sin(x) - 3 %e   )
+     2
+   dx
+
+					       - x
+ + 3 (30 cos(3 x) + sin(2 x) - 60 sin(x) - 3 %e	  ) = 15 sin(2 x)]
+</pre>
+<p>We obtain a list of two equations that contain symbolic derivatives.
+To enforce the computation of the derivatives, we have to
+evaluate the equations:</p>
+<pre class="mInput">map (lambda( [eq], ev(eq, diff)), %);</pre>
+
+<pre class="mOutput">                                                                - x
+ [45 sin(3 x) + 3 (- 15 sin(3 x) + 2 cos(2 x) + 30 cos(x) + 3 %e   )
+
+				- x	   - x
+ - 6 cos(2 x) - 90 cos(x) + 6 %e    = 15 %e   , 
+
+					    - x
+3 (30 cos(3 x) + sin(2 x) - 60 sin(x) - 3 %e   ) - 270 cos(3 x)
+
+						   - x
+ - 4 (- 45 cos(3 x) - 4 sin(2 x) - 30 sin(x) - 3 %e   ) - 4 sin(2 x)
+
+		   - x
+ + 60 sin(x) - 3 %e    = 15 sin(2 x)]
+</pre>
+
+<p>This looks better, but simplification is obviously needed:</p>
+<pre class="mInput">trigsimp(%);</pre> 
+<pre class="mOutput">        - x        - x
+  [15 %e    = 15 %e   , 15 sin(2 x) = 15 sin(2 x)]
+</pre>
+
+<p>These two identities complete the proof.</p>
+
+<p>The next section shows that the equations of this example can also be
+solved with <b>desolve</b>.</p>
+<br>
+<hr class="startOfFooter">
+<TABLE bgColor=#ffffff border=0 cellPadding=2>
+  <TBODY>
+  <TR bgColor=#ccffcc>
+    <TD><CENTER><a href="ODE0001.htm">Previous</a></CENTER></TD>
+    <TD><CENTER><a href="../Contents.htm">Contents</a></Center></TD>
+    <TD><CENTER><a href="ode0003.htm">Next</a></CENTER></TD>
+  </TR>
+  </TBODY>
+</TABLE>
+</body>
+</html>

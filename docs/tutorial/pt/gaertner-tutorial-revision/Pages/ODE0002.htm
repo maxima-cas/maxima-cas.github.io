@@ -1,0 +1,189 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="en">
+<head>
+  <title>Maxima Tutorial</title>
+  <meta content="text/html; charset=windows-1252"
+ http-equiv="Content-Type">
+  <link href="defstyle.css" rel="stylesheet" type="text/css">
+</head>
+<body bgcolor="#ffffbb">
+<table bgcolor="#ffffff" border="0" cellpadding="2">
+  <tbody>
+    <tr bgcolor="#ccffcc">
+      <td>
+      <center><a href="ODE0001.htm">Anterior</a></center>
+      </td>
+      <td>
+      <center><a href="../Contents.htm">Índice</a></center>
+      </td>
+      <td>
+      <center><a href="ode0003.htm">Seguinte</a></center>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p></p>
+<h2>Equações Diferenciais - Soluções Simbólicas</h2>
+<p></p>
+<hr class="endOfHeader">
+<h3>Cálculo de Soluções com a Transformaçào de Laplace</h3>
+<p>A transformação de Laplace é uma poderosa ferramenta para resolver
+uma vasta classe de equações diferenciais ordinárias. O princípio é
+simples:</p>
+<ul>
+  <li>A equação diferencial é associada a uma equação linear algébrica.</li>
+  <li>A equação da associação é resolvida.</li>
+  <li>A solução da equação algébrica é associada de volta sobre a
+solução da equação diferencial dada.</li>
+</ul>
+<p>A teoria matemática da transformação de Laplace não é fácil, mas
+para propósitos práticos é muitas vezes suficiente simplesmente aplicar
+a transformação.<br>
+Murray R. Spiegel escreveu um bom tutorial sobre Transformação de
+Lapalce, foi publicado pela McGraw-Hill sob o título<b>Theory and
+Problems of Laplace Transforms</b>.</p>
+<h3>Transformação de Laplace e a Inversa da Transformação de Laplace</h3>
+<p>A transformação de Laplace associa uma função trascendente sobre uma
+expressão racional em uma nova variável:</p>
+<pre class="mInput">laplace(exp(-b*t)*cos(w*t),t,s);</pre>
+<pre class="mOutput">        s + b<br>--------------------<br>  2    2            2<br> w  + s  + 2 b s + b</pre>
+<pre class="mInput">assume(w &gt; 0);</pre>
+<pre class="mOutput">[w &gt; 0]</pre>
+<p>Sem o comando <span style="font-weight: bold;">assume</span>,
+Maxima iria perguntar mais tarde se w é ou não nulo.</p>
+<p>A inversa da transformação de Laplace associa uma expressão racional
+sobre uma função transcendental:</p>
+<pre class="mInput">ilt(%, s, t);</pre>
+<pre class="mOutput">  - b t<br>%e      cos(t w)<br></pre>
+<p>O conhecimento dessas funções é sempre suficiente para resolver uma
+equação diferencial ordinária:</p>
+<h3>Solução de uma EDO:</h3>
+<pre class="mInput">ode: 'diff(y(t), t, 2) + 5*'diff(y(t), t) + 4*y(t) = t;</pre>
+<p>É importante que você
+</p>
+<ul>
+  <li>escreva uma <b>diff</b> com apóstrofo para representar uma
+derivada</li>
+  <li>escreva a função <b>y</b> com seu argumento formal: <b>y(t)</b>.
+Não é suficiente escrever 'diff(y,&nbsp;t,&nbsp;2)</li>
+</ul>
+<p></p>
+<pre class="mOutput"> 2<br>d               d<br>--- (y(t)) + 5 (-- (y(t))) + 4 y(t) = t<br>  2	        dt<br>dt</pre>
+<p>A seguir, especificamos as condições iniciais. Fazemos isso com a
+função
+<b>atvalue</b>:</p>
+<pre class="mInput">atvalue(y(t), t=0, 0);</pre>
+<pre class="mOutput"> 0</pre>
+<pre class="mInput">atvalue('diff(y(t), t), t= 0, 0);</pre>
+<pre class="mOutput"> 0</pre>
+<p>Agora podemos calcular a trasformada de Laplace da euqação:</p>
+<pre class="mInput">lap_ode:laplace(ode,t,s);</pre>
+<pre class="mOutput"> 2                                                                          1<br>s  laplace(y(t), t, s) + 5 s laplace(y(t), t, s) + 4 laplace(y(t), t, s) = --<br>                                                                            2<br>                                                                           s</pre>
+<p>Isso é uma equação linear na desconhecida <b>laplace(y(t), t, s)</b>.
+Resolvemos isso com <b>solve</b>:</p>
+<pre class="mInput"> sol: solve(%, 'laplace(y(t), t, s));</pre>
+<p>Note que você tem que escrever a desconhecida com um apóstrofo. Sem
+o apóstrofo, Maxima tentará avaliar a expressão laplace(y(t), t, s).</p>
+<pre class="mOutput">				1<br>  [laplace(y(t), t, s) = ----------------]<br>			  4	 3      2<br>			 s  + 5 s  + 4 s</pre>
+<p>A resposta é uma lista com uma equação, A solução da equação linear.</p>
+<p>Agora, podemos aplicar a transformação inversa de Laplace. Para
+aplicr uma transformação aos elementos de uma lista, temos que usar <b>map</b>:</p>
+<pre class="mInput"> map( lambda( [eq], ilt(eq, s, t)), sol);</pre>
+<pre class="mOutput">		- t     - 4 t<br>	      %e      %e        t   5<br>      [y(t) = ----- - ------- + - - --]<br>		3       48      4   16</pre>
+<p>Isso é novamente uma lista de uma equação. Note que a inversa da
+transformação de Laplace foi aplicada a ambos os lados da equação:</p>
+<ul>
+  <li>Sobre o lado esquerdo, a aplicação da inversa da ransformação de
+Laplace na transformada de Laplace de y(t) retorna y(t).</li>
+  <li>Sobre o lado direito, a aplicação da inversa da transformação de
+Laplace retorna a solução da equação diferencial dada.</li>
+</ul>
+<p>Isso é certamente possível resolver essa equaao diferencial
+ordinária
+com o comando <b>ode2</b>: <a href="solutionWithOde2.htm">Solution of
+the example with ode2</a></p>
+<hr color="red" width="80%">
+<h4>Exemplo:</h4>
+<p>Um sistema de EDO's</p>
+<p>O seguinte exemplo foi tomado do livro de Spiegel. é um sistema de
+duas equações diferenciais ordinárias</p>
+<p>Primeiro definimos as equações:</p>
+<pre class="mInput">assume(s&gt;0);</pre>
+<pre class="mOutput">	  [s &gt; 0]</pre>
+<pre class="mInput">diff_eq1: 'diff(f(x),x,2) + 'diff(g(x),x) + 3*f(x) = 15*exp(-x);</pre>
+<pre class="mOutput">					     2<br>				d	    d			       - x<br>      			        -- (g(x)) + --- (f(x)) + 3 f(x) = 15 %e<br>				dx	      2<br>					    dx</pre>
+<pre class="mInput">diff_eq2: 'diff(g(x), x, 2) - 4*'diff(f(x), x) + 3*g(x) = 15*sin(2*x);</pre>
+<pre class="mOutput">			      2<br>			     d		     d<br>      			     --- (g(x)) - 4 (-- (f(x))) + 3 g(x) = 15 sin(2 x)<br>			       2	     dx<br>			     dx</pre>
+<p>A seguir, definimos os valore iniciais. Para esse exemplo, temos
+valores iniciais para ambas as funções e suas derivadas&nbsp; no ponto
+x = 0.</p>
+<pre class="mInput">atvalue (f(x), x=0, 35);</pre>
+<pre class="mOutput">	    35</pre>
+<pre class="mInput">atvalue ('diff(f(x),x),x=0, -48);</pre>
+<pre class="mOutput">	   - 48</pre>
+<pre class="mInput">atvalue (g(x), x=0, 27);</pre>
+<pre class="mOutput">	    27</pre>
+<pre class="mInput">atvalue ('diff(g(x), x), x=0, -55);</pre>
+<pre class="mOutput">	   - 55</pre>
+<p>Agora podemos calcular as trasformações de Laplace:</p>
+<pre class="mInput">lap_eq1:laplace(diff_eq1,x,s);</pre>
+<pre class="mOutput">				 2							      15<br>        s laplace(g(x), x, s) + s  laplace(f(x), x, s) + 3 laplace(f(x), x, s) - 35 s + 21 = -----<br>											     s + 1</pre>
+<pre class="mInput">lap_eq2:laplace(diff_eq2,x,s);</pre>
+<pre class="mOutput">       2											      30<br>      s  laplace(g(x), x, s) + 3 laplace(g(x), x, s) - 4 (s laplace(f(x), x, s) - 35) - 27 s + 55 = ------<br>												     2<br>												    s  + 4</pre>
+<p>essas são duas equações lineares&nbsp; nas desconhecidas <b>laplace(f(x),x,
+s)</b> e <b>laplace(g(x), x, s)</b>. Resolvemos isso com <b>solve</b>:</p>
+<pre class="mInput">linsolve([lap_eq1,lap_eq2],['laplace(f(x),x,s),'laplace(g(x),x,s)]);</pre>
+<pre class="mOutput">				  6	  5	   4	    3	      2<br>			      35 s  - 13 s  + 407 s  + 185 s  + 1020 s  + 918 s - 72<br>       [laplace(f(x), x, s) = ------------------------------------------------------, <br>				7    6	     5	     4	     3	     2<br>			       s  + s  + 14 s  + 14 s  + 49 s  + 49 s  + 36 s + 36<br><br>						       6       5       4        3	 2<br>						   27 s  - 28 s  + 50 s  - 610 s  - 787 s  - 2022 s - 2250<br>			     laplace(g(x), x, s) = -------------------------------------------------------]<br>						      7	   6	   5	   4	   3	   2<br>						     s  + s  + 14 s  + 14 s  + 49 s  + 49 s  + 36 s + 36</pre>
+<p>Os denominadores das soluções são polinômios em <b>s</b> de grau 7.
+O cálculo da inversa da transformação de Laplace requer que os
+denominadores sejam decompostos em fatores lineares e quadráticos. A
+função <b>ilt</b>
+não fatora sempre denominadores, então fazemos isso:</p>
+<pre class="mInput">factored: map(lambda( [eq], factor(eq)), %);</pre>
+<pre class="mOutput">				  6	  5	   4	    3	      2<br>			      35 s  - 13 s  + 407 s  + 185 s  + 1020 s  + 918 s - 72<br>       [laplace(f(x), x, s) = ------------------------------------------------------, <br>						  2	   2	    2<br>					(s + 1) (s  + 1) (s  + 4) (s  + 9)<br><br>						       6       5       4        3	 2<br>						   27 s  - 28 s  + 50 s  - 610 s  - 787 s  - 2022 s - 2250<br>			     laplace(g(x), x, s) = -------------------------------------------------------]<br>								       2        2	 2<br>							     (s + 1) (s  + 1) (s  + 4) (s  + 9)</pre>
+<p>Agora podemos aplicar a inversa da transformação de Laplace a ambas
+as equações:</p>
+<pre class="mInput">sol: map(lambda( [eq], ilt(eq, s, x)), factored);</pre>
+<p>Obtemos uma solução para o sistema dado de equações diferenciais
+ordinárias:</p>
+<pre class="mOutput">							    - x<br>       [f(x) = - 15 sin(3 x) + 2 cos(2 x) + 30 cos(x) + 3 %e   , <br><br>						        - x<br>        g(x) = 30 cos(3 x) + sin(2 x) - 60 sin(x) - 3 %e   ]</pre>
+<p>Em princípio nós concluímos, mas existe uma interessante informação
+técnica:
+como podemos demonstrar que&nbsp; a solução satisfaz o sistema de
+equações dados?</p>
+<p>A demonstração requer quatro passos adicionais.</p>
+<p>Primeiro, escrevemos as duas equações diferenciais como um sistema:</p>
+<pre class="mInput">ode_system: [diff_eq1, diff_eq2];</pre>
+<pre class="mOutput">		     2<br>	d	    d			       - x<br>       [-- (g(x)) + --- (f(x)) + 3 f(x) = 15 %e	  , <br>	dx	      2<br>		    dx<br><br>			      2<br>			     d		     d<br>			     --- (g(x)) - 4 (-- (f(x))) + 3 g(x) = 15 sin(2 x)]<br>			       2	     dx<br>			     dx<br></pre>
+<p>A seguir substituimos a solução naquele sistema:</p>
+<pre class="mInput">ode_system, sol;</pre>
+<pre class="mOutput">	 2<br>	d						  - x<br>       [--- (- 15 sin(3 x) + 2 cos(2 x) + 30 cos(x) + 3 %e   )<br>	  2<br>	dx<br><br>   d					        - x<br> + -- (30 cos(3 x) + sin(2 x) - 60 sin(x) - 3 %e   )<br>   dx<br><br>						   - x	       - x<br> + 3 (- 15 sin(3 x) + 2 cos(2 x) + 30 cos(x) + 3 %e   ) = 15 %e	  , <br><br>     d						      - x<br>- 4 (-- (- 15 sin(3 x) + 2 cos(2 x) + 30 cos(x) + 3 %e	 ))<br>     dx<br><br>    2<br>   d						 - x<br> + --- (30 cos(3 x) + sin(2 x) - 60 sin(x) - 3 %e   )<br>     2<br>   dx<br><br>					       - x<br> + 3 (30 cos(3 x) + sin(2 x) - 60 sin(x) - 3 %e	  ) = 15 sin(2 x)]<br></pre>
+<p>Obtemos uma lista de duas equações que possuem derivadas simbólicas.
+Para forçar o cálculo das derivadas, temos que avaliar as equações:</p>
+<pre class="mInput">map (lambda( [eq], ev(eq, diff)), %);</pre>
+<pre class="mOutput">                                                                - x<br> [45 sin(3 x) + 3 (- 15 sin(3 x) + 2 cos(2 x) + 30 cos(x) + 3 %e   )<br><br>				- x	   - x<br> - 6 cos(2 x) - 90 cos(x) + 6 %e    = 15 %e   , <br><br>					    - x<br>3 (30 cos(3 x) + sin(2 x) - 60 sin(x) - 3 %e   ) - 270 cos(3 x)<br><br>						   - x<br> - 4 (- 45 cos(3 x) - 4 sin(2 x) - 30 sin(x) - 3 %e   ) - 4 sin(2 x)<br><br>		   - x<br> + 60 sin(x) - 3 %e    = 15 sin(2 x)]<br></pre>
+<p>Isso parece melhor, mas simpplificação é obviamente necessária:</p>
+<pre class="mInput">trigsimp(%);</pre>
+<pre class="mOutput">        - x        - x<br>  [15 %e    = 15 %e   , 15 sin(2 x) = 15 sin(2 x)]<br></pre>
+<p>Essas duas identidades completam a demonstração.</p>
+<p>A próxima seção mostra que as equações desse exemplo podem ser
+resolvidas com <b>desolve</b>.</p>
+<br>
+<hr class="startOfFooter">
+<table bgcolor="#ffffff" border="0" cellpadding="2">
+  <tbody>
+    <tr bgcolor="#ccffcc">
+      <td>
+      <center><a href="ODE0001.htm">Anterior</a></center>
+      </td>
+      <td>
+      <center><a href="../Contents.htm">Índice</a></center>
+      </td>
+      <td>
+      <center><a href="ode0003.htm">Seguinte</a></center>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,321 @@
+<html lang="en">
+<head>
+<title>Maxima Tutorial</title>
+
+<META content="text/html; charset=windows-1252" http-equiv=Content-Type>
+<LINK href="defstyle.css" rel="stylesheet" type="text/css">
+</head>
+
+<body bgcolor="#ffffbb">
+<TABLE bgColor=#ffffff border=0 cellPadding=2>
+  <TBODY>
+  <TR bgColor=#ccffcc>
+    <TD><CENTER><a href="../Contents.htm">Contents</a></Center></TD>
+  </TR>
+  </TBODY>
+</TABLE>
+
+<p><h2>Symbolic Integration - First Examples</h2></p>
+<hr class="endOfHeader">
+
+
+<p>On this page we consider indefinite integrals.
+See also <a href="DefInt0001.htm">Definite Integrals</a>.</p>
+
+<p>Maxima can compute indefinite integrals of many functions.
+<a href="SI001.htm">Symbolic Integration</a> describes the algorithm for computing indefinite integrals.</p>
+
+<pre class="mInput">integrate(x/(x^3 + 1), x);</pre>
+<pre class="mOutput">					2 x - 1
+		      2		   atan(-------)
+		 log(x  - x + 1)        sqrt(3)	   log(x + 1)
+      		 --------------- + ------------- - ----------
+			6	      sqrt(3)	       3
+</pre>
+
+<p>To verify this result, we compute its derivative:</p>
+ 
+<pre class="mInput">diff(%, x);</pre>
+
+<pre class="mOutput">			2	        2 x - 1		  1
+     	        ------------------ + -------------- - ---------
+			    2		 2	      3 (x + 1)
+		   (2 x - 1)	     6 (x  - x + 1)
+		3 (---------- + 1)
+		       3
+</pre>
+
+<p>This is a sum of three rational expressions. Obviously, every term
+of the integral contributes one rational expression. We use <b>ratsimp</b> to
+bring all three expressions on a common denominator:</p>
+<pre class="mInput">ratsimp(%);</pre>
+
+<pre class="mOutput">	      x
+      	    ------
+	     3
+	    x  + 1
+</pre>
+<hr style="color:green", width="80%">
+
+<p>Let us look at an example with trigonometric functions and exponentials:</p>
+<pre class="mInput"> integrate(exp(a*x)*sin(x)*cos(x), x) ;</pre>
+<p>We obtain:</p>
+<pre class="mOutput">			  a x
+			%e    (a sin(2 x) - 2 cos(2 x))
+(%o1)		        -------------------------------
+				      2
+				  2 (a  + 4)</pre>
+
+
+<p>To verify the result, we compute the derivative:</p>
+<pre class="mInput">(%i2) diff(%, x);</pre>
+
+<pre class="mOutput">	 a x				   a x
+     a %e    (a sin(2 x) - 2 cos(2 x))	 %e    (4 sin(2 x) + 2 a cos(2 x))
+(%o2)--------------------------------- + ---------------------------------
+		    2				        2
+		2 (a  + 4)			    2 (a  + 4)</pre>
+
+<p>This answer is a surprise, but simplification gives</p>
+
+<pre class="mInput">ratsimp(%);</pre>
+
+<pre class="mOutput">				  a x
+				%e    sin(2 x)
+(%o3)			        --------------
+				      2</pre>
+
+<p>To get rid of the sinus of the multiple angle, we apply <b>trigexpand</b>:</p>
+
+<pre class="mInput">trigexpand(%);</pre>
+
+<pre class="mOutput">				a x
+(%o4)			      %e    cos(x) sin(x)</pre>
+
+<hr style="color:green", width="80%">
+<p>Sometimes Maxima answers the so-called 'noun form' of an integral. This
+tells you that Maxima was unable to find an integral:</p>
+<pre class="mInput">integrate(1/((x-3)^4+1/2), x);</pre>
+<pre class="mOutput">			       /
+			       [      1
+(%o5) 			       I ------------ dx
+			       ]        4   1
+			       / (x - 3)  + -
+					    2
+</pre>
+<p>Sometimes a change of the integration variable helps:</p>
+<pre class="mInput">changevar (%, x - 3 - y ,y ,x);</pre>
+
+<pre class="mOutput">				      /
+				      [	   1
+(%o6) 				    2 I -------- dy
+				      ]	   4
+				      / 2 y  + 1
+</pre>
+<p>Now we can integrate:</p>
+<pre class="mInput">ev (%, integrate);</pre>
+<p>and obtain.</p>
+<pre class="mOutput">		      2	   3/4			     2	  3/4
+	 log(sqrt(2) y  + 2    y + 1)   log(sqrt(2) y  - 2    y + 1)
+(%o8) 2 (---------------------------- - ----------------------------
+		       3/4			      3/4
+		    4 2				   4 2
+
+							3/4			   3/4
+					 2 sqrt(2) y + 2	    2 sqrt(2) y - 2
+				    atan(------------------)   atan(------------------)
+						 3/4			    3/4
+						2			   2
+				  + ------------------------ + ------------------------)
+						3/4			   3/4
+					     2 2		        2 2</pre>
+
+<p>Backsubstitution gives us the desired integral.</p>
+<pre class="mInput">sfx: %, y=x-3;</pre>
+
+<pre class="mOutput">			    2	 3/4
+	 log(sqrt(2) (x - 3)  + 2    (x - 3) + 1)
+(%o8) 2 (----------------------------------------
+			     3/4
+			  4 2
+
+									3/4
+						   2 sqrt(2) (x - 3) + 2
+					      atan(------------------------)
+		      2	   3/4				      3/4
+   log(sqrt(2) (x - 3)  - 2    (x - 3) + 1)		     2
+ - ---------------------------------------- + ------------------------------
+		       3/4				     3/4
+		    4 2					  2 2
+
+			     3/4
+	2 sqrt(2) (x - 3) - 2
+   atan(------------------------)
+		   3/4
+		  2
+ + ------------------------------)
+		  3/4
+	       2 2
+</pre>
+<p>The integrand is an everywhere positive function. For such functions
+we can evaluate the integral at the limits of a definite integral to
+obtain its value. To compute:</p>
+<pre class="mInput">'integrate(1/((x-3)^4+1/2), x,0, 1);
+					 1
+					/
+					[       1
+(%o17) 				        I  ------------ dx
+					]	  4   1
+					/  (x - 3)  + -
+					 0	      2
+</pre>
+<p>we can write:</p>
+<pre class="mInput">ratsimp(subst (1, x, sfx) - subst(0, x, sfx));</pre>
+<p>This expression uses substitution to evaluate the indefinite integral
+at the limits of the definite integral. We obtain:</p>
+  
+<pre class="mOutput">		     3/4			     3/4
+	   1/4	    2    + 6 sqrt(2)	   1/4	    2    + 4 sqrt(2)
+(%o14) (2 2    atan(----------------) - 2 2    atan(----------------)
+			   3/4				   3/4
+			  2				  2
+
+    1/4	       3/4		       1/4	  3/4
+ + 2    log(3 2	   + 9 sqrt(2) + 1) - 2	   log(2 2    + 4 sqrt(2) + 1)
+
+    1/4		 3/4			 1/4	      3/4
+ + 2    log(- 2 2    + 4 sqrt(2) + 1) - 2    log(- 3 2	  + 9 sqrt(2) + 1)
+
+			    3/4				    3/4
+      1/4      6 sqrt(2) - 2	      1/4      4 sqrt(2) - 2
+ + 2 2	  atan(----------------) - 2 2	  atan(----------------))/4
+		      3/4			      3/4
+		     2				     2
+</pre>
+<p>The numerical value is:</p>
+
+<pre class="mInput">(%i15) float(%);
+(%o15) 			       0.02880633385274</pre>
+<p>Numerical integration with the Romberg method confirms that result:</p>
+<pre class="mInput">(%i16) romberg(1/((x-3)^4+1/2), x,0, 1);
+(%o16) 			       0.02880633392455</pre>
+
+
+
+<hr style="color:green", width="80%">
+
+<p>The following example shows how an integrand of the form f(x)*f'(x) is handled:</p>
+
+<pre class="mInput">p: (x^3 + x^2)^2*(3*x^2 + 2*x);</pre>
+
+<pre class="mOutput">				2	   3    2 2
+(%o4)			    (3 x  + 2 x) (x  + x )
+</pre>
+
+<pre class="mInput">p2: expand(p);</pre>
+<pre class="mOutput">			      8	     7	    6	   5
+(%o5)			   3 x  + 8 x  + 7 x  + 2 x
+</pre>
+
+<pre class="mInput">integrate(p2*sin(2*x^3 + 2*x^2)*cos(x^3 + x^2),x);</pre>
+
+<p>We obtain:</p>
+
+<pre class="mOutput">	  3	 2	   3	  2	     6	     5	    4
+(%o6)((6 x  + 6 x ) sin(3 x  + 3 x ) + (- 9 x  - 18 x  - 9 x  + 2)
+
+	3      2	 3	 2	 3    2
+ cos(3 x  + 3 x ) + (54 x  + 54 x ) sin(x  + x )
+
+	  6	  5	  4	       3    2
+ + (- 27 x  - 54 x  - 27 x  + 54) cos(x  + x ))/54
+</pre>
+
+<hr style="color:green", width="80%">
+
+<h3>Integrands with Simple Radical Extensions</h3>
+
+<p>The following integral can be computed</p>
+
+<pre class="mInput">integrate((-4*x^3*(x^4 + 1)^(2/3)
+           -16*x^3*(x^4 + 1)^(1/3))
+     /(3*x^8 +6*x^4 + 3), x);</pre>
+
+<p>We obtain:</p>
+
+<pre class="mOutput">				1	      2
+(%o2)			   ----------- + -----------
+			     4	   1/3	   4	 2/3
+			   (x  + 1)	 (x  + 1)
+</pre>
+
+<p>Simplification with <b>ratsimp</b> gives:</p>
+
+<pre class="mOutput">			    4	  2/3	    4	  1/3
+			  (x  + 1)    + 2 (x  + 1)
+(%o3)			  ---------------------------
+				     4
+				    x  + 1
+</pre>
+
+<p>A sightly more complicated integral is solved in terms of exponentials and
+logarithms:</p>
+
+<pre class="mInput">integrate(((6*x^5 + 7*x^4 - 36*x^3 + 18*x - 21)*(x^4 + 1)^(2/3)
+           + (2*x^6 - 20*x^4 - 40*x^3 + 18*x^2 + 12)*(x^4 + 1)^(1/3))
+     /(3*x^8 +6*x^4 + 3), x);</pre>
+
+<pre class="mOutput">				 4				  4
+			  2 log(x  + 1)			     log(x  + 1)
+			  -------------			     -----------
+	   2		        3	      3			  3
+       (3 x  - 7 x + 9) %e	        + (2 x  + 4 x + 5) %e
+(%o4)  -----------------------------------------------------------------
+				     4
+				    x  + 1
+</pre>
+
+<p>We have to use <b>radcan</b> to obtain a canonical representation of the
+radicals:</p>
+
+<pre class="mInput">radcan(%);</pre>
+<pre class="mOutput">	      2		     4	   2/3	     3		    4	  1/3
+	  (3 x  - 7 x + 9) (x  + 1)    + (2 x  + 4 x + 5) (x  + 1)
+(%o5)	  -----------------------------------------------------------
+				     4
+				    x  + 1
+</pre>
+
+<p>**</p>
+<pre>(%i6) integrate (7*tan(x)^8 + 7*tan(x)^6, x);
+	       7	    5		 3
+	 15 tan (x) - 21 tan (x) + 35 tan (x) - 105 tan(x)
+(%o6) 7 (------------------------------------------------- + x)
+				105
+
+					      5		  3
+					 3 tan (x) - 5 tan (x) + 15 tan(x)
+				    + 7 (--------------------------------- - x)
+							15
+(%i7) ratsimp(%);
+				       7
+(%o7) 				    tan (x)
+</pre>
+
+<p>a definite integral:</p>
+
+<pre>
+
+</pre>
+
+<br>
+<hr class="startOfFooter">
+<TABLE bgColor=#ffffff border=0 cellPadding=2>
+  <TBODY>
+  <TR bgColor=#ccffcc>
+    <TD><CENTER><a href="../Contents.htm">Contents</a></Center></TD>
+  </TR>
+  </TBODY>
+</TABLE>
+</body>
+</html>

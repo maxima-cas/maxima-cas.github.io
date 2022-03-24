@@ -1,0 +1,96 @@
+<html lang="en">
+<head>
+<title>Maxima Tutorial</title>
+
+<META content="text/html; charset=windows-1252" http-equiv=Content-Type>
+<LINK href="defstyle.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<TABLE bgColor=#ffffff border=0 cellPadding=2>
+  <TBODY>
+  <TR bgColor=#ccffcc>
+    <TD><CENTER><a href="../Contents.htm">Contents</a></Center></TD>
+  </TR>
+  </TBODY>
+</TABLE>
+
+<h2>Computation of Finite and Infinite Sums</h2>
+<hr class="endOfHeader">
+
+<p></p>
+
+<h3>Examples of Use:</h3>
+<p>A finite sum is immediately computed:</p>
+<pre class="mInput"> sum(i, i, 1, 100);</pre>
+<pre class="mOutput">       5050</pre>
+<p>An infinite sum is left unevaluated:</p>
+<pre class="mInput"> sum(1/x^2, x, 1, inf);</pre>
+<pre class="mOutput">		     inf
+		     ====
+		     \	   1
+		      >	   --
+		     /	    2
+		     ====  x
+		     x = 1</pre>
+
+<p>To obtain a value, you have to add the option <b>simpsum=true</b>:</p>
+<pre class="mInput"> sum(1/x^2, x, 1, inf), simpsum=true;</pre>
+<pre class="mOutput">		  2
+	       %pi
+	       ----
+		6</pre>
+
+<p>It is possible to add unevaluated sums:</p>
+<pre class="mInput">(%i2) sum1: sum(1/x^2, x, 1, inf);</pre>
+<pre class="mOutput">				   inf
+				   ====
+				   \	 1
+(%o2) 				    >	 --
+				   /	  2
+				   ====	 x
+				   x = 1</pre>
+<pre class="mInput"> sum2:sum(1/x^3, x, 1, inf);</pre>
+<pre class="mOutput">				   inf
+				   ====
+				   \	 1
+(%o3) 				    >	 --
+				   /	  3
+				   ====	 x
+				   x = 1</pre>
+<pre class="mInput"> sum1 + sum2;</pre>
+<pre class="mOutput">			      inf	 inf
+			      ====	 ====
+			      \	    1	 \     1
+(%o4) 			       >    -- +  >    --
+			      /	     2	 /      3
+			      ====  x	 ====  x
+			      x = 1	 x = 1</pre>
+<p>Symbolic sums are not automatically contracted. To write
+both terms under a common summation sign, we have to
+apply the function <b>sumcontract</b>:</p>
+
+<pre class="mInput"> sumcontract(%);</pre>
+<pre class="mOutput">				inf
+				====
+				\      1    1
+(%o5) 				 >    (-- + --)
+				/       2    3
+				====   x    x
+				x = 1</pre>
+<pre class="mInput"> ev (%, simpsum=true);</pre>
+<pre class="mOutput">					     2
+					  %pi
+(%o7) 			        zeta(3) + ----
+					   6</pre>
+<br>
+<hr class="startOfFooter">
+<TABLE bgColor=#ffffff border=0 cellPadding=2>
+  <TBODY>
+  <TR bgColor=#ccffcc>
+    <TD><CENTER><a href="../Contents.htm">Contents</a></Center></TD>
+  </TR>
+  </TBODY>
+</TABLE>
+</body>
+</html>

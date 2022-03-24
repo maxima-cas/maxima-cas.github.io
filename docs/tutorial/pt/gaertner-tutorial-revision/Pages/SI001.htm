@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="en">
+<head>
+  <title>Maxima Tutorial</title>
+  <meta content="text/html; charset=windows-1252"
+ http-equiv="Content-Type">
+  <link href="defstyle.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<table bgcolor="#ffffff" border="0" cellpadding="2">
+  <tbody>
+    <tr bgcolor="#ccffcc">
+      <td>
+      <center><a href="../Contents.htm">Índice</a></center>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h2>Integração Simbólica: Os Algorítmos</h2>
+<hr class="endOfHeader">
+<p>O artigo pioneiro sobre integração simbólica é:</p>
+<pre class="citation">Joel Moses:<br><b>Symbolic Integration: The Stormy Decade</b>
+Communications of the ACM, Vol 14, No 8 August 1971, pp. 548-650</pre>
+<p>Esse artigo é um resumo atualizado da tese de Moses 'Symbolic
+Integration',
+a qual está disponível nos endereços abaixo:
+</p>
+<ul>
+  <li><a
+ href="http://theses.mit.edu/Dienst/UI/2.0/Describe/0018.mit.theses/1967-24">http://theses.mit.edu/Dienst/UI/2.0/Describe/0018.mit.theses/1967-24</a>.
+  </li>
+  <li><a href="http://www.lcs.mit.edu/publications/specpub.php?id=615">http://www.lcs.mit.edu/publications/specpub.php?id=615</a>
+  </li>
+</ul>
+Essas teses descrevem um algorítmo de três estágios cuja estrutura
+ainda é seguida pelos integradores simbólicos de todos os maiores
+sistemas de álgebra computacional.
+<p></p>
+<p>Um texto moderno sobre integração simbólica é:</p>
+<pre class="citation">Manueal Bronstein:<br><b>Symbolic Integration I</b> Transcendental Functions<br>1997 Springer Berlin Heidelberg New York</pre>
+<p>Artigo de Fatemans sobre simplificação algébrica:</p>
+<a href="http://www.cs.berkeley.edu/%7Efateman/papers/paperocr.txt">http://www.cs.berkeley.edu/~fateman/papers/paperocr.txt</a>
+<h3>O Algorítmo de Integração</h3>
+<p>A seguinte descrição do é retirada do artigo de ACM (com omissões
+substanciais):</p>
+<h4>Primeiro Estágio</h4>
+<p>O primeiro estágio é um teste simples para determinar se derivadas
+de uma subexpressão do integrando dividem o resto do integrando. Esse
+teste determina se o integrando é da forma:</p>
+<pre class="mathExpression">&#8747; c* op(u(x))*u'(x) dx</pre>
+<p>onde</p>
+<ul>
+  <li><b>c</b> é uma contante</li>
+  <li><b>u(x)</b> é alguma função de <b>x</b></li>
+  <li><b>u'(x)</b> é sua derivada</li>
+  <li><b>op</b> é uma função elementar, a saber uma entre
+    <ul>
+      <li>sin</li>
+      <li>cos</li>
+      <li>tan</li>
+      <li>cot</li>
+      <li>sec</li>
+      <li>csc</li>
+      <li>asin</li>
+      <li>atan</li>
+      <li>asec</li>
+      <li>log</li>
+    </ul>
+Adicionalmente, op(u(x)) pode ter as formas
+    <table style="margin-left: 1em;">
+      <tbody>
+        <tr>
+          <td>u(x)</td>
+          <td style="padding-left: 2em;">(op being the identity)</td>
+        </tr>
+        <tr>
+          <td>1/u(x)</td>
+          <td style="padding-left: 2em;">(op being the reciprocal)</td>
+        </tr>
+        <tr>
+          <td>u(x)<sup>d</sup></td>
+          <td style="padding-left: 2em;">where d &lt;&gt; -1</td>
+        </tr>
+        <tr>
+          <td>d<sup>u(x)</sup></td>
+          <td style="padding-left: 2em;">where d is a constant.</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+</ul>
+<p>Para integrandos dessa forma, uma consulta a uma tabela e uma
+substituição são suficientes para calcular a integral.</p>
+<p>A experiência mostra the esse algorítmo simples resolve muitas
+integraiss.
+Os <a href="ExamplesFirstStage.htm">exemplos do primeiro estágio</a>
+demonstram o poder do algorítmo.</p>
+<h4>Segundo estágio</h4>
+<p>O algorítmo insere o segundo estágio quando o primeiro estágio não
+pode resolver a integral. O segundo estágio&nbsp; contém onze métodos
+que podem ser aplicáveis a um dado problema. Uma rotina de coincidência
+de modelos determina qual método pode ser tentado.</p>
+<p><a href="ExamplesSecondStage.htm">second stage examples</a>.</p>
+<h4>Terceiro Estágio</h4>
+<p>***</p>
+<br>
+<hr class="startOfFooter">
+<table bgcolor="#ffffff" border="0" cellpadding="2">
+  <tbody>
+    <tr bgcolor="#ccffcc">
+      <td>
+      <center><a href="../Contents.htm">Índice</a></center>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

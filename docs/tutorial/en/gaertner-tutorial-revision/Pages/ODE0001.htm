@@ -1,0 +1,136 @@
+<html lang="en">
+<head>
+<title>Maxima Tutorial</title>
+
+<META content="text/html; charset=windows-1252" http-equiv=Content-Type>
+<LINK href="defstyle.css" rel="stylesheet" type="text/css">
+</head>
+
+<body bgcolor="#ffffbb">
+<TABLE bgColor=#ffffff border=0 cellPadding=2>
+  <TBODY>
+  <TR bgColor=#ccffcc>
+    <TD><CENTER><a href="../Contents.htm">Contents</a></Center></TD>
+    <TD><CENTER><a href="ODE0002.htm">Next</a></CENTER></TD>
+  </TR>
+  </TBODY>
+</TABLE>
+
+<p><h2>Differential Equations - Symbolic Solutions</h2></p>
+<hr class="endOfHeader">
+
+<h3>Differential Equations of First Order</h3>
+
+<p>In a first step we write down the differential equation that we want to solve.
+Note the apostroph in front of the <b>diff</b>. It is needed to
+avoid the immediate computation of a derivative.</p>
+
+<pre class="mInput">eq:'diff(y,x) = -y;</pre>
+<p>We obtain the equation in a more conventional writing form:</p>
+
+<pre class="mOutput">	 dy
+      	 -- = - y
+	 dx
+</pre>
+
+<p>We use <b>ode2</b> to compute a solution:</p>
+ 
+<pre class="mInput">ode2(eq, y, x);</pre>
+
+<P>The solution contains the integration constant <b>%C</b>.</p>
+<pre class="mOutput">	  - x
+y = %c %e
+</pre>
+
+<p>To obtain a solution for a selected initial value we use the function <b>ic1</b>
+to define the initial condition. For later use, we assign the solution to the
+variable <b>sol</b>:</p>
+
+<pre class="mInput">sol: ic1(%, x= 1, y= 8);</pre>
+<p>This initial condition selects the solution that passes through point (1, 8).
+We obtain:</p>
+<pre class="moutput">			 1 - x
+(%o3)		 y = 8 %e
+</pre>
+
+<p>You can now draw the solution:</p>
+
+<pre class="mInput">plot2d(rhs (sol),[x,-4,4],[y,-10,10]);</pre>
+
+<hr width="80%" style="color:#FF0505">
+
+<h3>Differential Equations of Second Order</h3>
+
+<p>Like differential equations of first, order, differential equations of second order
+are solved with the function <b>ode2</b>. To specify an initial condition, one uses
+the function <b>ic2</b>, which specifies a point of the solution and the tangent to
+the solution at that point.</p>
+
+<h4>Example:</h4>
+
+<pre class="mInput">eq: 'diff(y, x, 2) + y = 0;</pre>
+
+<p>This is:</p>
+
+<pre class="mOutput">		     2
+		    d y
+(%o1)		    --- + y = 0
+		      2
+		    dx
+</pre>
+
+<p>The general solution is again computed with <b>ode2</b>:</p>
+
+<pre class="mInput">sol2: ode2(eq, y, x);</pre>
+
+<p>We obtain:</p>
+
+<pre class="mOutput">(%o2)    y = %k1 sin(x) + %k2 cos(x)
+</pre>
+
+<p>This solution has two parameters. There are two substantially different
+ways to compute values for these parameters:</p>
+<ul>
+<li>For an initial value problem, we obtain the parameters for a
+particular solution form the value of that particular solution and
+its derivative at a given point.</li>
+<li>For a boundary value problem, we need to know the values of the
+searched solution at two different points.</li>
+
+</ul>
+
+<p>For the initial value problem we use the function <b>ic2</b>:</p>
+<pre class="mInput">ps: ic2(sol2, x=0, y=2, 'diff(y, x)=1);</pre>
+<pre class="mOutput"> y = sin(x) + 2 cos(x)</pre>
+<p>We check that the initial value is satisfied by this solution:</p>
+<pre class="mInput">ev (rhs(ps) , x= 0);</pre>
+<pre class="mOutput"> 2 </pre>
+<p>We check that derivation of the solution satisfies the condition <b>'diff(y, x)=1</b>:</p>
+<pre class="mInput"> diff(rhs (ps), x);</pre>
+<pre class="mOutput"> cos(x) - 2 sin(x)</pre>
+<pre class="mInput"> ev (%, x = 0);</pre>
+<pre class="mOutput"> 1 </pre>
+
+<p>We note that it is not possible to combine these two
+expressions into:</p>
+<pre class="error">ev (diff(rhs(ps), x), x=0);</pre>
+
+<p>For the boundary value problem we use the function <b>bc2</b>:</p>
+<pre class="mInput">bc2(sol2, x=0, y=2, x=2, y = -1);</pre>
+<pre class="mOutput">	            (2 cos(2) + 1) sin(x)
+     y = 2 cos(x) - ---------------------
+                          sin(2)</pre>
+<p>It is easy to verify that both boundary conditions are 
+satisfied by this solution:</p>
+<br>
+<hr class="startOfFooter">
+<TABLE bgColor=#ffffff border=0 cellPadding=2>
+  <TBODY>
+  <TR bgColor=#ccffcc>
+    <TD><CENTER><a href="../Contents.htm">Contents</a></Center></TD>
+    <TD><CENTER><a href="ODE0002.htm">Next</a></CENTER></TD>
+  </TR>
+  </TBODY>
+</TABLE>
+</body>
+</html>

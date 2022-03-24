@@ -1,0 +1,299 @@
+<html lang="en">
+<head>
+<title>Maxima Tutorial</title>
+
+<META content="text/html; charset=windows-1252" http-equiv=Content-Type>
+<LINK href="defstyle.css" rel="stylesheet" type="text/css">
+</head>
+
+<body bgcolor="#ffffbb">
+<TABLE bgColor=#ffffff border=0 cellPadding=2>
+  <TBODY>
+  <TR bgColor=#ccffcc>
+    <TD><CENTER><a href="../Contents.htm">Contents</a></Center></TD>
+    <TD><CENTER><a href="./Programming0002.htm">Next</a></Center></TD>
+  </TR>
+  </TBODY>
+</TABLE>
+
+<p><h2>Maxima Programming</h2></p>
+<hr class="endOfHeader">
+
+<p>Programming in Maxima has two very different aspcets:</p>
+<ul>
+<li>First, Maxima has its own programming language, which
+can be used to extend Maxima. Important parts of Maxima are
+written in that language. Code that is written in the Maxima
+language is stored in files with extensions <b>.mac</b> or <b>.mc</b>.
+A lot of such files can be found in the subdirectories of the directory<br>
+<pre>~/Maxima-5.9.1/share/maxima/5.9.1/share</pre></li>
+<li>Maxima itself is written in Lisp. That code is available too; it
+is stored in files with the extension <b>.lisp</b> and can be
+found in the directory<br>
+<pre>~/Maxima-5.9.1/share/maxima/5.9.1/src</pre></li>
+</ul>
+
+<p>The use of the Maxima programming language is highly recommended
+for serious work. Programming with Lisp is work for advanced users.
+Occassionally, it may be necessary to use both programming languages
+to solve a problem. The use of files is a candidate for bilingual
+programming.</p>
+
+<hr width="80%"> 
+
+<p>A simple Maxima program is nothing but a sequence of Maxima commands.
+To be able to reproduce a lengthy computation at a later time, it is
+often prudent to record its commands in a batch file. Such a protocol
+file is in fact a Maxima program.</p>
+
+
+<p>In the chapter about <a href="FnDef0002.htm">Tubes around Spacial Curves</a>
+we used this definition to compute the tangent of a spacial curve:</p>
+
+<pre class="mInput">tangent(fn, x) :=
+       diff(fn(x), x) / ((diff(fn(x), x) . diff(fn (x), x))^(1/2))$</pre>
+
+<p>This is a straightforward definition, but it has a serious flaw:
+It computes the derivative of <b>f</b> three times. It would be much
+better to compute the derivative only once and to store it for later
+use.</p>
+
+<pre class="mInput">tangent(fn, x) :=
+  block ( [df: diff(fn(x), x)],
+           df / (df . df)^(1/2)
+        )$</pre>
+ 
+<p>Explanations:</p>
+<ul>
+<li>A <b>block</b> is more or less what a procedure body is in languages
+like Pascal or Ada. It contains a list of local variables and one or
+several expressions. The names of local variables are case sensitive.</li>
+<li>The declaration<pre class ="mInput">[df: diff(fn(x), x)]</pre><br>
+introduces the temporary variable <b>df</b> and assigns it the
+value of <b>diff(fn(x),&nbsp;x)</b> as initial value.</li>
+<li>The expression<pre class ="mInput">df / (df . df)^(1/2)</pre><br>
+uses the value of <b>df</b> to compute the tangent vector. This expression
+is the last expression of the block; its value is answered as the result
+of the block evaluation.</li>
+</ul>
+
+<hr width="80%", color="lightBlue">
+
+<h3>The Structure of Expressions</h3>
+<p>An expression is either an atom or a structure that is built with an
+operator and a list of arguments. The function <b>op</b> is used to
+access the operator of an expression, the function <b>args</b> is
+used to obtain a list of all arguments. Some examples explain this:</p>
+<pre class="mInput"> op (a + b + c);
+<span class="response">    +</span>
+ args(a + b + c);
+<span class="response">    [c, b, a]</span>
+ op (sin(3*x));
+<span class="response">    sin</span>
+ args (sin(3*x));
+<span class="response">    [3 x]</span>
+ op (f(a, b, g(c), d));
+<span class="response">    f</span>
+ args (f(a, b, g(c), d));
+<span class="response">    [a, b, g(c), d]</span></pre>
+
+<p>Note that <b>exp(x)</b> is translated into a power to the constant <b>%e</b>:</p>
+
+<pre class="mInput"> op(exp(2*x));
+<span style="color:black">  ^</span>
+ args(exp(2*x));
+<span style="color:black">  [%e, 2 x]</span></pre>
+
+<h3>A Function that collects the Operators of an Expression</h3>
+
+<p>A non-atomar expression contains always exactly one operator and a
+collection of arguments that are in turn expressions. An expression
+is thus a tree. It is sometimes helpful to traverse that tree and to
+collect all operators. The knowledge of all used operators can be used to
+select promising simplifications and to skip simplifications that
+are obviously not needed in the absence of some operators.</p>
+<p>This section explains how such a function
+is programmed.</p>
+
+<h4>Outline of the desired Solution</h4>
+<p>We want a function that takes an expression and answers a list with all
+operators of the expression:</p>
+
+<pre class="mInput">allOps(a);
+<span style="color:black">[]</span>
+allOps(sin(x) + cos(x));
+<span style="color:black">[cos, sin, +]</span>
+allOps(sin(x) + 2*sin(2*x));
+<span style="color:black">[sin, *, +]</span></pre>
+
+<p>The answered list should contain every found operator once.
+Repetions are not desired. The last expression exemplifies this
+requirement.</p>
+
+<p>The function <b>allOps</b> is very simple: It delegates the
+traversal of the expression to a function that takes a subexpression
+and a list of operators that were found so far:</p>
+
+<pre class="mInput">allOps(expression):=
+ block( [ ],
+        allOpsPriv (expression, [])
+       );</pre>
+
+<p>The function <b>allOpsPriv</b> requires more work.
+A first attempt handles only the simple cases:</p>
+
+<pre class="mInput">  <b>/* incomplete preliminary version  */</b>
+allOpsPriv(expression, opList) :=
+ block ( [x],
+        if atom(expression)
+           then opList
+           else
+             (x: op(expression),
+              cons(x, opList)
+             ) 
+        );</pre>
+<p>This definition handles two simple cases:</p>
+<ul>
+<li>For an atomar expression the function answers the
+unchanged list of known operators. This is correct because
+an atomar expression has no operator.</li>
+<li>For a nonatomar expression the function <b>cons</b> is
+used to add the operator of that expression to the list of
+known operators. Subexpressions are not processed, this
+is the topic of the next refinement of the algorithm.</li>
+</ul>
+<p>The definition uses an if-statement to identify and to
+handle both cases. An if-statement always answers the
+value of its evaluated alternative as its result. For
+an atomar expression, the above if-statement answers the
+value of <b>opList</b>. The else-branch of the if-statement
+contains two statements that are written in parentheses.
+The result of <b>cons(x,&nbsp;opList)</b> is the result of the
+entire if-statement when the else-branch is selected for
+evaluation.</p>
+
+<p>Note that the definition of <b>allOpsPriv</b> uses a
+temporary variable to store the operator of a nonatomar
+expression. This is not really necessary, it is also
+possible to write:</p>
+<pre class="codeFragment">cons(op(expression), opList)</pre>
+
+<p>When we try the definition that we have now, we obtain:</p>
+
+<pre class="mInput">allOps(a);
+<span style="color:black">[]</span>
+allOps(sin(x) + cos(x));
+<span style="color:black">[+]</span></pre>
+
+<p>The inspection of the subexpressions is obviously missing. For a
+complete solution we have to:</p>
+<ul>
+<li>fetch the list of arguments of a nonatomar expression</li>
+<li>process all expressions in the argument list</li>
+</ul>
+
+<p>A refinement of this definition requires additional actions in
+the else-branch of the if-statement. <p>Added code is displayed in bold:</p>
+
+
+<pre class="mInput">allOpsPriv(expression, opList) :=
+ block ( [x<b>, args, newList</b>],
+        if atom(expression)
+           then opList
+           else
+             (x:    op(expression),
+              <b>args: args(expression),
+              newList:</b> cons(x, opList),
+              <b>for arg in args do
+                newList: allOpsPriv(arg, newList),
+              newList</b>
+             ) 
+        );</pre>
+
+
+<p>Here we use the language element
+<pre class="codeFragment">for arg in args do
+   <i>&lt;statement&gt;</i></pre><br>
+which iterates over all elements <b>arg</b> in the list <b>args</b>.
+Note that the variable <b>arg</b> is not declared as a block-local
+variable: The declaration of that variable is implicit and its
+scope is the <i>statement</i> that is evaluated under by the iterator.</pre>
+
+<p>A quick test reveals both remarkable improvements and an imperfection of the
+algorithm:</p>
+
+<pre class="mInput">allOps(a);
+<span style="color:black">[]</span>
+allOps(sin(x) + cos(x));
+<span style="color:black">[cos, sin, +]</span>
+allOps(sin(x) + 2*sin(2*x));
+<span style="color:black">[sin, *, sin, *, +]</span></pre>
+
+<p>The operators <b>sin</b> and <b>*</b> are mentioned twice. This is not
+really a surprise, since we do not check whether an operator is already in the list
+before we add it. It is however easy to fix that:</p>
+
+<pre class="mInput">allOpsPriv(expression, opList) :=
+ block ( [x, args, newList],
+        if atom(expression)
+           then opList
+           else
+             (x:    op(expression),
+              args: args(expression),
+              newList: <b>if member (x, opList)
+                          then opList
+                          else</b> cons(x, opList),
+              for arg in args do
+                newList: allOpsPriv(arg, newList),
+              newList
+             ) 
+        );</pre>
+
+<p>You find this code in file <a href="./sources/allOps.mc">allOps.mc</a>. When you
+copy that file into the subdirectory <b>user</b> of your Maxima installation,
+you can load it with</p>
+<pre class="mInput">batch("allOps");</pre>
+
+<hr width="80%" color="lightBlue">
+
+<p>The function <b>allOps</b> collects all operators of an expression. To do that,
+it has to completely traverse an expression. For a similar problem complete
+traversal is not allways needed:</p>
+<p>When we are looking for the presence of a given operator in an expression, we
+can stop traversal as soon as we have found the operator we are looking for.</p>
+
+<pRe class="mInput">containsOp(expression, opList) :=
+ block ( [x, args, <b>found</b>],
+        if atom(expression)
+           then <b>false</b>
+           else
+             (x:    op(expression),
+              args: args(expression),
+              if member (x, opList)
+                 then <b>true</b>
+                 else 
+                  (<b>found : false,</b>
+                   for arg in args <b>while not found</b> do
+                        found: containsOp(arg, opList),
+                   found)
+             ) 
+        );</pre>
+
+<p>Here we use a variant of the earlier used language element <b>for&nbsp;arg&nbsp;in&nbsp;args&nbsp;do</b>:
+<pre class="codeFragment">for arg in args while not found do
+   <i>&lt;statement&gt;</i></pre><br>
+which iterates over the elements <b>arg</b> in the list <b>args</b>
+for as long as the condition holds. Iteration terminates when the condition
+becomes <b>nil</b> or when all list elements are processed. </pre>
+<br>
+<hr class="startOfFooter">
+<TABLE bgColor=#ffffff border=0 cellPadding=2>
+  <TBODY>
+  <TR bgColor=#ccffcc>
+    <TD><CENTER><a href="../Contents.htm">Contents</a></Center></TD>
+    <TD><CENTER><a href="./Programming0002.htm">Next</a></Center></TD>
+  </TR>
+  </TBODY>
+</TABLE>
+</body>
+</html>

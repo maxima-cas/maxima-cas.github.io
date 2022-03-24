@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="en">
+<head>
+  <title>Maxima Tutorial</title>
+  <meta content="text/html; charset=windows-1252"
+ http-equiv="Content-Type">
+  <link href="defstyle.css" rel="stylesheet" type="text/css">
+</head>
+<body bgcolor="#ffffbb">
+<table bgcolor="#ffffff" border="0" cellpadding="2">
+  <tbody>
+    <tr bgcolor="#ccffcc">
+      <td>
+      <center><a href="../Contents.htm">Índice</a></center>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p></p>
+<h2>Iniciando<br>
+</h2>
+<p></p>
+<hr class="endOfHeader">
+<p>Maxima é um sistema em linha de comando. Você informa um comando,
+obtém uma resposta e pode inserir o comando seguinte.</p>
+<p>Um comando é uma expressão que pode ocupar mais de uma linha e é
+encerrado com um ponto e vírgula. e.g.</p>
+<pre class="mInput">(%i1) 14*(7 + 3);</pre>
+<p>Você obtém essa resposta:</p>
+<pre class="mOutput">(%o1)  140</pre>
+<p>Note que nada irá acontecer quando você esquecer de colocar o ponto
+e vírgula.
+Maxima irá simplesmente esperar por entradas adicionais.</p>
+<p>Você pode inserir uma expressão que contém variáveis:</p>
+<pre class="mInput">(%i2) (x + 2)*(x - 3);</pre>
+<p>Maxima responde a essa expressão da forma simplificada:</p>
+<pre class="mOutput">(%o2)  (x - 3) (x + 2)</pre>
+<p>Note que você tem que digitar um asterisco para denotar a
+multiplicação.
+Maxima prefere uma forma de escrever&nbsp; que não utiliza um operador
+de multiplicação: Como na notação tradicional de matemática, a
+multiplicação está implícita.</p>
+<p>Talvez você possa preferir ver o produto expandido. Isso é alguma
+coisa que que você tem que perguntar. </p>
+<pre class="mInput">expand(%);</pre>
+<pre class="mOutput">	   2<br>(%o5)	  x  - x - 6</pre>
+<p>Note a interpretação de expoentes:</p>
+<pre class="mInput">x^3^4;</pre>
+<pre class="mOutput">	      81<br>(%o2)	     x</pre>
+<pre class="mInput">(x^3)^4;</pre>
+<pre class="mOutput">	      12<br>(%o4)	     x</pre>
+<p>Vemos que x^3^4 é avaliado como x^(3^4), não como (x^3)^4.</p>
+<br>
+<hr class="startOfFooter">
+<table bgcolor="#ffffff" border="0" cellpadding="2">
+  <tbody>
+    <tr bgcolor="#ccffcc">
+      <td>
+      <center><a href="../Contents.htm">Índice</a></center>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="en">
+<head>
+  <title>Maxima Tutorial</title>
+  <meta content="text/html; charset=windows-1252"
+ http-equiv="Content-Type">
+  <link href="defstyle.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<table bgcolor="#ffffff" border="0" cellpadding="2">
+  <tbody>
+    <tr bgcolor="#ccffcc">
+      <td>
+      <center><a href="FnDef0001.htm">Anterior</a></center>
+      </td>
+      <td>
+      <center><a href="../Contents.htm">Índice</a></center>
+      </td>
+      <td>
+      <center><a href="FnDef0003.htm">Seguinte</a></center>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h2>Geometria: Tubos Abraçando Curvas Espaciais</h2>
+<hr class="endOfHeader">
+<p><b>Resumo do exemplo:</b></p>
+<p>Para uma curva arbitrária no espaço tridimensional, usamos fórmulas
+de Frenet para calcular um tubo abraçando aquela curva. Um tubo
+abraçando uma curva é uma superfície no espaço; uma superfície no
+espaço é convenientemente representada por um vetor de três funções</p>
+<pre class="codeFragment"> [ f<sub>x</sub>(u, v), f<sub>y</sub>(u, v), f<sub>z</sub>(u, v)]</pre>
+<p>onde <b>u</b>, <b>v</b> são parâmetros.</p>
+<p>Para calcular um tubo abraçando uma curva, precisamos da nomal e da
+binormal paa todo o ponto da curva. Esses vetores são obtidos através
+das fórmulas de Frenet:</p>
+<p>A tangente:</p>
+<pre class="codeFragment">      g'<br>t =  ----<br>     |g'|</pre>
+<p>The binormal:</p>
+<pre class="codeFragment">      g' × g"<br>b =  ---------<br>     |g' × g"|</pre>
+<p>A normal normal:</p>
+<pre class="codeFragment"> n = b × t</pre>
+<p>Nessas fórmulas, o "x"multiplicativo quer dizer produto vetorial
+entre dois vetores espaciais. Note que g é uma função de um parâmetro;
+por conseqüência os vetores&nbsp; t, b, n são também funções daquele
+mesmo parâmetro.</p>
+<p>Com esses vetores, um tubo abraçando uma curva é facilmente definido:</p>
+<pre class="codeFragment">tube(g, r, u, v) :=<br>    g(u) + r*(cos(v)*n(u) + sin(v)*b(u))</pre>
+<p>onde <b>r</b> é o raio do tubo, <b>u</b> é o parâmetro
+da curva espacial e <b>v</b> é um parâmetro que percorre de 0 a 2*pi.</p>
+<p>Note que para o tubo precisamos somente a normal e a binormal.
+Todavia
+precisamos de todas as fórmulas de Frenet: A tamgente é necessária para
+calcular a normal.</p>
+<p>Iremos precisar do produto vetorial de dois vetores umas poucas
+vezes,
+então vamos começar com uma definição para isso: </p>
+<pre class="mInput">cross (v1, v2) := determinant(matrix([[1, 0, 0], [0, 1, 0], [0, 0,1]], v1, v2));</pre>
+<p>Aqui está um exemplo:</p>
+<pre class="mInput"> cross([12, -1, 3], [-9, -2, -2]);<br><span
+ style="color: black;">  [8, - 3, - 33]</span></pre>
+<p>Umartifício de definição completo é esse:</p>
+<p>Primeiro definimos uma função para rotacionar os elementos da lista
+uma posição para a esquerda. Aqui usamos&nbsp; nosso conhecimento de
+Lisp para escrever: </p>
+<pre class="codeExample">  (DEFUN rotateLeft<br>         (Lambda (V) (APPEND (CDR V) (LIST (CAR V))))<br>  )</pre>
+<br>
+Traduzido para Maxima, torna-se:
+<p></p>
+<pre class="mInput">rotateLeft(v1):= append(rest(v1, 1), cons(first(v1), []));</pre>
+<p>Agora vamos ao artifício:</p>
+<pre class="MInput">cross (u, v) := rotateLeft( u * rotateLeft(v) - v * rotateLeft(u));</pre>
+<p>Testemos esse artifício com dois vetores genéricos:</p>
+<pre class="mInput"> cross([ax, ay, az], [bx, by, bz]);<br><span
+ style="color: black;"> [ay bz - az by, az bx - ax bz, ax by - ay bx]</span></pre>
+<p>Essa é de fato a fórmula que encontramos em todo livro didático
+sobre geometria analítica.</p>
+<p>Agora usamos as fórmulas de Frenet para calcular a tangente, a
+normal e a binormal para um ponto arbitrário da curva espacial:</p>
+<p>A tangente:</p>
+<pre class="mInput">tangent(fn, x) :=<br>       diff(fn(x), x) / ((diff(fn(x), x) . diff(fn (x), x))^(1/2))$</pre>
+<p>A binormal:</p>
+<pre class="mInput">binormal (fn, x) := <br>         cross (diff(fn(x), x), <br>                diff (fn(x), x, 2)<br>               )  <br>           /(( cross(diff(fn(x), x), diff (fn(x), x, 2))<br>               . cross(diff(fn(x), x), diff (fn(x), x, 2))<br>             ) ^(1/2)<br>            )$</pre>
+<p>E a normal:</p>
+<pre class="mInput">normal (fn, x) := cross(binormal(fn, x), tangent(fn, x))$</pre>
+<p>Par construir um tubo, usamos o vetor normal e o vetor binormal para
+traçar um círculo em torno de um ponto da curva:</p>
+<pre class="mInput"> tube(fn, r, t, phi) :=<br>       fn(t) + r* (cos(phi)* normal(fn, t) + sin(phi)* binormal(fn, t))$</pre>
+<p>Você pode encontrar essas definições em <a
+ href="./sources/tubeplot1.mc">tubeplot1.mc</a>.</p>
+<p>Agora vamos testar essas definições com uma curva espacial muito
+bonita: uma hélice.</p>
+<pre class="mInput">helix(x) := [5*cos(x), 5*sin(x), 3*x];</pre>
+<p>Maxima responde a definição:</p>
+<pre class="mOutput"> helix(x) := [5 cos(x), 5 sin(x), 3 x]</pre>
+<p>A definição é fácil de entender:<br>
+</p>
+<pre class="mathExpression">[5*cos(x), 5*sin(x)]</pre>
+<br>
+é um círculo de raio 5.<br>
+A terceira coordenada<br>
+<pre class="mathExpression">3*x</pre>
+<br>
+translada os pontos do círculo no espaço. A distância de translação
+para uma volta completa de um pointo sobre o círculo é 2*pi*3.
+<p></p>
+<p>Agora podemos testar nossas definições.</p>
+<pre class="mInput">tangent(helix, t);</pre>
+<pre class="mOutput">		      5 sin(t)<br>(%o14) [- ---------------------------------, <br>		     2		  2<br>	  sqrt(25 sin (t) + 25 cos (t) + 9)<br><br>		      5 cos(t)				     3<br>	  ---------------------------------, ---------------------------------]<br>		     2		  2		        2	     2<br>	  sqrt(25 sin (t) + 25 cos (t) + 9)  sqrt(25 sin (t) + 25 cos (t) + 9)<br></pre>
+<pre class="mInput">binormal (helix, t);</pre>
+<pre class="mOutput">				 15 sin(t)<br>(%o15) [------------------------------------------------------------, <br>		    2		 2    2		 2	       2<br>	sqrt((25 sin (t) + 25 cos (t))  + 225 sin (t) + 225 cos (t))<br><br>			   15 cos(t)<br>- ------------------------------------------------------------, <br>	      2		   2    2	   2		 2<br>  sqrt((25 sin (t) + 25 cos (t))  + 225 sin (t) + 225 cos (t))<br><br>			2	     2<br>		  25 sin (t) + 25 cos (t)<br>------------------------------------------------------------]<br>	    2		 2    2		 2	       2<br>sqrt((25 sin (t) + 25 cos (t))  + 225 sin (t) + 225 cos (t))</pre>
+<pre class="mInput">(%i13) normal(helix, t);</pre>
+<pre class="mOutput">			  2	       2<br>(%o16) [- 5 cos(t) (25 sin (t) + 25 cos (t))<br><br>	     2		  2		        2	     2	  2<br>/(sqrt(25 sin (t) + 25 cos (t) + 9) sqrt((25 sin (t) + 25 cos (t))<br><br>	  2	        2<br> + 225 sin (t) + 225 cos (t))) - 45 cos(t)<br><br>	     2		  2		        2	     2	  2<br>/(sqrt(25 sin (t) + 25 cos (t) + 9) sqrt((25 sin (t) + 25 cos (t))<br><br>	  2	        2			  2	       2<br> + 225 sin (t) + 225 cos (t))), - 5 sin(t) (25 sin (t) + 25 cos (t))<br><br>	     2		  2		        2	     2	  2<br>/(sqrt(25 sin (t) + 25 cos (t) + 9) sqrt((25 sin (t) + 25 cos (t))<br><br>	  2	        2<br> + 225 sin (t) + 225 cos (t))) - 45 sin(t)<br><br>	     2		  2		        2	     2	  2<br>/(sqrt(25 sin (t) + 25 cos (t) + 9) sqrt((25 sin (t) + 25 cos (t))<br><br>	  2	        2<br> + 225 sin (t) + 225 cos (t))), 0]</pre>
+<p>Quando tentamos</p>
+<pre class="mInput">tube(helix, 1, t, rho);</pre>
+<p>Recebemos uma página cheia de expressões não simplificadas.</p>
+<p>O problema óbvio é que essas expressões não foram simplificadas.
+Ess não é o caminho correto para fazer omputação simbólica. Precisamos
+ter cuidado com simplificações e, como regra geral, podemos simplificar
+uma expressão tão breve quanto possível.</p>
+<p>Para esse exemplo, simplificação pode ser facilmente encontrada com
+a função <b>trigsimp</b>:</p>
+<pre class="mInput">trigsimp(tangent(helix, t));</pre>
+<pre class="mOutput">			    5 sin(t)  5 cos(t)	   3<br>      			 [- --------, --------, --------]<br>			    sqrt(34)  sqrt(34)  sqrt(34)</pre>
+<pre class="mInput">trigsimp(binormal(helix, t));</pre>
+<pre class="mOutput">			3 sin(t)    3 cos(t)	 5<br>(%o18) 		       [--------, - --------, --------]<br>			sqrt(34)    sqrt(34)  sqrt(34)</pre>
+<pre class="mInput">trigsimp(normal(helix, t));</pre>
+<pre class="mOutput">  [- cos(t), - sin(t), 0]</pre>
+<p>Nesse exemplo, simplificação trigonométrica foi duplamente útil e
+necessária. Vamos examinar uma curva espacial diferente antes de
+desenhar nossas conclusões sobre definições melhoradas para as dunções <b>tangent</b>,
+<b>binormal</b>,
+<b>normal</b>.</p>
+<pre class="mInput">w(x) := [2*t^2 - t, t^2, 2*t^2 + 4*t];</pre>
+<pre class="mOutput">				  2	  2     2<br>(%o8) 		      w(x) := [2 t  - t, t , 2 t  + 4 t]</pre>
+<pre class="mInput">tg: tangent(w, t);</pre>
+<pre class="mOutput">		     4 t - 1<br>(%o9) [------------------------------------, <br>		     2		  2	 2<br>       sqrt((4 t + 4)  + (4 t - 1)  + 4 t )<br><br>		    2 t				        4 t + 4<br>    ------------------------------------, ------------------------------------]<br>		  2	       2      2		        2	     2	    2<br>    sqrt((4 t + 4)  + (4 t - 1)  + 4 t )  sqrt((4 t + 4)  + (4 t - 1)  + 4 t )</pre>
+<p>É óbvio que simplificação trigonométrica não ajudará aqui,mas é
+igualmente óbvio que todos os três denominadores podem ser
+simplificados.
+Tentemos <b>radcan</b>, que é muitas vezes útil para reescrever
+radicais na forma canônica:</p>
+<pre class="mInput">radcan(tg);</pre>
+<pre class="mOutput">		4 t - 1			   2 t<br>(%o10) [-----------------------, -----------------------, <br>		 2			  2<br>	sqrt(36 t  + 24 t + 17)	 sqrt(36 t  + 24 t + 17)<br><br>							       4 t + 4<br>						       -----------------------]<br>								2<br>						       sqrt(36 t  + 24 t + 17)</pre>
+<p>Isso parece um pouco melhor.</p>
+<p>para a binormal e a normal obtemos:</p>
+<pre class="mInput">bn: binormal(w, t);</pre>
+<pre class="mOutput">							    2<br>(%o11) [(8 t - 2 (4 t + 4))/sqrt((4 (4 t + 4) - 4 (4 t - 1))<br><br>		      2			     2<br> + (8 t - 2 (4 t + 4))  + (2 (4 t - 1) - 8 t) ), <br><br>							    2<br>(4 (4 t + 4) - 4 (4 t - 1))/sqrt((4 (4 t + 4) - 4 (4 t - 1))<br><br>		      2			     2<br> + (8 t - 2 (4 t + 4))  + (2 (4 t - 1) - 8 t) ), <br><br>						    2			   2<br>(2 (4 t - 1) - 8 t)/sqrt((4 (4 t + 4) - 4 (4 t - 1))  + (8 t - 2 (4 t + 4))<br><br>		      2<br> + (2 (4 t - 1) - 8 t) )]</pre>
+<pre class="">radcan(bn);</pre>
+<pre class="mOutput">			  4	      10	    1<br>(%o12) 		   [- ----------, ----------, - ----------]<br>		      3 sqrt(13)  3 sqrt(13)    3 sqrt(13)</pre>
+<pre class="">nm: normal(w, t);</pre>
+<pre class="mOutput">(%o13) [(4 t + 4) (4 (4 t + 4) - 4 (4 t - 1))<br><br>		2	     2	    2				       2<br>/(sqrt((4 t + 4)  + (4 t - 1)  + 4 t ) sqrt((4 (4 t + 4) - 4 (4 t - 1))<br><br>		      2			     2<br> + (8 t - 2 (4 t + 4))  + (2 (4 t - 1) - 8 t) ))<br><br>					  2	       2      2<br> - 2 t (2 (4 t - 1) - 8 t)/(sqrt((4 t + 4)  + (4 t - 1)  + 4 t )<br><br>				 2		        2<br> sqrt((4 (4 t + 4) - 4 (4 t - 1))  + (8 t - 2 (4 t + 4))<br><br>		      2<br> + (2 (4 t - 1) - 8 t) )), (4 t - 1) (2 (4 t - 1) - 8 t)<br><br>		2	     2	    2				       2<br>/(sqrt((4 t + 4)  + (4 t - 1)  + 4 t ) sqrt((4 (4 t + 4) - 4 (4 t - 1))<br><br>		      2			     2<br> + (8 t - 2 (4 t + 4))  + (2 (4 t - 1) - 8 t) ))<br><br>						2	     2	    2<br> - (4 t + 4) (8 t - 2 (4 t + 4))/(sqrt((4 t + 4)  + (4 t - 1)  + 4 t )<br><br>				 2		        2<br> sqrt((4 (4 t + 4) - 4 (4 t - 1))  + (8 t - 2 (4 t + 4))<br><br>		      2<br> + (2 (4 t - 1) - 8 t) )), 2 t (8 t - 2 (4 t + 4))<br><br>		2	     2	    2				       2<br>/(sqrt((4 t + 4)  + (4 t - 1)  + 4 t ) sqrt((4 (4 t + 4) - 4 (4 t - 1))<br><br>		      2			     2<br> + (8 t - 2 (4 t + 4))  + (2 (4 t - 1) - 8 t) ))<br><br> - (4 t - 1) (4 (4 t + 4) - 4 (4 t - 1))<br><br>		2	     2	    2				       2<br>/(sqrt((4 t + 4)  + (4 t - 1)  + 4 t ) sqrt((4 (4 t + 4) - 4 (4 t - 1))<br><br>		      2			     2<br> + (8 t - 2 (4 t + 4))  + (2 (4 t - 1) - 8 t) ))]</pre>
+<pre class="">radcan(nm);</pre>
+<pre class="mOutput">					       2<br>	(42 sqrt(13) t + 40 sqrt(13)) sqrt(36 t  + 24 t + 17)<br>(%o14) [-----------------------------------------------------, <br>			      2<br>			1404 t  + 936 t + 663<br><br>				       2<br>(12 sqrt(13) t + 17 sqrt(13)) sqrt(36 t  + 24 t + 17)<br>-----------------------------------------------------, <br>		      2<br>		1404 t  + 936 t + 663<br><br>					 2<br>  (48 sqrt(13) t - 10 sqrt(13)) sqrt(36 t  + 24 t + 17)<br>- -----------------------------------------------------]<br>			2<br>		  1404 t  + 936 t + 663</pre>
+<p>Agora vamos tentar melhorar as definições de <b>tangent</b>,
+<b>normal</b>, <b>binormal</b>:</p>
+<p>Podemos assumir que para expressões que contiverem funções
+trigonométricas ambos o produto escalar e o produto vetorial irão
+freqüêntemente retornar expressões que possuem expoentes de funções
+trigonométricas. É portanto uma boa idéia aplicar <b>trigsimp</b> a
+esses resultados.</p>
+<p>Aqui estão as novas definições:</p>
+<pre class="mInput">tangent(fn, x) :=<br>       diff(fn(x), x) / <b>radcan (trigsimp(</b>(diff(fn(x), x) . diff(fn (x), x))<b>)</b>^(1/2)<b>)</b>$</pre>
+<pre class="mInput">binormal (fn, x) := <br>         <b>trigsimp(</b>cross (diff(fn(x), x), <br>                         diff (fn(x), x, 2)<br>                         )<br>                    <b>)</b> / <br>            <b>radcan<br>                 (trigsimp(</b>
+                     ( cross(diff(fn(x), x), diff (fn(x), x, 2))
+                        . cross(diff(fn(x), x), diff (fn(x), x, 2))
+                      ) ^(1/2)
+               <b>)       )</b>$</pre>
+<pre class="mInput">normal (fn, x) := <b>radcan (trigsimp(</b>cross(binormal(fn, x), tangent(fn, x))<b>))</b>$</pre>
+<p>Você encontrará essas definições em <a href="./sources/tubeplot2.mc">tubeplot2.mc</a>.</p>
+<p>With these definitions, we obtain reasonably well simplified results.</p>
+<h3>O que aprendemos:</h3>
+<ul>
+  <li>A aplicação da fórmula geral para um tubo abraçanco uma curva
+espacial requer um considerável volume de computação formal.
+É aí que a computação simbólica é realmente útil.</li>
+  <li>Sem cuidado ao executar simplificações, obtemos resultados
+inadequados.</li>
+  <li>Simplificação pode ser concluída tão rapidamente quanto
+possívele. Essa regra também é válida quando você usa pepel e lápis.</li>
+</ul>
+<br>
+<hr class="startOfFooter">
+<table bgcolor="#ffffff" border="0" cellpadding="2">
+  <tbody>
+    <tr bgcolor="#ccffcc">
+      <td>
+      <center><a href="FnDef0001.htm">Anterior</a></center>
+      </td>
+      <td>
+      <center><a href="../Contents.htm">Índice</a></center>
+      </td>
+      <td>
+      <center><a href="FnDef0003.htm">Seguinte</a></center>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

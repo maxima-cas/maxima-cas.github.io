@@ -1,0 +1,58 @@
+<html lang="en">
+<head>
+<title>Maxima Tutorial</title>
+
+<META content="text/html; charset=windows-1252" http-equiv=Content-Type>
+<LINK href="defstyle.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<TABLE bgColor=#ffffff border=0 cellPadding=2>
+  <TBODY>
+  <TR bgColor=#ccffcc>
+    <TD><CENTER><a href="../Contents.htm">Contents</a></Center></TD>
+  </TR>
+  </TBODY>
+</TABLE>
+
+<p><h2>Symbolic Integration: First Stage</h2></p>
+<hr class="endOfHeader">
+
+<h3>Problems that can be solved by the first stage</h3>
+<pre class="mInput">integrate(x*exp(x^2), x);
+<span class="response">					2
+				       x
+				     %e
+      				     ----
+				      2</span>
+integrate(4*cos(2*x + 3), x);
+<span class="response"> 			        2 sin(2 x + 3)</span>
+integrate(exp(x)/(1 + exp(x)), x);
+<span class="response">				       x
+      				 log(%e  + 1)</span>
+integrate(sin(x)*cos(x), x);
+<span class="response">					2
+				     cos (x)
+      				   - -------
+					2</span>
+integrate(x*(x^2 + 1)^(1/2), x);
+<span class="response">				    2	  3/2
+				  (x  + 1)
+      				  -----------
+				       3</span>
+integrate(cos(exp(x))^2*sin(exp(x))* exp(x), x);
+<span class="response">				       3   x
+				    cos (%e )
+      				  - ---------
+					3</span></pre>
+<br>
+<hr class="startOfFooter">
+<TABLE bgColor=#ffffff border=0 cellPadding=2>
+  <TBODY>
+  <TR bgColor=#ccffcc>
+    <TD><CENTER><a href="../Contents.htm">Contents</a></Center></TD>
+  </TR>
+  </TBODY>
+</TABLE>
+</body>
+</html>

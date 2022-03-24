@@ -1,0 +1,133 @@
+<html lang="en">
+<head>
+<title>Maxima Tutorial</title>
+
+<META content="text/html; charset=windows-1252" http-equiv=Content-Type>
+<LINK href="defstyle.css" rel="stylesheet" type="text/css">
+</head>
+
+<body bgcolor="#ffffbb">
+<TABLE bgColor=#ffffff border=0 cellPadding=2>
+  <TBODY>
+  <TR bgColor=#ccffcc>
+    <TD><CENTER><a href="StepwisePF0001.htm">Previous</a></CENTER></TD>
+    <TD><CENTER><a href="../Contents.htm">Contents</a></Center></TD>
+  </TR>
+  </TBODY>
+</TABLE>
+
+<h2>Step-by-Step Computation of a Partial Fraction Decomposition</h2>
+<h3>Continuation</h3>
+<hr class="endOfHeader">
+
+<p>The computation that we just carried out, gives the desired result,
+but it has a serious flaw: The equations were manually assembled. That
+is inconvenient and error-prone, and it does not lead to a useful
+generalisation. In this section we explore a better algorithm to set
+up the equations.</p>
+
+
+<pre class="mInput"> r:  1/(x^2*(x^2 + 1));</pre>
+<pre class="mOutput">       1
+  -----------
+   2   2
+  x  (x  + 1)</pre>
+
+<p>Now, we enter the three elementary fractions that may occur in the
+partial fraction decomposition of that expression:</p>
+ 
+<pre class="mInput">p1: a/x;</pre>
+
+
+<pre class="mOutput">     a
+     -
+     x</pre>
+
+
+<pre class="mInput">p2: b/x^2;</pre>
+
+
+<pre class="mOutput">    b
+    --
+     2
+    x</pre>
+
+
+
+<pre class="mInput">p3: (c*x + d)/(x^2 + 1);</pre>
+
+
+<pre class="mOutput">    c x + d
+    -------
+     2
+    x  + 1</pre>
+<p>The partial fraction decomposition is the sum of these three fractions:</p>
+<pre class="mInput">p1 + p2 + p3;</pre>
+
+
+<pre class="mOutput">      c x + d   a   b
+      ------- + - + --
+       2        x    2
+      x  + 1	    x</pre>
+
+<p>To compare the unknown numerator coefficients with the numerator of the
+given expression, we have to rewrite that sum on a common denominator:
+<pre class="mInput">ratsimp(%);</pre>
+
+<pre class="mOutput">               3            2
+      (c + a) x  + (d + b) x  + a x + b
+      ---------------------------------
+                    4    2
+                   x  + x
+</pre>
+
+<p>Now, we access the numerator of this fraction:</p>
+
+<pre class="mInput">n: num(%);</pre>
+
+<pre class="mOutput">              3            2
+     (c + a) x  + (d + b) x  + a x + b</pre>
+
+<p>This is a sum, but we need a list of its terms. To rewrite a sum as a
+list of terms, we have to use the function <b>maplist</b>:</p>
+ 
+<pre class= "mInput"> terms: maplist (lambda ([item ], item), %);</pre>
+<pre class= "mOutput">             3           2
+   [(c + a) x , (d + b) x , a x, b]</pre>
+
+
+<p>The following expression transforms the list of terms into a list of
+equations. For each term in terms, the term coefficient is equated to the
+coefficient of the corresponding term in r</p>
+<pre class= "mInput"> map(lambda ([term], coeff(term, x, hipow(term, x)) = coeff(r, x, hipow(term, x))),
+              terms);</pre>
+<pre class= "mOutput">   [c + a = 0, d + b = 0, a = 0, b = 1]</pre>
+<p>This ist is a system of linear equation. We can solve it with <b>solve</b>:</p>
+
+<pre class= "mInput"> solve(%, [a, b, c, d]);</pre>
+<pre class="mOutput">    [[a = 0, b = 1, C = 0, d = - 1]]</pre>
+
+<pre class= "mInput"> at(p1 + p2 + p3, first(%));</pre>
+<pre class="mOutput">   1      1
+   -- - ------
+    2    2
+   x    x  + 1</pre>
+
+<h3>What we have learned:</h3>
+<ul>
+<li>To obtain the arguments of an n-ary operator in a list,
+the function <b>maplist</b> can be used.</li> 
+</ul>
+
+<br>
+<hr class="startOfFooter">
+<TABLE bgColor=#ffffff border=0 cellPadding=2>
+  <TBODY>
+  <TR bgColor=#ccffcc>
+    <TD><CENTER><a href="StepwisePF0001.htm">Previous</a></CENTER></TD>
+    <TD><CENTER><a href="../Contents.htm">Contents</a></Center></TD>
+  </TR>
+  </TBODY>
+</TABLE>
+</body>
+</html>

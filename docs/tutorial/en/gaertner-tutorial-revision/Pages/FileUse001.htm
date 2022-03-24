@@ -1,0 +1,60 @@
+<html lang="en">
+<head>
+<title>Maxima Tutorial</title>
+
+<META content="text/html; charset=windows-1252" http-equiv=Content-Type>
+<LINK href="defstyle.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<TABLE bgColor=#ffffff border=0 cellPadding=2>
+  <TBODY>
+  <TR bgColor=#ccffcc>
+    <TD><CENTER><a href="../Contents.htm">Contents</a></Center></TD>
+  </TR>
+  </TBODY>
+</TABLE>
+
+<h2>Use of Files</h2>
+<hr class="endOfHeader">
+
+There are several mechanisms to store data in files and retrieve it.
+
+<ol>
+    <li> <p> <b>save</b> writes data to a file as Lisp expressions.
+    <b>load</b> retrieves the data written by <b>save</b>. 
+    Execute <b>? save</b> and <b>? load</b> for more information.</p> </li>
+
+    <li> <p> <b>stringout</b> writes data to a file as Maxima expressions.
+    <b>load</b> retrieves the data written by <b>stringout</b>. 
+    Execute <b>? stringout</b> for more information.</p> </li>
+
+    <li> <p> <b>writefile</b> creates a console log (a so-called "dribble" file)
+    which records the interactions between the user and Maxima.
+    This file cannot be reloaded into Maxima.
+    Execute <b>? writefile</b> for more information.<p> </li>
+
+    <li> <p>The functions <b>read_matrix</b>, <b>read_list</b>, <b>read_nested_list</b>, etc.,
+    can read files which contain numbers or symbols, arranged in rows and separated by 
+    whitespace, commas, or pipe (vertical bar) characters.
+    <b>write_data</b> writes data in the same format. </p>
+
+    <p> These functions are in the <b>numericalio</b> package.
+    <b>load (numericalio)</b> makes these functions available to the user.</p>
+
+    <p> The comments in the file <tt>share/contrib/numericalio/numericalio.lisp</tt>
+    give more details about these functions. </p>
+    </li>
+</ol>
+<br>
+<hr class="startOfFooter">
+<TABLE bgColor=#ffffff border=0 cellPadding=2>
+  <TBODY>
+  <TR bgColor=#ccffcc>
+    <TD><CENTER><a href="../Contents.htm">Contents</a></Center></TD>
+    <TD><CENTER><a href="FileUse002.htm">Next</a></Center></TD>
+  </TR>
+  </TBODY>
+</TABLE>
+</body>
+</html>
