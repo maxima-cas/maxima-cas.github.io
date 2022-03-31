@@ -79,19 +79,28 @@ body {
   background: #a4b7d8;
   margin-top: 20px;
 }
-img.expand {
+img.contract {
   max-width:100%;
   height:auto;
+  display: block
+}
+img.center {
   margin-left: auto;
   margin-right: auto;
   display: block
 }
-div.maxima {
+pre.maxima {
   border: 1px solid #334669;
   padding: 0.5em;
-  line-height: 2em;
+  line-height: 1.2em;
+  width: auto;
   word-wrap: break-word;
   background-color: #dee7f5;
+}
+table.bordered {border-collapse:collapse;}
+table.bordered td, th {
+  border:1px solid black;
+  padding:0.5em;
 }
 span.maxlabel {color: #dd0000}
 @media screen and (max-width: 800px) {
