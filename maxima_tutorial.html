@@ -1,0 +1,1493 @@
+<!DOCTYPE html><html prefix="dcterms: http://purl.org/dc/terms/">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>A Maxima tutorial</title>
+<!--Generated on Sat Dec  9 12:51:31 2023 by LaTeXML (version 0.8.6) http://dlmf.nist.gov/LaTeXML/.-->
+<!--Document created on December 9, 2023.-->
+
+<link rel="stylesheet" href="css/latex-schola.css" type="text/css">
+<link rel="stylesheet" href="css/ltx-article.css" type="text/css">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+<nav><a href="index.html">Maxima.st</a><span>&rarr;</span><span>A Maxima tutorial</span></nav>
+<div class="ltx_page_main">
+<div class="ltx_page_content">
+<article class="ltx_document ltx_authors_1line">
+<h1 class="ltx_title ltx_title_document">A Maxima tutorial</h1>
+<div class="ltx_authors">
+<span class="ltx_creator ltx_role_author">
+<span class="ltx_personname">Jaime E. Villate
+<br class="ltx_break"><em class="ltx_emph ltx_font_italic">University of Porto, Portugal</em>
+</span></span>
+</div>
+<div class="ltx_dates">(December 9, 2023)</div>
+
+<div class="ltx_pagination ltx_role_newpage"></div>
+<section id="S1" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">1 </span>Introduction</h2>
+
+<div id="S1.p1" class="ltx_para">
+<p class="ltx_p"><em class="ltx_emph ltx_font_italic">Maxima</em> is a <em class="ltx_emph ltx_font_italic">Free Software</em> package for the
+manipulation of symbolic and numerical expressions, including
+differentiation, integration, Taylor series, Laplace transforms,
+ordinary differential equations, systems of linear equations,
+polynomials, sets, lists, vectors, matrices and tensors and more. It
+can be freely downloaded from its Website
+(<a href="https://maxima.sourceforge.net" title="" class="ltx_ref ltx_url ltx_font_typewriter">https://maxima.sourceforge.net</a>) which also includes reference
+manuals and tutorials in several languages. There is an active
+community of developers and users; questions about Maxima can be sent
+to its main mailing-list address at
+<span class="ltx_text ltx_font_typewriter">maxima-discuss@lists.sourceforge.net</span>.</p>
+</div>
+<div id="S1.p2" class="ltx_para">
+<p class="ltx_p">Maxima is one of the oldest Computer Algebra Systems (CAS). It was
+created by MIT’s MAC group in the 1960s and it was initially called
+<em class="ltx_emph ltx_font_italic">Macsyma</em> (<em class="ltx_emph ltx_font_italic">project MAC’s SYmbolic
+MAnipulator</em>). <em class="ltx_emph ltx_font_italic">Macsyma</em> was originally developed for the
+DEC-PDP-10 large-scale computers that were used in various academic
+institutions at that time.</p>
+</div>
+<div id="S1.p3" class="ltx_para">
+<p class="ltx_p">In the 1980s, its code was ported to several new platforms and one of
+those derived versions was called <em class="ltx_emph ltx_font_italic">Maxima</em>. In 1982 the MIT
+decided to sell <em class="ltx_emph ltx_font_italic">Macsyma</em> as proprietary software and
+simultaneously Professor William Schelter of the University of Texas
+continued to develop the <em class="ltx_emph ltx_font_italic">Maxima</em> version. In the late 1980s
+other proprietary CAS systems similar to <em class="ltx_emph ltx_font_italic">Macsyma</em> appeared,
+such as <em class="ltx_emph ltx_font_italic">Maple</em> and <em class="ltx_emph ltx_font_italic">Mathematica</em>. In 1998, Professor
+Schelter obtained authorization from the DOE (Department of Energy),
+which held the copyright for the original version of
+<em class="ltx_emph ltx_font_italic">Macsyma</em>, to distribute the source code of <em class="ltx_emph ltx_font_italic">Maxima</em>
+as free software. When Professor Schelter passed away in 2001, a
+group of volunteers was formed to continue to develop and distribute
+<em class="ltx_emph ltx_font_italic">Maxima</em> as free software.</p>
+</div>
+<div id="S1.p4" class="ltx_para">
+<p class="ltx_p">In the case of CAS software, the advantages of free software are very
+important. When a method fails or gives very complicated answers it is
+quite useful to have access to the details of the underlying
+implementation of the methods used. On the other hand, as one’s
+research and teaching becomes dependent on the results of a CAS, it is
+desirable to have good documentation of the methods involved and its
+implementation and to be assured that there are no legal barriers
+forbidding the examination and modification of that code.</p>
+</div>
+</section>
+<section id="S2" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">2 </span>Graphical interfaces for maxima</h2>
+
+<div id="S2.p1" class="ltx_para">
+<p class="ltx_p">Maxima is a program that uses a command shell (or a console or text
+terminal) to interact with the user. There are also several graphical
+interfaces to work with Maxima, such as <em class="ltx_emph ltx_font_italic">wxMaxima</em>, which is a
+software package separate from Maxima; you might have to install that
+package separately, if it’s not bundled to the package you download to
+install Maxima. Two other graphical interfaces, <em class="ltx_emph ltx_font_italic">imaxima</em> and
+<em class="ltx_emph ltx_font_italic">Xmaxima</em>, are being developed and distributed together with
+Maxima. The left-hand side of Figure <a href="#S2.F1" title="Figure 1 ‣ 2 Graphical interfaces for maxima ‣ A Maxima tutorial" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1</span></a> shows some
+commands being run in Xmaxima, and the right-hand side shows the same
+commands as being run in imaxima, which runs from within the
+<em class="ltx_emph ltx_font_italic">Emacs</em> text editor</p>
+</div>
+<figure id="S2.F1" class="ltx_figure"><img src="figs/maxima_interfaces.png" style="width:33.978em;max-width:100%;height:auto" id="S2.F1.g1" class="ltx_graphics ltx_centering" alt="Xmaxima’s graphical interface.">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 1: </span>Xmaxima’s graphical interface.</figcaption>
+</figure>
+<div id="S2.p2" class="ltx_para">
+<p class="ltx_p">The graphical interfaces connect to the Maxima program, send the
+commands that the user types to Maxima, and show the result it
+returns. Some interfaces, such as wxMaxima and imaxima, convert those
+results to a graphic that resembles closer what the user would find in
+a textbook, while Xmaxima leaves the result as given by Maxima, namely
+simple text that can take several lines in the case of fractions,
+powers or long output.</p>
+</div>
+<div id="S2.p3" class="ltx_para">
+<p class="ltx_p">Xmaxima usually opens two windows (Figure <a href="#S2.F1" title="Figure 1 ‣ 2 Graphical interfaces for maxima ‣ A Maxima tutorial" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1</span></a>). One of
+them, called the <em class="ltx_emph ltx_font_italic">browser</em>, shows a tutorial and allows the
+user to read the manual or other Web pages. The second window is the
+<em class="ltx_emph ltx_font_italic">console</em>, where Maxima commands should be written and their
+output will appear.</p>
+</div>
+<div id="S2.p4" class="ltx_para">
+<p class="ltx_p">In the “Edit” menu there are options to navigate the list of
+previous commands (“previous input”) or to copy and paste text; some
+options in the menus can also be accessed with the shortcut keys shown
+next to them. Different colors are used to distinguish commands that
+have already been processed (in blue) from the command that is being
+written and has not yet been sent to Maxima (in green); the results
+are shown in black (see Figure <a href="#S2.F1" title="Figure 1 ‣ 2 Graphical interfaces for maxima ‣ A Maxima tutorial" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1</span></a>).</p>
+</div>
+<div id="S2.p5" class="ltx_para">
+<p class="ltx_p">When changing a command already executed or when starting a new
+command, care must be taken that what is being written appears in
+green or blue, to ensure that it will be sent to Maxima. Sometimes it
+may be necessary to use the options “Interrupt” or “Input prompt”,
+in the “File” menu to recover the state in which Xmaxima is
+accepting commands.</p>
+</div>
+<div id="S2.p6" class="ltx_para">
+<p class="ltx_p">It is also possible to move the prompt symbol to some older entry in
+the screen (in blue), change it, and press enter to repeat the same
+command with the modifications.</p>
+</div>
+</section>
+<section id="S3" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">3 </span>Data input and output</h2>
+
+<div id="S3.p1" class="ltx_para">
+<p class="ltx_p">When a Maxima session starts, the tag <span class="ltx_text" style="color:#CC3333;">(%i1)</span> will appear, which
+refers to <em class="ltx_emph ltx_font_italic">input</em> 1. A valid command should be written next to
+that tag, ended with a semi-colon and when the enter key is pressed,
+that input will be parsed, simplified, linked to an internal variable
+<span class="ltx_text" style="color:#000099;">%i1</span> and its result will be shown following a tag <code class="ltx_verbatim ltx_font_typewriter">(%o1)</code>,
+referring to <em class="ltx_emph ltx_font_italic">output</em> 1. That result will also be linked to an
+internal variable <span class="ltx_text" style="color:#000099;">%o1</span>. Another tag <span class="ltx_text" style="color:#CC3333;">(%i2)</span> will then
+appear, to mark the place where a second command may be written and so
+on. The most basic usage of Maxima is as a calculator, as in the
+following examples.</p>
+</div>
+<div id="S3.p2" class="ltx_para">
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i1)</span> <span class="ltx_text" style="color:#000099;">2.5*3.1;
+<br class="ltx_break"></span>
+(%o1)   <math id="S3.p2.m1" class="ltx_Math" alttext="7.75" display="inline"><mn>7.75</mn></math>
+<br class="ltx_break">
+<span class="ltx_text" style="color:#CC3333;">(%i2)</span> <span class="ltx_text" style="color:#000099;">5.2*log(2);
+<br class="ltx_break"></span>
+(%o2)   <math id="S3.p2.m2" class="ltx_Math" alttext="5.2\,\log 2" display="inline"><mrow><mn>5.2</mn><mspace width=0.166em /><mrow><mi>log</mi><mspace width=0.11em /><mn>2</mn></mrow></mrow></math></p>
+</blockquote>
+</div>
+<div id="S3.p3" class="ltx_para">
+<p class="ltx_p">The result <code class="ltx_verbatim ltx_font_typewriter">(%o2)</code> shows
+two important aspects of Maxima. First, the natural logarithm of 2 was
+not computed, because its result is an irrational number which cannot
+be represented exactly with a finite number of numerical digits. The
+second important aspect is that the symbol <code class="ltx_verbatim ltx_font_typewriter">*</code> which is always
+required when a product is entered and the parenthesis, which have to
+be used to specify the argument of a function, were not included in
+the output. That happened because, by default, the output is shown in
+a mode called display2d, in which the output tries to resemble the way
+mathematical expressions are usually shown in books. The expression
+“<code class="ltx_verbatim ltx_font_typewriter">5.2 log 2</code>” most probably will be interpreted correctly by a
+reader, as the product of 5.2 times the logarithm of 2; however, if
+that same ambiguous expression was given as input to Maxima it would
+trigger an error, because Maxima syntax requires an operator between
+5.2 and the logarithm function, and the argument of the logarithm must
+be inside parenthesis. In spite of the form of the output, variable
+<span class="ltx_text" style="color:#000099;">%o2</span> has been linked to an expression with correct syntax, so
+it can be reused in later Maxima commands without syntax errors.</p>
+</div>
+<div id="S3.p4" class="ltx_para">
+<p class="ltx_p">To look up the documentation of a function or special variable in the
+manual, for instance the function <span class="ltx_text" style="color:#000099;">log</span> that was just used, the
+describe function is used, which can be abbreviated with a question
+mark followed by space and the name of the function:</p>
+</div>
+<div id="S3.p5" class="ltx_para">
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i3)</span> <span class="ltx_text" style="color:#000099;">? log
+<br class="ltx_break"></span>
+– Function: log (&lt;x&gt;)
+<br class="ltx_break">
+Represents the natural (base e) logarithm of &lt;x&gt;.
+<br class="ltx_break">
+Maxima does not have a built-in function for the base 10 logarithm
+or other bases. ’log10(x) := log(x) / log(10)’ is a useful
+definition.
+<br class="ltx_break">
+…</p>
+</blockquote>
+</div>
+</section>
+<section id="S4" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">4 </span>Numbers</h2>
+
+<div id="S4.p1" class="ltx_para">
+<p class="ltx_p">Maxima accepts real and complex numbers. Real numbers in Maxima can be
+integers, rationals, such as 3/5, or floating-point numbers, for
+instance, 2.56 and 25.6e-1, which is a short notation for
+<math id="S4.p1.m1" class="ltx_Math" alttext="25.6\times 10^{-1}" display="inline"><mrow><mn>25.6</mn><mo>×</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>1</mn></mrow></msup></mrow></math>. Irrational numbers, such as <code class="ltx_verbatim ltx_font_typewriter">sqrt(2)</code> or
+<code class="ltx_verbatim ltx_font_typewriter">log(2)</code> (natural logarithm of 2) are left in that form, without
+being approximated by floating-point numbers, and later calculations,
+such as <code class="ltx_verbatim ltx_font_typewriter">sqrt(2)^2</code> or <code class="ltx_verbatim ltx_font_typewriter">exp(log(2))</code> will lead to the exact
+result 2.</p>
+</div>
+<div id="S4.p2" class="ltx_para">
+<p class="ltx_p">Floating-point numbers are “contagious”; namely, the operations in
+which they enter will be carried out in that format. For example, if
+instead of writing <span class="ltx_text" style="color:#000099;">log(2)</span> we would write <span class="ltx_text" style="color:#000099;">log(2.0)</span>, the
+logarithm would be computed approximately in floating-point. Another
+way to force an expression to be computed as a floating-point number
+consists on using the function <span class="ltx_text" style="color:#000099;">float</span>. For instance, since the
+result <code class="ltx_verbatim ltx_font_typewriter">(%o2)</code> obtained above has been stored in variable
+<span class="ltx_text" style="color:#000099;">%o2</span>, to get a floating-point approximation of that result we
+would write:</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#000099;">(%i4)</span> <span class="ltx_text" style="color:#000099;">float (%o2);
+<br class="ltx_break"></span>
+(%o4)   <math id="S4.p2.m1" class="ltx_Math" alttext="3.604365338911716" display="inline"><mn>3.604365338911716</mn></math></p>
+</blockquote>
+</div>
+<div id="S4.p3" class="ltx_para">
+<p class="ltx_p">The function float computed the product <math id="S4.p3.m1" class="ltx_Math" alttext="5.2\,\log(2)" display="inline"><mrow><mn>5.2</mn><mspace width=0.166em /><mrow><mi>log</mi><mspace width=0.11em /><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></mrow></mrow></math> approximately,
+using 16 significant digits in floating-point format. The
+floating-point format used in Maxima stores each number in 64 binary
+bits, which leads to between 15 and 17 significant digits when
+expressed in decimal base. That format is known as <em class="ltx_emph ltx_font_italic">double
+precision</em>.
+</p>
+</div>
+<div id="S4.p4" class="ltx_para">
+<p class="ltx_p">A frequent source of confusion arises from the fact that those numbers
+are being represented internally in binary base and not in decimal
+base; thus, certain numbers that can be represented in decimal base
+with a few digits, for instance 0.1, would need an infinite number of
+binary digits to be represented accurately in binary base. It is the
+situation as with the fraction 1/3 in decimal base, which in
+floating-point form has an infinite number of digits: 0.333…,
+while in base 3 that fraction would simply be 0.1.</p>
+</div>
+<div id="S4.p5" class="ltx_para">
+<p class="ltx_p">The fractions that lead to an infinite number of digits are not the
+same in the decimal and binary base. Consider the following results,
+which would appear in any system that uses binary base and
+double-precision format and which might puzzle somebody used to
+working with in decimal base:</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i5)</span> <span class="ltx_text" style="color:#000099;">2*0.1;
+<br class="ltx_break"></span>
+(%o5)   <math id="S4.p5.m1" class="ltx_Math" alttext="0.2" display="inline"><mn>0.2</mn></math>
+<br class="ltx_break">
+<span class="ltx_text" style="color:#CC3333;">(%i6)</span> <span class="ltx_text" style="color:#000099;">6*0.1;
+<br class="ltx_break"></span>
+(%o6)   <math id="S4.p5.m2" class="ltx_Math" alttext="0.6000000000000001" display="inline"><mn>0.6000000000000001</mn></math>
+<br class="ltx_break"></p>
+</blockquote>
+</div>
+<div id="S4.p6" class="ltx_para">
+<p class="ltx_p">Some computing systems ignore the last digits in the results obtained
+from double-precision calculations, showing the result as 0.6, but
+whenever binary double-precision is used, the result of 6×0.1 will not
+be exactly 0.6.</p>
+</div>
+<div id="S4.p7" class="ltx_para">
+<p class="ltx_p">The best approximation of 1/3 in decimal base, using only 3
+significant digits, is <math id="S4.p7.m1" class="ltx_Math" alttext="333/10^{3}=0.333" display="inline"><mrow><mrow><mn>333</mn><mo>/</mo><msup><mn>10</mn><mn>3</mn></msup></mrow><mo>=</mo><mn>0.333</mn></mrow></math>. In binary base, it is
+represented as <math id="S4.p7.m2" class="ltx_Math" alttext="n/2^{m}" display="inline"><mrow><mi>n</mi><mo>/</mo><msup><mn>2</mn><mi>m</mi></msup></mrow></math> (<math id="S4.p7.m3" class="ltx_Math" alttext="n" display="inline"><mi>n</mi></math> and <math id="S4.p7.m4" class="ltx_Math" alttext="m" display="inline"><mi>m</mi></math> integers); with the 52 significant
+digits used in the double-precision standard, <math id="S4.p7.m5" class="ltx_Math" alttext="n" display="inline"><mi>n</mi></math> has to be less than
+<math id="S4.p7.m6" class="ltx_Math" alttext="2^{52}" display="inline"><msup><mn>2</mn><mn>52</mn></msup></math>. Maxima’s function rationalize shows the approximate
+representation being used for a number, in the form of a fraction. For
+instance the approximation to <math id="S4.p7.m7" class="ltx_Math" alttext="0.1" display="inline"><mn>0.1</mn></math> is</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i7)</span> <span class="ltx_text" style="color:#000099;">rationalize (0.1);
+<br class="ltx_break"></span>
+(%o7)   <math id="S4.p7.m8" class="ltx_Math" alttext="\dfrac{3602879701896397}{36028797018963968}" display="inline"><mstyle displaystyle="true"><mfrac><mn>3602879701896397</mn><mn>36028797018963968</mn></mfrac></mstyle></math></p>
+</blockquote>
+<p class="ltx_p">where 3602879701896397 is less than <math id="S4.p7.m9" class="ltx_Math" alttext="2^{52}" display="inline"><msup><mn>2</mn><mn>52</mn></msup></math> and bigger than <math id="S4.p7.m10" class="ltx_Math" alttext="2^{51}" display="inline"><msup><mn>2</mn><mn>51</mn></msup></math>,
+and the denominator is a power of 2 (<math id="S4.p7.m11" class="ltx_Math" alttext="36028797018963968=2^{55}" display="inline"><mrow><mn>36028797018963968</mn><mo>=</mo><msup><mn>2</mn><mn>55</mn></msup></mrow></math>). That
+fraction is not exactly equal to <math id="S4.p7.m12" class="ltx_Math" alttext="0.1" display="inline"><mn>0.1</mn></math>, but it is the best possible
+approximation using double-precision.</p>
+</div>
+<div id="S4.p8" class="ltx_para">
+<p class="ltx_p">There is a Maxima specific format which accepts bigger number of
+significant digits to represent floating-point numbers, called
+<em class="ltx_emph ltx_font_italic">bigfloat</em>. To use it, one should write “b”, instead of
+“e” for the exponents; for example, <math id="S4.p8.m1" class="ltx_Math" alttext="2.56\times 10^{20}" display="inline"><mrow><mn>2.56</mn><mo>×</mo><msup><mn>10</mn><mn>20</mn></msup></mrow></math>, written as
+2.56e20 would be represented internally in double-precision format,
+with 16 significant digits, and any calculations made with it would
+result in other double-precision numbers. But if the same number was
+written as 2.56b20, it would be stored in the bigfloat format and any
+calculations involving it would produce other bogfloat numbers. By
+default, bigfloat format uses the same 16 significant digits as
+double-precision, but that can be changed by changing the value of the
+system variable <span class="ltx_text" style="color:#000099;">fpprec</span> (floating-point precision).</p>
+</div>
+<div id="S4.p9" class="ltx_para">
+<p class="ltx_p">Function <span class="ltx_text" style="color:#000099;">bfloat</span> converts a number into bigfloat. For
+example, to show an approximation to result <code class="ltx_verbatim ltx_font_typewriter">(%o2)</code> with 60
+significant digits, the following commands can be used:</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i8)</span> <span class="ltx_text" style="color:#000099;">fpprec: 60;
+<br class="ltx_break"></span>
+(%o8)   <math id="S4.p9.m1" class="ltx_Math" alttext="60" display="inline"><mn>60</mn></math>
+<br class="ltx_break">
+<span class="ltx_text" style="color:#CC3333;">(%i9)</span> <span class="ltx_text" style="color:#000099;">bfloat (%o2);
+<br class="ltx_break"></span>
+(%o9) <math id="S4.p9.m2" class="ltx_Math" alttext="3.60436533891171573209728052144843624984298344312084369367127\mathrm{b}0" display="inline"><mrow><mn>3.60436533891171573209728052144843624984298344312084369367127</mn><mspace width=0.166em /><mi>b0</mi></mrow></math></p>
+</blockquote>
+</div>
+<div id="S4.p10" class="ltx_para">
+<p class="ltx_p">The letter b followed by zero at the end of <code class="ltx_verbatim ltx_font_typewriter">(%o9)</code>
+means that the number is stored in bigfloat format and it should be
+multiplied by a factor of <math id="S4.p10.m1" class="ltx_Math" alttext="10^{0}=1" display="inline"><mrow><msup><mn>10</mn><mn>0</mn></msup><mo>=</mo><mn>1</mn></mrow></math>.</p>
+</div>
+<div id="S4.p11" class="ltx_para">
+<p class="ltx_p">In the rest of this tutorial we will show all floating-point results
+with only 4 significant digits. That is achieved by changing system
+variable <span class="ltx_text" style="color:#000099;">fpprintprec</span> from its default value of 0 to 4:</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i10)</span> <span class="ltx_text" style="color:#000099;">fpprintprec: 4;
+<br class="ltx_break"></span>
+(%o10)   <math id="S4.p11.m1" class="ltx_Math" alttext="4" display="inline"><mn>4</mn></math></p>
+</blockquote>
+</div>
+<div id="S4.p12" class="ltx_para">
+<p class="ltx_p">Internally, all floating-point double-precision numbers will continue
+to have 16 significant digits and bigfloat numbers will have the
+number of significant digits set by <span class="ltx_text" style="color:#000099;">fpprec</span>, but whenever a
+number has to be printed in the screen, it will be rounded to 4
+significant digits. If we would like to see all the significant digits
+stored internally, variable <span class="ltx_text" style="color:#000099;">fpprintprec</span> should be set to its
+default value of 0.</p>
+</div>
+</section>
+<section id="S5" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">5 </span>Variables</h2>
+
+<div id="S5.p1" class="ltx_para">
+<p class="ltx_p">To associate a value or other objects to a variable, use a colon “:”
+and not the equal sign “=”, which is reserved to define mathematical
+equations. The name of the variables can be any combination of
+letters, numbers and the characters % and _,
+but the first character cannot be a number. Maxima is case
+sensitive. Here are some examples:</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i11)</span> <span class="ltx_text" style="color:#000099;">a: 2$
+<br class="ltx_break"></span>
+<span class="ltx_text" style="color:#CC3333;">(%i12)</span> <span class="ltx_text" style="color:#000099;">[b, c]: [-2, -4];
+<br class="ltx_break"></span>
+(%o12)   <math id="S5.p1.m1" class="ltx_Math" alttext="\left[-2,-4\right]" display="inline"><mrow><mo>[</mo><mrow><mo>−</mo><mn>2</mn></mrow><mo>,</mo><mrow><mo>−</mo><mn>4</mn></mrow><mo>]</mo></mrow></math>
+<br class="ltx_break">
+<span class="ltx_text" style="color:#CC3333;">(%i13)</span> <span class="ltx_text" style="color:#000099;">c;
+<br class="ltx_break"></span>
+(%o13)   <math id="S5.p1.m2" class="ltx_Math" alttext="-4" display="inline"><mrow><mo>−</mo><mn>4</mn></mrow></math>
+<br class="ltx_break">
+<span class="ltx_text" style="color:#CC3333;">(%i14)</span> <span class="ltx_text" style="color:#000099;">Root1: (-b + sqrt(b^2 - 4*a*c))/(2*a);
+<br class="ltx_break"></span>
+(%o14)   <math id="S5.p1.m3" class="ltx_Math" alttext="2" display="inline"><mn>2</mn></math>
+<br class="ltx_break">
+<span class="ltx_text" style="color:#CC3333;">(%i15)</span> <span class="ltx_text" style="color:#000099;">d: sqrt(z^2 + a*c);
+<br class="ltx_break"></span>
+(%o15)   <math id="S5.p1.m4" class="ltx_Math" alttext="\sqrt{z^{2}-8}" display="inline"><msqrt><mrow><msup><mi>z</mi><mn>2</mn></msup><mo>−</mo><mn>8</mn></mrow></msqrt></math></p>
+</blockquote>
+<p class="ltx_p">variables <span class="ltx_text" style="color:#000099;">a</span>, <span class="ltx_text" style="color:#000099;">b</span>, <span class="ltx_text" style="color:#000099;">c</span> and <span class="ltx_text" style="color:#000099;">Root1</span> were
+associated to the numerical values 2, <math id="S5.p1.m5" class="ltx_Math" alttext="-2" display="inline"><mrow><mo>−</mo><mn>2</mn></mrow></math>, <math id="S5.p1.m6" class="ltx_Math" alttext="-4" display="inline"><mrow><mo>−</mo><mn>4</mn></mrow></math> and 2, while variable
+<span class="ltx_text" style="color:#000099;">d</span> was associated to an expression.</p>
+</div>
+<div id="S5.p2" class="ltx_para">
+<p class="ltx_p">Notice that input <span class="ltx_text" style="color:#CC3333;">(%i11)</span> was ended with a dollar sign $,
+rather than a semi-colon. That will make the command to be executed
+without showing its result on the screen. In spite of not being
+displayed on the screen, that result has been associated to the symbol
+<span class="ltx_text" style="color:#000099;">%o11</span> so it can be used later on.</p>
+</div>
+<div id="S5.p3" class="ltx_para">
+<p class="ltx_p">Input <span class="ltx_text" style="color:#CC3333;">(%i12)</span> shows how to associate several variables to
+several values with a single command. When the name of a variable is
+written, as in input <span class="ltx_text" style="color:#CC3333;">(%i13)</span>, the output will be the value
+associated to that variable or the name of the variable itself if it
+has not been associated to any value. In <span class="ltx_text" style="color:#CC3333;">(%i14)</span>, the values
+associated to <span class="ltx_text" style="color:#000099;">a</span>, <span class="ltx_text" style="color:#000099;">b</span> and <span class="ltx_text" style="color:#000099;">c</span> were replaced and the
+result was associated to variable <span class="ltx_text" style="color:#000099;">Root1</span>. If the values
+associated to <span class="ltx_text" style="color:#000099;">a</span>, <span class="ltx_text" style="color:#000099;">b</span> or <span class="ltx_text" style="color:#000099;">c</span> are later changed, that
+will not affect the value already associated to <span class="ltx_text" style="color:#000099;">Root1</span>.</p>
+</div>
+<div id="S5.p4" class="ltx_para">
+<p class="ltx_p">In <span class="ltx_text" style="color:#CC3333;">(%i15)</span> since <span class="ltx_text" style="color:#000099;">z</span> has not yet been associated to any
+value, it is just a symbol and variable <span class="ltx_text" style="color:#000099;">d</span> is then associated to
+an expression that depends on that symbol. Variables can be associated
+to numerical values, expressions with abstract symbols, equations and
+several other objects that will be described in the following
+sections. That means that when you add two variables, you could be
+adding a mix of numbers, expressions, equations and so on; the result
+could lead to some other valid object or to an error it Maxima can not
+sum those objects.</p>
+</div>
+<div id="S5.p5" class="ltx_para">
+<p class="ltx_p">To remove the value associated to a variable, the function
+<span class="ltx_text" style="color:#000099;">remvalue</span> can be used; in the following example the value
+associated to <span class="ltx_text" style="color:#000099;">a</span> is removed and an expression that depends on the
+symbol <span class="ltx_text" style="color:#000099;">a</span> is then associated to <span class="ltx_text" style="color:#000099;">Root1</span>:</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i16)</span> <span class="ltx_text" style="color:#000099;">remvalue (a)$
+<br class="ltx_break"></span>
+<span class="ltx_text" style="color:#CC3333;">(%i17)</span> <span class="ltx_text" style="color:#000099;">Root1: (-b + sqrt(b^2 - 4*a*c))/(2*a);
+<br class="ltx_break"></span>
+(%o17)   <math id="S5.p5.m1" class="ltx_Math" alttext="\dfrac{\sqrt{16\,a+4}+2}{2\,a}" display="inline"><mstyle displaystyle="true"><mfrac><mrow><msqrt><mrow><mrow><mn>16</mn><mspace width=0.166em /><mi>a</mi></mrow><mo>+</mo><mn>4</mn></mrow></msqrt><mo>+</mo><mn>2</mn></mrow><mrow><mn>2</mn><mspace width=0.166em /><mi>a</mi></mrow></mfrac></mstyle></math></p>
+</blockquote>
+</div>
+<div id="S5.p6" class="ltx_para">
+<p class="ltx_p">The command <span class="ltx_text" style="color:#000099;">remvalue(all)</span> removes all
+values associate variable in an expression by a given value; for
+instance, the following 2 commands will show the value of the
+expression associated to <span class="ltx_text" style="color:#000099;">Root1</span> when <span class="ltx_text" style="color:#000099;">a</span> equals 1 and then
+the floating-point approximation of that irrational number.
+</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i18)</span> <span class="ltx_text" style="color:#000099;">subst (a=1, Root1);
+<br class="ltx_break"></span>
+(%o18)   <math id="S5.p6.m1" class="ltx_Math" alttext="\dfrac{2\,\sqrt{5}+2}{2}" display="inline"><mstyle displaystyle="true"><mfrac><mrow><mrow><mn>2</mn><mspace width=0.166em /><msqrt><mn>5</mn></msqrt></mrow><mo>+</mo><mn>2</mn></mrow><mn>2</mn></mfrac></mstyle></math>
+<br class="ltx_break">
+<span class="ltx_text" style="color:#CC3333;">(%i19)</span> <span class="ltx_text" style="color:#000099;">float(%o18);
+<br class="ltx_break"></span>
+(%o19)   <math id="S5.p6.m2" class="ltx_Math" alttext="3.236" display="inline"><mn>3.236</mn></math></p>
+</blockquote>
+</div>
+<div id="S5.p7" class="ltx_para">
+<p class="ltx_p">The objects associated to <span class="ltx_text" style="color:#000099;">a</span> and <span class="ltx_text" style="color:#000099;">Root1</span> are not modified
+after <span class="ltx_text" style="color:#CC3333;">(%i18)</span>; <span class="ltx_text" style="color:#000099;">a</span> continues to be an abstract symbol
+and <span class="ltx_text" style="color:#000099;">Root1</span> is associated to an expression that depends on the
+symbol <span class="ltx_text" style="color:#000099;">a</span>.</p>
+</div>
+<div id="S5.p8" class="ltx_para">
+<p class="ltx_p">Maxima uses several system variables, whose names start by %. Some
+examples are the variables <span class="ltx_text" style="color:#000099;">%i2</span> and <span class="ltx_text" style="color:#000099;">%o2</span>, linked to an
+input command and its result. The character <span class="ltx_text" style="color:#000099;">%</span> itself
+represents the last result obtained. For instance, in <span class="ltx_text" style="color:#CC3333;">(%i19)</span>
+it would have been enough to write down <span class="ltx_text" style="color:#000099;">%</span> instead of
+<span class="ltx_text" style="color:#000099;">%o18</span>. The two commands <span class="ltx_text" style="color:#CC3333;">(%i18)</span> and <span class="ltx_text" style="color:#CC3333;">(%i19)</span> could
+have been combined into a single command
+<span class="ltx_text" style="color:#000099;">float(subst
+(a=1,Root1))</span>.</p>
+</div>
+<div id="S5.p9" class="ltx_para">
+<p class="ltx_p">A variable can also be associated to an algebraic equation, as in the
+following example</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i20)</span> <span class="ltx_text" style="color:#000099;">second_law: F = m*a;
+<br class="ltx_break"></span>
+(%o20)   <math id="S5.p9.m1" class="ltx_Math" alttext="F=a\,m" display="inline"><mrow><mi>F</mi><mo>=</mo><mrow><mi>a</mi><mspace width=0.166em /><mi>m</mi></mrow></mrow></math></p>
+</blockquote>
+</div>
+<div id="S5.p10" class="ltx_para">
+<p class="ltx_p">Maxima does some simplifications to the input commands before executing
+them. In this last example, the result of that
+simplification was to change the order of the product,
+to put the two symbols in alphabetical order. If any of the 3 symbols
+<span class="ltx_text" style="color:#000099;">F</span>, <span class="ltx_text" style="color:#000099;">m</span> or <span class="ltx_text" style="color:#000099;">a</span> were associated to a value or other
+object, that object would have been substituted by the simplifier. To
+prevent the value of a variable to be replaced, its name can be
+preceded by an apostrophe (<span class="ltx_text" style="color:#000099;">’a</span> refers to the symbol a and not to
+any object associated to it).</p>
+</div>
+<div id="S5.p11" class="ltx_para">
+<p class="ltx_p">The following example shows how the equation associated to
+<span class="ltx_text" style="color:#000099;">second_law</span> does not change when one of the symbols in it s then
+associated to a value</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i21)</span> <span class="ltx_text" style="color:#000099;">a: 3;
+<br class="ltx_break"></span>
+(%o21)   <math id="S5.p11.m1" class="ltx_Math" alttext="3" display="inline"><mn>3</mn></math>
+<br class="ltx_break">
+<span class="ltx_text" style="color:#CC3333;">(%i22)</span> <span class="ltx_text" style="color:#000099;">second_law;
+<br class="ltx_break"></span>
+(%o22)   <math id="S5.p11.m2" class="ltx_Math" alttext="F=a\,m" display="inline"><mrow><mi>F</mi><mo>=</mo><mrow><mi>a</mi><mspace width=0.166em /><mi>m</mi></mrow></mrow></math></p>
+</blockquote>
+</div>
+<div id="S5.p12" class="ltx_para">
+<p class="ltx_p">The function <span class="ltx_text" style="color:#000099;">subst</span> is used to substitute values of the symbols
+in <span class="ltx_text" style="color:#000099;">second_law</span>. Several values can be replaced at once, as in
+the following example</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i23)</span> <span class="ltx_text" style="color:#000099;">subst([m=2,’a=5], second_law);
+<br class="ltx_break"></span>
+(%o23)   <math id="S5.p12.m1" class="ltx_Math" alttext="F=10" display="inline"><mrow><mi>F</mi><mo>=</mo><mn>10</mn></mrow></math></p>
+</blockquote>
+</div>
+<div id="S5.p13" class="ltx_para">
+<p class="ltx_p">The first argument in the <span class="ltx_text" style="color:#000099;">subst</span> command in <span class="ltx_text" style="color:#CC3333;">(%i24)</span> is a
+list, whose elements are separated by commas and within square
+brackets. The two elements in that list are equations. The apostrophe
+pre-pended to the symbol <span class="ltx_text" style="color:#000099;">a</span> prevents it to be replaced by its
+associated value. Without the apostrophe, the <span class="ltx_text" style="color:#000099;">subst</span> command
+would have been simplified as</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i24)</span> <span class="ltx_text" style="color:#000099;">subst([m=2, 3=5], second_law);
+<br class="ltx_break"></span>
+(%o24)   <math id="S5.p13.m1" class="ltx_Math" alttext="F=2\,a" display="inline"><mrow><mi>F</mi><mo>=</mo><mrow><mn>2</mn><mspace width=0.166em /><mi>a</mi></mrow></mrow></math></p>
+</blockquote>
+<p class="ltx_p">in which only <span class="ltx_text" style="color:#000099;">m</span> was replaced and the statement “3=5” was
+simply ignored.</p>
+</div>
+</section>
+<section id="S6" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">6 </span>Lists</h2>
+
+<div id="S6.p1" class="ltx_para">
+<p class="ltx_p">As seen in the previous section, lists can be created using square
+brackets and commas. The following example creates a list with the
+squares of the first five natural numbers and associates it to the
+variable <span class="ltx_text" style="color:#000099;">squares</span>
+</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i25)</span> <span class="ltx_text" style="color:#000099;">squares: [1, 4, 9, 16, 25]$</span></p>
+</blockquote>
+</div>
+<div id="S6.p2" class="ltx_para">
+<p class="ltx_p">Many of the operations among numbers can also
+be done among lists. For example, let us create another list in which
+each element is the square root of the corresponding element of
+<span class="ltx_text" style="color:#000099;">squares</span>, multiplied by 3</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i26)</span> <span class="ltx_text" style="color:#000099;">3*sqrt(squares);
+<br class="ltx_break"></span>
+(%o26)   <math id="S6.p2.m1" class="ltx_Math" alttext="\left[3,6,9,12,15\right]" display="inline"><mrow><mo>[</mo><mn>3</mn><mo>,</mo><mn>6</mn><mo>,</mo><mn>9</mn><mo>,</mo><mn>12</mn><mo>,</mo><mn>15</mn><mo>]</mo></mrow></math></p>
+</blockquote>
+</div>
+<div id="S6.p3" class="ltx_para">
+<p class="ltx_p">The elements of a list are indexed by integers starting with 1. To
+refer to an element in the list, the corresponding index is written
+within square brackets; for instance the third element in the list
+<span class="ltx_text" style="color:#000099;">squares</span> is</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i27)</span> <span class="ltx_text" style="color:#000099;">squares[3];
+<br class="ltx_break"></span>
+(%o27)   <math id="S6.p3.m1" class="ltx_Math" alttext="9" display="inline"><mn>9</mn></math></p>
+</blockquote>
+</div>
+<div id="S6.p4" class="ltx_para">
+<p class="ltx_p">A very useful function to create lists is <span class="ltx_text" style="color:#000099;">makelist</span>. One way to
+use it is to expand an expression depending on a dummy index, for
+several values of that index. The first argument must be the
+expression to be expanded, followed by the dummy index, the initial
+value for it, the upper bound for the index values and the increments
+between successive values of the index. If the increment is not given,
+its default value is 1. Here are two examples:</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i28)</span> <span class="ltx_text" style="color:#000099;">cubes1: makelist ( i^3, i, 1, 5 );
+<br class="ltx_break"></span>
+(%o28)   <math id="S6.p4.m1" class="ltx_Math" alttext="\left[1,8,27,64,125\right]" display="inline"><mrow><mo>[</mo><mn>1</mn><mo>,</mo><mn>8</mn><mo>,</mo><mn>27</mn><mo>,</mo><mn>64</mn><mo>,</mo><mn>125</mn><mo>]</mo></mrow></math>
+<br class="ltx_break">
+<span class="ltx_text" style="color:#CC3333;">(%i29)</span> <span class="ltx_text" style="color:#000099;">cubes2: makelist ( i^3, i, 2, 6, 0.6);
+<br class="ltx_break"></span>
+(%o29) <math id="S6.p4.m2" class="ltx_Math" alttext="\left[8,17.58,32.77,54.87,85.18,125.0,175.6\right]" display="inline"><mrow><mo>[</mo><mn>8</mn><mo>,</mo><mn>17.58</mn><mo>,</mo><mn>32.77</mn><mo>,</mo><mn>54.87</mn><mo>,</mo><mn>85.18</mn><mo>,</mo><mn>125.0</mn><mo>,</mo><mn>175.6</mn><mo>]</mo></mrow></math></p>
+</blockquote>
+</div>
+<div id="S6.p5" class="ltx_para">
+<p class="ltx_p">The first list has the cubes of 1, 2, 3, 4 and 5. The second one has
+the cubes of 2, 2.6, 3.2, 3.8, 4.4, 5.0 and 5.6. Notice that the
+elements of <span class="ltx_text" style="color:#000099;">cubes2</span> are shown with only 4 significant digits,
+because in <span class="ltx_text" style="color:#CC3333;">(%i10)</span> we changed the value of the system variable
+<span class="ltx_text" style="color:#000099;">fpprintprec</span>. In a fresh Maxima session they would be shown with
+16 significant digits.</p>
+</div>
+<div id="S6.p6" class="ltx_para">
+<p class="ltx_p">Instead of giving an initial value and an upper bound for the dummy
+index, we can give a list of values for it. And any list in Maxima can
+have objects of different types. The following example creates a list
+with the cubes of 5, the expression <math id="S6.p6.m1" class="ltx_Math" alttext="x^{2}+\sqrt{y}" display="inline"><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msqrt><mi>y</mi></msqrt></mrow></math>, <math id="S6.p6.m2" class="ltx_Math" alttext="-3.2" display="inline"><mrow><mo>−</mo><mn>3.2</mn></mrow></math> (in
+bigfloat format) and the equation <math id="S6.p6.m3" class="ltx_Math" alttext="E=m\,c^{2}" display="inline"><mrow><mi>E</mi><mo>=</mo><mrow><mi>m</mi><mspace width=0.166em /><msup><mi>c</mi><mn>2</mn></msup></mrow></mrow></math></p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i30)</span> <span class="ltx_text" style="color:#000099;">makelist (i^3, i, [5, x^2+sqrt(y), -3.2b0, E=m*c^2]);
+<br class="ltx_break"></span>
+(%o30)   <math id="S6.p6.m4" class="ltx_Math" alttext="\left[125,\left(\sqrt{y}+x^{2}\right)^{3},-3.277\mathrm{b}1,E^{3}=c^{6}\,m^{3}\right]" display="inline"><mrow><mo>[</mo><mrow><mrow><mn>125</mn><mo>,</mo><msup><mrow><mo>(</mo><mrow><msqrt><mi>y</mi></msqrt><mo>+</mo><msup><mi>x</mi><mn>2</mn></msup></mrow><mo>)</mo></mrow><mn>3</mn></msup><mo>,</mo><mrow><mo>−</mo><mrow><mn>3.277</mn><mspace width=0.166em /><mi>b1</mi></mrow></mrow><mo>,</mo><msup><mi>E</mi><mn>3</mn></msup></mrow><mo>=</mo><mrow><msup><mi>c</mi><mn>6</mn></msup><mspace width=0.166em /><msup><mi>m</mi><mn>3</mn></msup></mrow></mrow><mo>]</mo></mrow></math></p>
+</blockquote>
+</div>
+</section>
+<section id="S7" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">7 </span>Useful constants</h2>
+
+<div id="S7.p1" class="ltx_para">
+<p class="ltx_p">There are some system variables associated to predefined mathematical
+constants. Most of them have names starting with %. Three of those
+variables are <span class="ltx_text" style="color:#000099;">%pi</span> (<math id="S7.p1.m1" class="ltx_Math" alttext="\pi" display="inline"><mi>π</mi></math>, the length of a circumference
+divided by its diameter), <span class="ltx_text" style="color:#000099;">%e</span>, the Euler number <math id="S7.p1.m2" class="ltx_Math" alttext="e" display="inline"><mi>e</mi></math>, base of
+the natural logarithms, and <span class="ltx_text" style="color:#000099;">%i</span>, which is the imaginary number
+<math id="S7.p1.m3" class="ltx_Math" alttext="i=\sqrt{-1}" display="inline"><mrow><mi>i</mi><mo>=</mo><msqrt><mrow><mo>−</mo><mn>1</mn></mrow></msqrt></mrow></math>. Functions <span class="ltx_text" style="color:#000099;">float</span> and <span class="ltx_text" style="color:#000099;">bfloat</span> produce
+floating-point approximations of <span class="ltx_text" style="color:#000099;">%pi</span> and <span class="ltx_text" style="color:#000099;">%e</span>.</p>
+</div>
+<div id="S7.p2" class="ltx_para">
+<p class="ltx_p">The following example computes the product between two complex numbers
+written using variable <span class="ltx_text" style="color:#000099;">%i</span>.</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i31)</span> <span class="ltx_text" style="color:#000099;">(3 + %i*4)*(2 + %i*5);
+<br class="ltx_break"></span>
+(%o31)   <math id="S7.p2.m1" class="ltx_Math" alttext="\left(4\,\mathrm{i}+3\right)\,\left(5\,\mathrm{i}+2\right)" display="inline"><mrow><mrow><mo>(</mo><mrow><mrow><mn>4</mn><mspace width=0.166em /><mi mathvariant="normal">i</mi></mrow><mo>+</mo><mn>3</mn></mrow><mo rspace="4.2pt">)</mo></mrow><mspace width=0.166em /><mrow><mo>(</mo><mrow><mrow><mn>5</mn><mspace width=0.166em /><mi mathvariant="normal">i</mi></mrow><mo>+</mo><mn>2</mn></mrow><mo>)</mo></mrow></mrow></math></p>
+</blockquote>
+</div>
+<div id="S7.p3" class="ltx_para">
+<p class="ltx_p">Function <span class="ltx_text" style="color:#000099;">rectform</span>, which stands for <em class="ltx_emph ltx_font_italic">rectangular form</em>,
+would show the previous result separating the real and imaginary
+parts:</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i32)</span> <span class="ltx_text" style="color:#000099;">rectform(%);
+<br class="ltx_break"></span>
+(%o32)   <math id="S7.p3.m1" class="ltx_Math" alttext="23\,\mathrm{i}-14" display="inline"><mrow><mrow><mn>23</mn><mspace width=0.166em /><mi mathvariant="normal">i</mi></mrow><mo>−</mo><mn>14</mn></mrow></math></p>
+</blockquote>
+</div>
+</section>
+<section id="S8" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">8 </span>Batch files</h2>
+
+<div id="S8.p1" class="ltx_para">
+<p class="ltx_p">The command
+<span class="ltx_text" style="color:#000099;">stringout(“filename”,input)</span>
+will store all the input commands that have been entered during a
+Maxima session, into a file named “filename”. That file can be
+loaded in a future Maxima session, to redo all those commands, with
+the command <span class="ltx_text" style="color:#000099;">batch(“filename”)</span>. The name
+of Maxima <em class="ltx_emph ltx_font_italic">batch</em> files are usually given the extension
+<code class="ltx_verbatim ltx_font_typewriter">.mac</code> to identify them as Maxima batch files.</p>
+</div>
+<div id="S8.p2" class="ltx_para">
+<p class="ltx_p">You can also create a Maxima batch file with a text editor. Just write
+the input commands (without any <code class="ltx_verbatim ltx_font_typewriter">%i</code> labels) and then
+execute it in Maxima with
+<span class="ltx_text" style="color:#000099;">batch(“filename”)</span>. That is a useful way
+to use Maxima to solve a problem. You write your commands to solve the
+problem in a text editor, save them into a file, and without closing
+the editor open Maxima in another window and run that file. If there
+is an error or you don’t get the result you wanted, you just have to
+go back to the editor window, make the necessary modifications, save
+them and back in the Maxima window rerun the batch file. Be careful
+not to use <span class="ltx_text" style="color:#000099;">%o</span> variables in batch files, because the number
+after <span class="ltx_text" style="color:#000099;">%o</span> might be different every time you execute them.</p>
+</div>
+<div id="S8.p3" class="ltx_para">
+<p class="ltx_p">Many additional functionalities of Maxima come into batch files which
+you execute in Maxima using
+<span class="ltx_text" style="color:#000099;">load(“filename”)</span>. The difference between
+<span class="ltx_text" style="color:#000099;">batch</span> and <span class="ltx_text" style="color:#000099;">load</span> is that <span class="ltx_text" style="color:#000099;">load</span> will not show the
+result of the commands being executed. Both commands have a predefined
+list of directories where they will look for the file with name
+“filename”.</p>
+</div>
+<div id="S8.p4" class="ltx_para">
+<p class="ltx_p">Batch files can include any comments, opening with the two characters
+<code class="ltx_verbatim ltx_font_typewriter">/*</code> and closing with <code class="ltx_verbatim ltx_font_typewriter">*/</code>. Any commands entered directly
+into Maxima or written into a batch file
+can contain blank spaces and new lines between numbers, operators,
+variables and other objects, in order to make them more
+readable.</p>
+</div>
+<div id="S8.p5" class="ltx_para">
+<p class="ltx_p">Some commands that are used repeatedly in different working sessions,
+for instance, the definition a frequently used function, can be placed
+inside a batch file which can be loaded in future sessions. If the
+name of a batch file to be loaded does not include a complete path but
+just the file name and that file name does not exist in the current
+directory, Maxima will look for it in a set of directories. That set
+of directories includes a sub-directory of the users home
+directory. The name of that sub-directory can be different in
+different systems but it is always stored in Maxima’s system variable
+<span class="ltx_text" style="color:#000099;">maxima_userdir</span>. You can look at the value of that variable and
+if the referred sub-directory does not exist, created them. Any batch
+files you put into that sub-directory can then be loaded into Maxima
+by giving its name, independently of the working directory being used
+in the current Maxima session.</p>
+</div>
+<div id="S8.p6" class="ltx_para">
+<p class="ltx_p">Every time Maxima starts it tries to load a user’s batch file in that
+<span class="ltx_text" style="color:#000099;">maxima_userdir</span>, with the name <span class="ltx_text" style="color:#000099;">maxima-init.mac</span>, before
+showing the first input prompt. That means that you can create that
+file, if it doesn’t already exist, and add commands that you want to
+be used in all your Maxima sessions. For example, the Maxima commands
+shown in this document have been executed a computer where there is a
+<span class="ltx_text" style="color:#000099;">maxima-init.mac</span> file with the following two lines</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#000099;">ratprint: false$
+<br class="ltx_break"></span>
+<span class="ltx_text" style="color:#000099;">linel: 66$</span></p>
+</blockquote>
+</div>
+<div id="S8.p7" class="ltx_para">
+<p class="ltx_p">The first command prevents Maxima from showing warning messages every
+time a floating-point number is replaced by a fraction, something many
+Maxima functions do, and the second command limits the maximum length
+of output lines to 66 characters. In a <em class="ltx_emph ltx_font_italic">Linux</em> system that
+file would be located in <span class="ltx_text ltx_font_typewriter">/home/username/.maxima/</span>.</p>
+</div>
+<div id="S8.p8" class="ltx_para">
+<p class="ltx_p">Any other valid Maxima commands can be placed into that file, but make
+extra sure that the commands you put have been testes, because any
+errors will prevent Maxima from starting until you remove or correct
+that initial batch file.</p>
+</div>
+</section>
+<section id="S9" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">9 </span>Algebra</h2>
+
+<div id="S9.p1" class="ltx_para">
+<p class="ltx_p">Expressions can include mathematical functions as the function cosine
+in the following example</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i33)</span> <span class="ltx_text" style="color:#000099;">3*x^2 + 2*cos(t)$</span></p>
+</blockquote>
+</div>
+<div id="S9.p2" class="ltx_para">
+<p class="ltx_p">Those expressions can then be manipulated producing new
+expressions. In the next example we find the square of the expression
+above and add <math id="S9.p2.m1" class="ltx_Math" alttext="x^{3}" display="inline"><msup><mi>x</mi><mn>3</mn></msup></math> to it</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i34)</span> <span class="ltx_text" style="color:#000099;">%^2 + x^3;
+<br class="ltx_break"></span>
+(%o34)   <math id="S9.p2.m2" class="ltx_Math" alttext="\left(3\,x^{2}+2\,\cos t\right)^{2}+x^{3}" display="inline"><mrow><msup><mrow><mo>(</mo><mrow><mrow><mn>3</mn><mspace width=0.166em /><msup><mi>x</mi><mn>2</mn></msup></mrow><mo>+</mo><mrow><mn>2</mn><mspace width=0.166em /><mrow><mi>cos</mi><mspace width=0.11em /><mi>t</mi></mrow></mrow></mrow><mo>)</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mi>x</mi><mn>3</mn></msup></mrow></math></p>
+</blockquote>
+</div>
+<div id="S9.p3" class="ltx_para">
+<p class="ltx_p">As we have already mentioned besides numbers and expressions, other
+kind of object we can manipulate is an equation as the following one</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i35)</span> <span class="ltx_text" style="color:#000099;">3*x^3 + 5*x^2 = x - 6;
+<br class="ltx_break"></span>
+(%o35)   <math id="S9.p3.m1" class="ltx_Math" alttext="3\,x^{3}+5\,x^{2}=x-6" display="inline"><mrow><mrow><mrow><mn>3</mn><mspace width=0.166em /><msup><mi>x</mi><mn>3</mn></msup></mrow><mo>+</mo><mrow><mn>5</mn><mspace width=0.166em /><msup><mi>x</mi><mn>2</mn></msup></mrow></mrow><mo>=</mo><mrow><mi>x</mi><mo>−</mo><mn>6</mn></mrow></mrow></math></p>
+</blockquote>
+</div>
+<div id="S9.p4" class="ltx_para">
+<p class="ltx_p">Most functions used to manipulate expressions can also be used for
+equations. For example, Maxima’s function <span class="ltx_text" style="color:#000099;">allroots</span> finds a
+numerical approximation to the roots of a polynomial, such as
+<math id="S9.p4.m1" class="ltx_Math" alttext="x^{2}+x-1" display="inline"><mrow><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi></mrow><mo>−</mo><mn>1</mn></mrow></math>; if <span class="ltx_text" style="color:#000099;">allroots</span> is given the equation <math id="S9.p4.m2" class="ltx_Math" alttext="x^{2}+x=1" display="inline"><mrow><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi></mrow><mo>=</mo><mn>1</mn></mrow></math>, it will
+interpreted as <math id="S9.p4.m3" class="ltx_Math" alttext="x^{2}+x-1=0" display="inline"><mrow><mrow><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi></mrow><mo>−</mo><mn>1</mn></mrow><mo>=</mo><mn>0</mn></mrow></math> and find the roots of <math id="S9.p4.m4" class="ltx_Math" alttext="x^{2}+x-1" display="inline"><mrow><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi></mrow><mo>−</mo><mn>1</mn></mrow></math>. Therefore,
+when given the expression in <code class="ltx_verbatim ltx_font_typewriter">(%o35)</code>, <span class="ltx_text" style="color:#000099;">allroots</span> will find
+the roots of <math id="S9.p4.m5" class="ltx_Math" alttext="3\,x^{3}+5\,x-x+6" display="inline"><mrow><mrow><mrow><mrow><mn>3</mn><mspace width=0.166em /><msup><mi>x</mi><mn>3</mn></msup></mrow><mo>+</mo><mrow><mn>5</mn><mspace width=0.166em /><mi>x</mi></mrow></mrow><mo>−</mo><mi>x</mi></mrow><mo>+</mo><mn>6</mn></mrow></math></p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i36)</span> <span class="ltx_text" style="color:#000099;">allroots(%o35);
+<br class="ltx_break"></span>
+(%o36) <math id="S9.p4.m6" class="ltx_Math" alttext="\left[x=0.9073\,\mathrm{i}+0.2776,\;x=0.2776-0.9073\,\mathrm{i},\;x=-2.222\right]" display="inline"><mrow><mo>[</mo><mrow><mrow><mi>x</mi><mo>=</mo><mrow><mrow><mn>0.9073</mn><mspace width=0.166em /><mi mathvariant="normal">i</mi></mrow><mo>+</mo><mn>0.2776</mn></mrow></mrow><mo rspace="5.3pt">,</mo><mrow><mrow><mi>x</mi><mo>=</mo><mrow><mn>0.2776</mn><mo>−</mo><mrow><mn>0.9073</mn><mspace width=0.166em /><mi mathvariant="normal">i</mi></mrow></mrow></mrow><mo rspace="5.3pt">,</mo><mrow><mi>x</mi><mo>=</mo><mrow><mo>−</mo><mn>2.222</mn></mrow></mrow></mrow></mrow><mo>]</mo></mrow></math></p>
+</blockquote>
+</div>
+<div id="S9.p5" class="ltx_para">
+<p class="ltx_p">Two of those roots are complex numbers. The three roots are shown as
+a list of three equations, instead of just numbers. That way of
+presenting the result may seem odd, but it will prove convenient to
+interact with other functions of Maxima. For example, to
+check that the third root shown is in fact a root of the polynomial
+<math id="S9.p5.m1" class="ltx_Math" alttext="3\,x^{3}+5\,x-x+6" display="inline"><mrow><mrow><mrow><mrow><mn>3</mn><mspace width=0.166em /><msup><mi>x</mi><mn>3</mn></msup></mrow><mo>+</mo><mrow><mn>5</mn><mspace width=0.166em /><mi>x</mi></mrow></mrow><mo>−</mo><mi>x</mi></mrow><mo>+</mo><mn>6</mn></mrow></math>, we write</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i37)</span> <span class="ltx_text" style="color:#000099;">subst(%o36[3], 3*x^3+5*x^2-x+6);
+<br class="ltx_break"></span>
+(%o37)   <math id="S9.p5.m2" class="ltx_Math" alttext="7.105\mathrm{e}-15" display="inline"><mrow><mrow><mn>7.105</mn><mspace width=0.166em /><mi mathvariant="normal">e</mi></mrow><mo>−</mo><mn>15</mn></mrow></math></p>
+</blockquote>
+</div>
+<div id="S9.p6" class="ltx_para">
+<p class="ltx_p">The notation <span class="ltx_text" style="color:#000099;">%o36[3]</span> means the third
+element in the list associated to variable <span class="ltx_text" style="color:#000099;">%o36</span>, which is the
+equation <math id="S9.p6.m1" class="ltx_Math" alttext="x=-2.222" display="inline"><mrow><mi>x</mi><mo>=</mo><mrow><mo>−</mo><mn>2.222</mn></mrow></mrow></math> and it is exactly what we need to tell
+<span class="ltx_text" style="color:#000099;">subst</span> to substitute <math id="S9.p6.m2" class="ltx_Math" alttext="x" display="inline"><mi>x</mi></math> by <math id="S9.p6.m3" class="ltx_Math" alttext="-2.222" display="inline"><mrow><mo>−</mo><mn>2.222</mn></mrow></math>. It is in fact substituted
+to by <math id="S9.p6.m4" class="ltx_Math" alttext="-2.221834293486762" display="inline"><mrow><mo>−</mo><mn>2.221834293486762</mn></mrow></math> which is the value stored in list
+<span class="ltx_text" style="color:#000099;">%o36</span>; result <code class="ltx_verbatim ltx_font_typewriter">(%o36)</code> is the exact result rounded to 4
+significant digits. The result <code class="ltx_verbatim ltx_font_typewriter">(%o37)</code> is not zero, because
+<span class="ltx_text" style="color:#000099;">allroots</span> is a numerical and its results have a numerical error
+which in the double-precision format is of the order of <math id="S9.p6.m5" class="ltx_Math" alttext="10^{-15}" display="inline"><msup><mn>10</mn><mrow><mo>−</mo><mn>15</mn></mrow></msup></math>.</p>
+</div>
+<div id="S9.p7" class="ltx_para">
+<p class="ltx_p">There are other functions to find the exact solution to an algebraic
+equation without numerical approximations. Function <span class="ltx_text" style="color:#000099;">solve</span> can
+find the exact solutions to equation <code class="ltx_verbatim ltx_font_typewriter">%o35</code>, but the result is so
+long that rather than showing it to you we will save it in a variable
+named <span class="ltx_text" style="color:#000099;">result</span> and will show you only the last root which is
+real:</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i38)</span> result: <span class="ltx_text" style="color:#000099;">solve ( 3*x^3 + 5*x^2 = x - 6, x )$
+<br class="ltx_break"></span>
+<span class="ltx_text" style="color:#CC3333;">(%i39)</span> <span class="ltx_text" style="color:#000099;">xthru (result[3]);
+<br class="ltx_break"></span>
+(%o39) <math id="S9.p7.m1" class="ltx_Math" alttext="x=\dfrac{\left(3^{\frac{5}{2}}\,\sqrt{13331}-1843\right)^{\frac{2}{3}}+2^{%
+\frac{1}{3}}\,\left(17\,2^{\frac{4}{3}}-5\,\left(3^{\frac{5}{2}}\,\sqrt{13331}%
+-1843\right)^{\frac{1}{3}}\right)}{9\,2^{\frac{1}{3}}\,\left(3^{\frac{5}{2}}\,%
+\sqrt{13331}-1843\right)^{\frac{1}{3}}}" display="inline"><mrow><mi>x</mi><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><msup><mrow><mo>(</mo><mrow><mrow><msup><mn>3</mn><mfrac><mn>5</mn><mn>2</mn></mfrac></msup><mspace width=0.166em /><msqrt><mn>13331</mn></msqrt></mrow><mo>−</mo><mn>1843</mn></mrow><mo>)</mo></mrow><mfrac><mn>2</mn><mn>3</mn></mfrac></msup><mo>+</mo><mrow><msup><mn>2</mn><mfrac><mn>1</mn><mn>3</mn></mfrac></msup><mspace width=0.166em /><mrow><mo>(</mo><mrow><msup><mn>17 2</mn><mfrac><mn>4</mn><mn>3</mn></mfrac></msup><mo>−</mo><mrow><mn>5</mn><mspace width=0.166em /><msup><mrow><mo>(</mo><mrow><mrow><msup><mn>3</mn><mfrac><mn>5</mn><mn>2</mn></mfrac></msup><mspace width=0.166em /><msqrt><mn>13331</mn></msqrt></mrow><mo>−</mo><mn>1843</mn></mrow><mo>)</mo></mrow><mfrac><mn>1</mn><mn>3</mn></mfrac></msup></mrow></mrow><mo>)</mo></mrow></mrow></mrow><mrow><msup><mn>9 2</mn><mfrac><mn>1</mn><mn>3</mn></mfrac></msup><mspace width=0.166em /><msup><mrow><mo>(</mo><mrow><mrow><msup><mn>3</mn><mfrac><mn>5</mn><mn>2</mn></mfrac></msup><mspace width=0.166em /><msqrt><mn>13331</mn></msqrt></mrow><mo>−</mo><mn>1843</mn></mrow><mo>)</mo></mrow><mfrac><mn>1</mn><mn>3</mn></mfrac></msup></mrow></mfrac></mstyle></mrow></math></p>
+</blockquote>
+</div>
+<div id="S9.p8" class="ltx_para">
+<p class="ltx_p">Function <span class="ltx_text" style="color:#000099;">xthru</span> combined the terms in the expression into a
+common denominator, without expanding products. In this case that
+resulted into a simpler expression. There are other functions to
+simplify or show expressions in a different form, including
+<span class="ltx_text" style="color:#000099;">ratsimp</span> and <span class="ltx_text" style="color:#000099;">radcan</span>; which one of them gives a simpler
+result depends on the expression. And what we mean by simpler is a
+matter of personal taste, so we should try all those functions to
+decide which result we prefer (they are equivalent, just
+different). That is also why it is a good practice to save results
+before displaying them.</p>
+</div>
+<div id="S9.p9" class="ltx_para">
+<p class="ltx_p">You can also try to look at the two complex roots in <span class="ltx_text" style="color:#000099;">result</span>,
+using function <span class="ltx_text" style="color:#000099;">rectform</span> to separate the real and imaginary
+parts.</p>
+</div>
+<div id="S9.p10" class="ltx_para">
+<p class="ltx_p">Systems of linear equations and some nonlinear systems can also be
+solved using <span class="ltx_text" style="color:#000099;">solve</span>. The two equations must be given into a
+list, as in the following example</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i40)</span> <span class="ltx_text" style="color:#000099;">exp1: (4 + 8)*x1 - 8* x2 = 6 + 4$
+<br class="ltx_break"></span>
+<span class="ltx_text" style="color:#CC3333;">(%i41)</span> <span class="ltx_text" style="color:#000099;">exp2: (2 + 8 + 5 + 1)*x2 - 8*x1 = -4$
+<br class="ltx_break"></span>
+<span class="ltx_text" style="color:#CC3333;">(%i42)</span> <span class="ltx_text" style="color:#000099;">solve ( [exp1, exp2], [x1, x2] );
+<br class="ltx_break"></span>
+(%o42)   <math id="S9.p10.m1" class="ltx_Math" alttext="\left[\;\left[x1=1,\;x2=\dfrac{1}{4}\right]\;\right]" display="inline"><mrow><mo>[</mo><mrow><mo lspace="5.3pt">[</mo><mrow><mrow><mrow><mi>x</mi><mspace width=0.166em /><mn>1</mn></mrow><mo>=</mo><mn>1</mn></mrow><mo rspace="5.3pt">,</mo><mrow><mrow><mi>x</mi><mspace width=0.166em /><mn>2</mn></mrow><mo>=</mo><mstyle displaystyle="true"><mfrac><mn>1</mn><mn>4</mn></mfrac></mstyle></mrow></mrow><mo rspace="5.3pt">]</mo></mrow><mo>]</mo></mrow></math></p>
+</blockquote>
+</div>
+<div id="S9.p11" class="ltx_para">
+<p class="ltx_p">There are two features of <span class="ltx_text" style="color:#000099;">solve</span> involved in the previous
+example. First, instead of 2 equations, we provided two expressions;
+every expression given to <span class="ltx_text" style="color:#000099;">solve</span> is then interpreted as that
+expression being equal to zero. Second, there is an optional argument,
+after the equations, with the variable or list of variables to be
+solved; if given, the number of variables must be equal to the number
+of equations. In the examples we have given there is no need to name
+the variables, because those variables are the only ones that appear
+in the equations. However, in some cases the name of the variables is
+necessary; for instance to solve just one equation <math id="S9.p11.m1" class="ltx_Math" alttext="x/y^{2}=\sqrt{z}" display="inline"><mrow><mrow><mi>x</mi><mo>/</mo><msup><mi>y</mi><mn>2</mn></msup></mrow><mo>=</mo><msqrt><mi>z</mi></msqrt></mrow></math>
+with three variables, we must specify what variable we want to get
+in terms of the other two.</p>
+</div>
+<div id="S9.p12" class="ltx_para">
+<p class="ltx_p">The result <code class="ltx_verbatim ltx_font_typewriter">(%o42)</code> is a list within another list, because the first
+list encloses the values of the variables and the second list
+encloses the various possible solutions to the system, which
+in this case was only one.</p>
+</div>
+<div id="S9.p13" class="ltx_para">
+<p class="ltx_p">Function <span class="ltx_text" style="color:#000099;">expand</span> will expand products and powers of
+expressions, as in the following example</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i43)</span> <span class="ltx_text" style="color:#000099;">expand ((4*x^2*y + 2*y^2)^3);
+<br class="ltx_break"></span>
+(%o43) <math id="S9.p13.m1" class="ltx_Math" alttext="8\,y^{6}+48\,x^{2}\,y^{5}+96\,x^{4}\,y^{4}+64\,x^{6}\,y^{3}" display="inline"><mrow><mrow><mn>8</mn><mspace width=0.166em /><msup><mi>y</mi><mn>6</mn></msup></mrow><mo>+</mo><mrow><mn>48</mn><mspace width=0.166em /><msup><mi>x</mi><mn>2</mn></msup><mspace width=0.166em /><msup><mi>y</mi><mn>5</mn></msup></mrow><mo>+</mo><mrow><mn>96</mn><mspace width=0.166em /><msup><mi>x</mi><mn>4</mn></msup><mspace width=0.166em /><msup><mi>y</mi><mn>4</mn></msup></mrow><mo>+</mo><mrow><mn>64</mn><mspace width=0.166em /><msup><mi>x</mi><mn>6</mn></msup><mspace width=0.166em /><msup><mi>y</mi><mn>3</mn></msup></mrow></mrow></math></p>
+</blockquote>
+</div>
+<div id="S9.p14" class="ltx_para">
+<p class="ltx_p">Function <span class="ltx_text" style="color:#000099;">subst</span>, which we used before to substitute numerical
+values, can also be used to substitute other expressions. In the next
+example we substitute <math id="S9.p14.m1" class="ltx_Math" alttext="x" display="inline"><mi>x</mi></math> by <math id="S9.p14.m2" class="ltx_Math" alttext="1/z" display="inline"><mrow><mn>1</mn><mo>/</mo><mi>z</mi></mrow></math>, and <math id="S9.p14.m3" class="ltx_Math" alttext="y" display="inline"><mi>y</mi></math> by <math id="S9.p14.m4" class="ltx_Math" alttext="\sqrt{z}" display="inline"><msqrt><mi>z</mi></msqrt></math> in the
+expression <code class="ltx_verbatim ltx_font_typewriter">(%o43)</code></p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i44)</span> <span class="ltx_text" style="color:#000099;">subst([x=1/z, y=sqrt(z)], %o43);
+<br class="ltx_break"></span>
+(%o44) <math id="S9.p14.m5" class="ltx_Math" alttext="8\,z^{3}+48\,\sqrt{z}+\dfrac{96}{z^{2}}+\dfrac{64}{z^{\frac{9}{2}}}" display="inline"><mrow><mrow><mn>8</mn><mspace width=0.166em /><msup><mi>z</mi><mn>3</mn></msup></mrow><mo>+</mo><mrow><mn>48</mn><mspace width=0.166em /><msqrt><mi>z</mi></msqrt></mrow><mo>+</mo><mstyle displaystyle="true"><mfrac><mn>96</mn><msup><mi>z</mi><mn>2</mn></msup></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><mn>64</mn><msup><mi>z</mi><mfrac><mn>9</mn><mn>2</mn></mfrac></msup></mfrac></mstyle></mrow></math></p>
+</blockquote>
+</div>
+<div id="S9.p15" class="ltx_para">
+<p class="ltx_p">We will now simplify that result with <span class="ltx_text" style="color:#000099;">ratsimp</span> and save it into
+a variable <span class="ltx_text" style="color:#000099;">r</span></p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i45)</span> <span class="ltx_text" style="color:#000099;">r: ratsimp(%);
+<br class="ltx_break"></span>
+(%o45) <math id="S9.p15.m1" class="ltx_Math" alttext="\dfrac{\sqrt{z}\,\left(8\,z^{7}+96\,z^{2}\right)+48\,z^{5}+64}{z^{\frac{9}{2}}}" display="inline"><mstyle displaystyle="true"><mfrac><mrow><mrow><msqrt><mi>z</mi></msqrt><mspace width=0.166em /><mrow><mo>(</mo><mrow><mrow><mn>8</mn><mspace width=0.166em /><msup><mi>z</mi><mn>7</mn></msup></mrow><mo>+</mo><mrow><mn>96</mn><mspace width=0.166em /><msup><mi>z</mi><mn>2</mn></msup></mrow></mrow><mo>)</mo></mrow></mrow><mo>+</mo><mrow><mn>48</mn><mspace width=0.166em /><msup><mi>z</mi><mn>5</mn></msup></mrow><mo>+</mo><mn>64</mn></mrow><msup><mi>z</mi><mfrac><mn>9</mn><mn>2</mn></mfrac></msup></mfrac></mstyle></math></p>
+</blockquote>
+</div>
+<div id="S9.p16" class="ltx_para">
+<p class="ltx_p">Algebraic expressions are represented internally as lists; hence, some
+Maxima functions for lists can also be used with expressions. For
+instance, function <span class="ltx_text" style="color:#000099;">length</span> gives the length of a list and it can
+also be used to compute the number of terms in an expression; for
+instance,</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i46)</span> <span class="ltx_text" style="color:#000099;">length(r);
+<br class="ltx_break"></span>
+(%o46)   <math id="S9.p16.m1" class="ltx_Math" alttext="2" display="inline"><mn>2</mn></math></p>
+</blockquote>
+</div>
+<div id="S9.p17" class="ltx_para">
+<p class="ltx_p">Since the expression <span class="ltx_text" style="color:#000099;">r</span> was combined into a single fraction, the corresponding list has two elements, the numerator
+and denominator of that fraction. However, the two elements of the
+expression cannot be obtained with <span class="ltx_text" style="color:#000099;">r[1]</span> and <span class="ltx_text" style="color:#000099;">r[2]</span> as we
+have previously done with regular lists. In this case we have to use
+the functions <span class="ltx_text" style="color:#000099;">first</span> and <span class="ltx_text" style="color:#000099;">second</span>. The following command
+shows the numerator of <span class="ltx_text" style="color:#000099;">r</span></p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i47)</span> <span class="ltx_text" style="color:#000099;">first(r);
+<br class="ltx_break"></span>
+(%o47) <math id="S9.p17.m1" class="ltx_Math" alttext="\sqrt{z}\,\left(8\,z^{7}+96\,z^{2}\right)+48\,z^{5}+64" display="inline"><mrow><mrow><msqrt><mi>z</mi></msqrt><mspace width=0.166em /><mrow><mo>(</mo><mrow><mrow><mn>8</mn><mspace width=0.166em /><msup><mi>z</mi><mn>7</mn></msup></mrow><mo>+</mo><mrow><mn>96</mn><mspace width=0.166em /><msup><mi>z</mi><mn>2</mn></msup></mrow></mrow><mo>)</mo></mrow></mrow><mo>+</mo><mrow><mn>48</mn><mspace width=0.166em /><msup><mi>z</mi><mn>5</mn></msup></mrow><mo>+</mo><mn>64</mn></mrow></math></p>
+</blockquote>
+<p class="ltx_p">and the length of that expression is</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i48)</span> <span class="ltx_text" style="color:#000099;">length(%);
+<br class="ltx_break"></span>
+(%o48)   <math id="S9.p17.m2" class="ltx_Math" alttext="3" display="inline"><mn>3</mn></math></p>
+</blockquote>
+<p class="ltx_p">because it is the sum of three other expressions.</p>
+</div>
+<div id="S9.p18" class="ltx_para">
+<p class="ltx_p">A Maxima expression that cannot be further separated into other
+sub-expressions, for instance <math id="S9.p18.m1" class="ltx_Math" alttext="x" display="inline"><mi>x</mi></math> or <math id="S9.p18.m2" class="ltx_Math" alttext="-3.5" display="inline"><mrow><mo>−</mo><mn>3.5</mn></mrow></math>, is dubbed an
+<em class="ltx_emph ltx_font_italic">atom</em>; functions that expect a list as its argument will
+usually trigger an error when they are given an atom as the argument.
+Function <span class="ltx_text" style="color:#000099;">atom</span> tells whether the argument given is an atom or
+not.</p>
+</div>
+<div id="S9.p19" class="ltx_para">
+<p class="ltx_p">A very useful function to manipulate lists or expressions is <span class="ltx_text" style="color:#000099;">map</span>,
+which will apply a given function to each element in a
+list. Here is an example: suppose we have the following expression,
+which we will save into a variable <span class="ltx_text" style="color:#000099;">f</span></p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i49)</span> <span class="ltx_text" style="color:#000099;">f: (x+y)^2 / (x-y)^2;
+<br class="ltx_break"></span>
+(%o49)   <math id="S9.p19.m1" class="ltx_Math" alttext="\dfrac{\left(y+x\right)^{2}}{\left(x-y\right)^{2}}" display="inline"><mstyle displaystyle="true"><mfrac><msup><mrow><mo>(</mo><mrow><mi>y</mi><mo>+</mo><mi>x</mi></mrow><mo>)</mo></mrow><mn>2</mn></msup><msup><mrow><mo>(</mo><mrow><mi>x</mi><mo>−</mo><mi>y</mi></mrow><mo>)</mo></mrow><mn>2</mn></msup></mfrac></mstyle></math></p>
+</blockquote>
+</div>
+<div id="S9.p20" class="ltx_para">
+<p class="ltx_p">We now would like to expand the squares in the numerator and
+denominator, but if we try to expand <span class="ltx_text" style="color:#000099;">f</span>, the result is the
+following</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i50)</span> <span class="ltx_text" style="color:#000099;">expand (f);
+<br class="ltx_break"></span>
+(%o50) <math id="S9.p20.m1" class="ltx_Math" alttext="\dfrac{y^{2}}{y^{2}-2\,x\,y+x^{2}}+\dfrac{2\,x\,y}{y^{2}-2\,x\,y+x^{2}}+\dfrac%
+{x^{2}}{y^{2}-2\,x\,y+x^{2}}" display="inline"><mrow><mstyle displaystyle="true"><mfrac><msup><mi>y</mi><mn>2</mn></msup><mrow><mrow><msup><mi>y</mi><mn>2</mn></msup><mo>−</mo><mrow><mn>2</mn><mspace width=0.166em /><mi>x</mi><mspace width=0.166em /><mi>y</mi></mrow></mrow><mo>+</mo><msup><mi>x</mi><mn>2</mn></msup></mrow></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><mrow><mn>2</mn><mspace width=0.166em /><mi>x</mi><mspace width=0.166em /><mi>y</mi></mrow><mrow><mrow><msup><mi>y</mi><mn>2</mn></msup><mo>−</mo><mrow><mn>2</mn><mspace width=0.166em /><mi>x</mi><mspace width=0.166em /><mi>y</mi></mrow></mrow><mo>+</mo><msup><mi>x</mi><mn>2</mn></msup></mrow></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>x</mi><mn>2</mn></msup><mrow><mrow><msup><mi>y</mi><mn>2</mn></msup><mo>−</mo><mrow><mn>2</mn><mspace width=0.166em /><mi>x</mi><mspace width=0.166em /><mi>y</mi></mrow></mrow><mo>+</mo><msup><mi>x</mi><mn>2</mn></msup></mrow></mfrac></mstyle></mrow></math></p>
+</blockquote>
+</div>
+<div id="S9.p21" class="ltx_para">
+<p class="ltx_p">The fraction was also expanded into 3 other fractions, which is not
+what we wanted. If we map <span class="ltx_text" style="color:#000099;">expand</span> to the two terms of the
+fraction, the numerator and denominator will be expanded separately
+giving the following result</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i51)</span> <span class="ltx_text" style="color:#000099;">map (expand, f);
+<br class="ltx_break"></span>
+(%o51)   <math id="S9.p21.m1" class="ltx_Math" alttext="\dfrac{y^{2}+2\,x\,y+x^{2}}{y^{2}-2\,x\,y+x^{2}}" display="inline"><mstyle displaystyle="true"><mfrac><mrow><msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><mrow><mn>2</mn><mspace width=0.166em /><mi>x</mi><mspace width=0.166em /><mi>y</mi></mrow><mo>+</mo><msup><mi>x</mi><mn>2</mn></msup></mrow><mrow><mrow><msup><mi>y</mi><mn>2</mn></msup><mo>−</mo><mrow><mn>2</mn><mspace width=0.166em /><mi>x</mi><mspace width=0.166em /><mi>y</mi></mrow></mrow><mo>+</mo><msup><mi>x</mi><mn>2</mn></msup></mrow></mfrac></mstyle></math></p>
+</blockquote>
+</div>
+</section>
+<section id="S10" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">10 </span>Trigonometry</h2>
+
+<div id="S10.p1" class="ltx_para">
+<p class="ltx_p">Table <a href="#S10.T1" title="Table 1 ‣ 10 Trigonometry ‣ A Maxima tutorial" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1</span></a> shows the names of the main trigonometric
+functions in Maxima. Angles are given in radians, and not in degrees.</p>
+</div>
+<figure id="S10.T1" class="ltx_table">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_table">Table 1: </span>Trigonometric functions</figcaption>
+<table class="ltx_tabular ltx_centering ltx_guessed_headers ltx_align_middle">
+<thead class="ltx_thead">
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left ltx_th ltx_th_column ltx_border_tt" style="padding-bottom:8.0pt;"><span class="ltx_text ltx_font_bold">Function<span class="ltx_text ltx_phantom"><span style="visibility:hidden">mm</span></span></span></td>
+<td class="ltx_td ltx_align_left ltx_th ltx_th_column ltx_border_tt" style="padding-bottom:8.0pt;"><span class="ltx_text ltx_font_bold">Description</span></td>
+</tr>
+</thead>
+<tbody class="ltx_tbody">
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left ltx_border_t" style="padding-bottom:8.0pt;"><span class="ltx_text" style="color:#000099;">sin(x)</span></td>
+<td class="ltx_td ltx_align_left ltx_border_t" style="padding-bottom:8.0pt;">Sin</td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left" style="padding-bottom:8.0pt;"><span class="ltx_text" style="color:#000099;">cos(x)</span></td>
+<td class="ltx_td ltx_align_left" style="padding-bottom:8.0pt;">Cosine</td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left" style="padding-bottom:8.0pt;"><span class="ltx_text" style="color:#000099;">tan(x)</span></td>
+<td class="ltx_td ltx_align_left" style="padding-bottom:8.0pt;">Tangent</td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left" style="padding-bottom:8.0pt;"><span class="ltx_text" style="color:#000099;">sec(x)</span></td>
+<td class="ltx_td ltx_align_left" style="padding-bottom:8.0pt;">Secant</td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left" style="padding-bottom:8.0pt;"><span class="ltx_text" style="color:#000099;">csc(x)</span></td>
+<td class="ltx_td ltx_align_left" style="padding-bottom:8.0pt;">Cosecant</td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left" style="padding-bottom:8.0pt;"><span class="ltx_text" style="color:#000099;">cot(x)</span></td>
+<td class="ltx_td ltx_align_left" style="padding-bottom:8.0pt;">Cotangent</td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left" style="padding-bottom:8.0pt;"><span class="ltx_text" style="color:#000099;">asin(x)</span></td>
+<td class="ltx_td ltx_align_left" style="padding-bottom:8.0pt;">Arc sine</td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left" style="padding-bottom:8.0pt;"><span class="ltx_text" style="color:#000099;">acos(x)</span></td>
+<td class="ltx_td ltx_align_left" style="padding-bottom:8.0pt;">Arc cosine</td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left" style="padding-bottom:8.0pt;"><span class="ltx_text" style="color:#000099;">atan(x)</span></td>
+<td class="ltx_td ltx_align_left" style="padding-bottom:8.0pt;">Arc tangent between <math id="S10.T1.m1" class="ltx_Math" alttext="-\pi/2" display="inline"><mrow><mo>−</mo><mrow><mi>π</mi><mo>/</mo><mn>2</mn></mrow></mrow></math> and <math id="S10.T1.m2" class="ltx_Math" alttext="\pi/2" display="inline"><mrow><mi>π</mi><mo>/</mo><mn>2</mn></mrow></math>
+</td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left" style="padding-bottom:8.0pt;"><span class="ltx_text" style="color:#000099;">atan2(y,x)</span></td>
+<td class="ltx_td ltx_align_left" style="padding-bottom:8.0pt;">Arc tangent between <math id="S10.T1.m3" class="ltx_Math" alttext="-\pi" display="inline"><mrow><mo>−</mo><mi>π</mi></mrow></math> and <math id="S10.T1.m4" class="ltx_Math" alttext="\pi" display="inline"><mi>π</mi></math>
+</td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left" style="padding-bottom:8.0pt;"><span class="ltx_text" style="color:#000099;">asec(x)</span></td>
+<td class="ltx_td ltx_align_left" style="padding-bottom:8.0pt;">Arc secant</td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left" style="padding-bottom:8.0pt;"><span class="ltx_text" style="color:#000099;">acsc(x)</span></td>
+<td class="ltx_td ltx_align_left" style="padding-bottom:8.0pt;">Arc cosecant</td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left ltx_border_bb" style="padding-bottom:8.0pt;"><span class="ltx_text" style="color:#000099;">acot(x)</span></td>
+<td class="ltx_td ltx_align_left ltx_border_bb" style="padding-bottom:8.0pt;">Arc cotangent</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<div id="S10.p2" class="ltx_para">
+<p class="ltx_p">When applied to a floating-point number, these functions will give
+another floating-point number. But if the argument is not a
+floating-point number, the result is simplified but not computed,
+unless for some known numbers for which the exact result is known, as
+in the following example. Function <span class="ltx_text" style="color:#000099;">float</span> can be used to get an
+approximate floating-point result</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i52)</span> <span class="ltx_text" style="color:#000099;">[sin(-0.5), cos(-1/2), tan(%pi/3)];</span>
+(%o52)   <math id="S10.p2.m1" class="ltx_Math" alttext="\left[-0.4794,\cos\left(\dfrac{1}{2}\right),\sqrt{3}\right]" display="inline"><mrow><mo>[</mo><mrow><mo>−</mo><mn>0.4794</mn></mrow><mo>,</mo><mrow><mi>cos</mi><mspace width=0.11em /><mrow><mo>(</mo><mstyle displaystyle="true"><mfrac><mn>1</mn><mn>2</mn></mfrac></mstyle><mo>)</mo></mrow></mrow><mo>,</mo><msqrt><mn>3</mn></msqrt><mo>]</mo></mrow></math>
+<span class="ltx_text" style="color:#CC3333;">(%i53)</span> <span class="ltx_text" style="color:#000099;">float(%);</span>
+(%o53)   <math id="S10.p2.m2" class="ltx_Math" alttext="\left[-0.4794,0.8776,1.732\right]" display="inline"><mrow><mo>[</mo><mrow><mo>−</mo><mn>0.4794</mn></mrow><mo>,</mo><mn>0.8776</mn><mo>,</mo><mn>1.732</mn><mo>]</mo></mrow></math></p>
+</blockquote>
+</div>
+<div id="S10.p3" class="ltx_para">
+<p class="ltx_p">Consider the point with <math id="S10.p3.m1" class="ltx_Math" alttext="x" display="inline"><mi>x</mi></math> coordinate <math id="S10.p3.m2" class="ltx_Math" alttext="-1" display="inline"><mrow><mo>−</mo><mn>1</mn></mrow></math> and <math id="S10.p3.m3" class="ltx_Math" alttext="y" display="inline"><mi>y</mi></math> coordinate
+1; the position vector of that point makes an angle of <math id="S10.p3.m4" class="ltx_Math" alttext="3\,\pi/4" display="inline"><mrow><mrow><mn>3</mn><mspace width=0.166em /><mi>π</mi></mrow><mo>/</mo><mn>4</mn></mrow></math>
+radians with the x-axis, and the tangent of that angle is <math id="S10.p3.m5" class="ltx_Math" alttext="-1" display="inline"><mrow><mo>−</mo><mn>1</mn></mrow></math> but if
+one computes <span class="ltx_text" style="color:#000099;">atan(-1)</span>, the result would be <math id="S10.p3.m6" class="ltx_Math" alttext="-\pi/4" display="inline"><mrow><mo>−</mo><mrow><mi>π</mi><mo>/</mo><mn>4</mn></mrow></mrow></math> because arc
+tangent has many branches and the branch chosen in Maxima goes from
+<math id="S10.p3.m7" class="ltx_Math" alttext="-\pi/2" display="inline"><mrow><mo>−</mo><mrow><mi>π</mi><mo>/</mo><mn>2</mn></mrow></mrow></math> to <math id="S10.p3.m8" class="ltx_Math" alttext="\pi/2" display="inline"><mrow><mi>π</mi><mo>/</mo><mn>2</mn></mrow></math>. The <math id="S10.p3.m9" class="ltx_Math" alttext="y" display="inline"><mi>y</mi></math> and <math id="S10.p3.m10" class="ltx_Math" alttext="x" display="inline"><mi>x</mi></math> coordinates can be given to
+function <span class="ltx_text" style="color:#000099;">atan2</span> and it will compute the correct angle:
+</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i54)</span> <span class="ltx_text" style="color:#000099;">atan2(1, -1);</span>
+(%o54)   <math id="S10.p3.m11" class="ltx_Math" alttext="\dfrac{3\,\pi}{4}" display="inline"><mstyle displaystyle="true"><mfrac><mrow><mn>3</mn><mspace width=0.166em /><mi>π</mi></mrow><mn>4</mn></mfrac></mstyle></math></p>
+</blockquote>
+</div>
+<div id="S10.p4" class="ltx_para">
+<p class="ltx_p">To convert an angle from degrees into radians, it is multiplied by
+<math id="S10.p4.m1" class="ltx_Math" alttext="\pi" display="inline"><mi>π</mi></math> and divided by 180. In the following example we compute the sine
+of <math id="S10.p4.m2" class="ltx_Math" alttext="60^{\circ}" display="inline"><msup><mn>60</mn><mo>∘</mo></msup></math></p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i55)</span> <span class="ltx_text" style="color:#000099;">sin(60*%pi/180);</span>
+(%o55)   <math id="S10.p4.m3" class="ltx_Math" alttext="\dfrac{\sqrt{3}}{2}" display="inline"><mstyle displaystyle="true"><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></mstyle></math></p>
+</blockquote>
+<p class="ltx_p">and to convert the results of the arc functions from radians to
+degrees, they should be multiplied by 180 and divided by <math id="S10.p4.m4" class="ltx_Math" alttext="\pi" display="inline"><mi>π</mi></math>.</p>
+</div>
+<div id="S10.p5" class="ltx_para">
+<p class="ltx_p">There are some functions that simplify trigonometric
+expressions. Function <span class="ltx_text" style="color:#000099;">trigexpand</span> expands sines and cosines of
+sums of angles:</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i56)</span> <span class="ltx_text" style="color:#000099;">trigexpand(sin(u+v)*cos(u)^3);</span>
+(%o56) <math id="S10.p5.m1" class="ltx_Math" alttext="\cos^{3}u\,\left(\cos u\,\sin v+\sin u\,\cos v\right)" display="inline"><mrow><mrow><msup><mi>cos</mi><mn>3</mn></msup><mspace width=0.11em /><mi>u</mi></mrow><mspace width=0.166em /><mrow><mo>(</mo><mrow><mrow><mrow><mi>cos</mi><mspace width=0.11em /><mi>u</mi></mrow><mspace width=0.166em /><mrow><mi>sin</mi><mspace width=0.11em /><mi>v</mi></mrow></mrow><mo>+</mo><mrow><mrow><mi>sin</mi><mspace width=0.11em /><mi>u</mi></mrow><mspace width=0.166em /><mrow><mi>cos</mi><mspace width=0.11em /><mi>v</mi></mrow></mrow></mrow><mo>)</mo></mrow></mrow></math></p>
+</blockquote>
+</div>
+<div id="S10.p6" class="ltx_para">
+<p class="ltx_p">And function <span class="ltx_text" style="color:#000099;">trigreduce</span> tries to convert an expression
+into a sum of terms with a single trigonometric function:
+</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i57)</span> <span class="ltx_text" style="color:#000099;">trigreduce(%);</span>
+(%o57) <math id="S10.p6.m1" class="ltx_Math" alttext="\dfrac{\sin\left(v+4\,u\right)+\sin\left(v-2\,u\right)}{8}+\dfrac{3\,\sin\left%
+(v+2\,u\right)+3\,\sin v}{8}" display="inline"><mrow><mstyle displaystyle="true"><mfrac><mrow><mrow><mi>sin</mi><mspace width=0.11em /><mrow><mo>(</mo><mrow><mi>v</mi><mo>+</mo><mrow><mn>4</mn><mspace width=0.166em /><mi>u</mi></mrow></mrow><mo>)</mo></mrow></mrow><mo>+</mo><mrow><mi>sin</mi><mspace width=0.11em /><mrow><mo>(</mo><mrow><mi>v</mi><mo>−</mo><mrow><mn>2</mn><mspace width=0.166em /><mi>u</mi></mrow></mrow><mo>)</mo></mrow></mrow></mrow><mn>8</mn></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><mrow><mrow><mn>3</mn><mspace width=0.166em /><mrow><mi>sin</mi><mspace width=0.11em /><mrow><mo>(</mo><mrow><mi>v</mi><mo>+</mo><mrow><mn>2</mn><mspace width=0.166em /><mi>u</mi></mrow></mrow><mo>)</mo></mrow></mrow></mrow><mo>+</mo><mrow><mn>3</mn><mspace width=0.166em /><mrow><mi>sin</mi><mspace width=0.11em /><mi>v</mi></mrow></mrow></mrow><mn>8</mn></mfrac></mstyle></mrow></math></p>
+</blockquote>
+</div>
+<div id="S10.p7" class="ltx_para">
+<p class="ltx_p">Function <span class="ltx_text" style="color:#000099;">trigsimp</span> applies the trigonometric identity
+<math id="S10.p7.m1" class="ltx_Math" alttext="\sin^{2}x+\cos^{2}x=1" display="inline"><mrow><mrow><mrow><msup><mi>sin</mi><mn>2</mn></msup><mspace width=0.11em /><mi>x</mi></mrow><mo>+</mo><mrow><msup><mi>cos</mi><mn>2</mn></msup><mspace width=0.11em /><mi>x</mi></mrow></mrow><mo>=</mo><mn>1</mn></mrow></math> and relations among trigonometric functions,
+trying to write the expression using only sines and cosines, as in the
+following example</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i58)</span> <span class="ltx_text" style="color:#000099;">tan(x)*sec(x)^2 + cos(x)*(1 - sin(x)^2);</span>
+(%o58) <math id="S10.p7.m2" class="ltx_Math" alttext="\sec^{2}x\,\tan x+\cos x\,\left(1-\sin^{2}x\right)" display="inline"><mrow><mrow><mrow><msup><mi>sec</mi><mn>2</mn></msup><mspace width=0.11em /><mi>x</mi></mrow><mspace width=0.166em /><mrow><mi>tan</mi><mspace width=0.11em /><mi>x</mi></mrow></mrow><mo>+</mo><mrow><mrow><mi>cos</mi><mspace width=0.11em /><mi>x</mi></mrow><mspace width=0.166em /><mrow><mo>(</mo><mrow><mn>1</mn><mo>−</mo><mrow><msup><mi>sin</mi><mn>2</mn></msup><mspace width=0.11em /><mi>x</mi></mrow></mrow><mo>)</mo></mrow></mrow></mrow></math>
+<span class="ltx_text" style="color:#CC3333;">(%i59)</span> <span class="ltx_text" style="color:#000099;">trigsimp(%);</span>
+(%o59)   <math id="S10.p7.m3" class="ltx_Math" alttext="\dfrac{\sin x+\cos^{6}x}{\cos^{3}x}" display="inline"><mstyle displaystyle="true"><mfrac><mrow><mrow><mi>sin</mi><mspace width=0.11em /><mi>x</mi></mrow><mo>+</mo><mrow><msup><mi>cos</mi><mn>6</mn></msup><mspace width=0.11em /><mi>x</mi></mrow></mrow><mrow><msup><mi>cos</mi><mn>3</mn></msup><mspace width=0.11em /><mi>x</mi></mrow></mfrac></mstyle></math></p>
+</blockquote>
+</div>
+</section>
+<section id="S11" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">11 </span>Calculus</h2>
+
+<div id="S11.p1" class="ltx_para">
+<p class="ltx_p">The simplest way to represent mathematical functions in Maxima is by
+using expressions. For example, to represent function
+<math id="S11.p1.m1" class="ltx_Math" alttext="f(x)=3\,x^{2}-5\,x" display="inline"><mrow><mrow><mi>f</mi><mspace width=0.166em /><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mn>3</mn><mspace width=0.166em /><msup><mi>x</mi><mn>2</mn></msup></mrow><mo>−</mo><mrow><mn>5</mn><mspace width=0.166em /><mi>x</mi></mrow></mrow></mrow></math>, the expression on the right-hand-side is linked
+to variable <math id="S11.p1.m2" class="ltx_Math" alttext="f" display="inline"><mi>f</mi></math></p>
+</div>
+<div id="S11.p2" class="ltx_para">
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i60)</span> <span class="ltx_text" style="color:#000099;">f: 3*x^2 - 5*x;
+<br class="ltx_break"></span>
+(%o60)   <math id="S11.p2.m1" class="ltx_Math" alttext="3\,x^{2}-5\,x" display="inline"><mrow><mrow><mn>3</mn><mspace width=0.166em /><msup><mi>x</mi><mn>2</mn></msup></mrow><mo>−</mo><mrow><mn>5</mn><mspace width=0.166em /><mi>x</mi></mrow></mrow></math></p>
+</blockquote>
+</div>
+<div id="S11.p3" class="ltx_para">
+<p class="ltx_p">The derivative of <math id="S11.p3.m1" class="ltx_Math" alttext="f" display="inline"><mi>f</mi></math> with respect to <math id="S11.p3.m2" class="ltx_Math" alttext="x" display="inline"><mi>x</mi></math> is computed using function
+<span class="ltx_text" style="color:#000099;">diff</span></p>
+</div>
+<div id="S11.p4" class="ltx_para">
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i61)</span> <span class="ltx_text" style="color:#000099;">diff (f, x);
+<br class="ltx_break"></span>
+(%o61)   <math id="S11.p4.m1" class="ltx_Math" alttext="6\,x-5" display="inline"><mrow><mrow><mn>6</mn><mspace width=0.166em /><mi>x</mi></mrow><mo>−</mo><mn>5</mn></mrow></math></p>
+</blockquote>
+</div>
+<div id="S11.p5" class="ltx_para">
+<p class="ltx_p">and the antiderivative with respect to <math id="S11.p5.m1" class="ltx_Math" alttext="x" display="inline"><mi>x</mi></math> is obtained with
+<span class="ltx_text" style="color:#000099;">integrate</span></p>
+</div>
+<div id="S11.p6" class="ltx_para">
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i62)</span> <span class="ltx_text" style="color:#000099;">integrate (f, x);
+<br class="ltx_break"></span>
+(%o62)   <math id="S11.p6.m1" class="ltx_Math" alttext="x^{3}-\dfrac{5\,x^{2}}{2}" display="inline"><mrow><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mstyle displaystyle="true"><mfrac><mrow><mn>5</mn><mspace width=0.166em /><msup><mi>x</mi><mn>2</mn></msup></mrow><mn>2</mn></mfrac></mstyle></mrow></math></p>
+</blockquote>
+</div>
+<div id="S11.p7" class="ltx_para">
+<p class="ltx_p">The value of the function at a point, for instance <math id="S11.p7.m1" class="ltx_Math" alttext="f(1)" display="inline"><mrow><mi>f</mi><mspace width=0.166em /><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></mrow></math>,
+can be obtained substituting <math id="S11.p7.m2" class="ltx_Math" alttext="x" display="inline"><mi>x</mi></math> by 1 using
+<span class="ltx_text" style="color:#000099;">subst</span>, or with function <span class="ltx_text" style="color:#000099;">at</span></p>
+</div>
+<div id="S11.p8" class="ltx_para">
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i63)</span> <span class="ltx_text" style="color:#000099;">at (f, x=1);
+<br class="ltx_break"></span>
+(%o63)   <math id="S11.p8.m1" class="ltx_Math" alttext="-2" display="inline"><mrow><mo>−</mo><mn>2</mn></mrow></math></p>
+</blockquote>
+</div>
+<div id="S11.p9" class="ltx_para">
+<p class="ltx_p">Maxima also has its own syntax to define general functions, which is
+the subject of a later section, and which can be used when the
+function’s result is an expression. For example, the same function
+<math id="S11.p9.m1" class="ltx_Math" alttext="f(x)=3\,x^{2}-5\,x" display="inline"><mrow><mrow><mi>f</mi><mspace width=0.166em /><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mn>3</mn><mspace width=0.166em /><msup><mi>x</mi><mn>2</mn></msup></mrow><mo>−</mo><mrow><mn>5</mn><mspace width=0.166em /><mi>x</mi></mrow></mrow></mrow></math> could have also be defined as follows</p>
+</div>
+<div id="S11.p10" class="ltx_para">
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i64)</span> <span class="ltx_text" style="color:#000099;">f(x) := 3*x^2 - 5*x;
+<br class="ltx_break"></span>
+(%o64)   <math id="S11.p10.m1" class="ltx_Math" alttext="f(x):=3\,x^{2}-5\,x" display="inline"><mrow><mrow><mi>f</mi><mspace width=0.166em /><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>:=</mo><mrow><mrow><mn>3</mn><mspace width=0.166em /><msup><mi>x</mi><mn>2</mn></msup></mrow><mo>−</mo><mrow><mn>5</mn><mspace width=0.166em /><mi>x</mi></mrow></mrow></mrow></math></p>
+</blockquote>
+</div>
+<div id="S11.p11" class="ltx_para">
+<p class="ltx_p">The value of the function at a point, for instance <math id="S11.p11.m1" class="ltx_Math" alttext="x=1" display="inline"><mrow><mi>x</mi><mo>=</mo><mn>1</mn></mrow></math>, and the
+function’s derivative and antiderivative could then be obtained in
+this way</p>
+</div>
+<div id="S11.p12" class="ltx_para">
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i65)</span> <span class="ltx_text" style="color:#000099;">f(1);
+<br class="ltx_break"></span>
+(%o65)   <math id="S11.p12.m1" class="ltx_Math" alttext="-2" display="inline"><mrow><mo>−</mo><mn>2</mn></mrow></math>
+<br class="ltx_break">
+<span class="ltx_text" style="color:#CC3333;">(%i66)</span> <span class="ltx_text" style="color:#000099;">diff (f(x), x);
+<br class="ltx_break"></span>
+(%o66)   <math id="S11.p12.m2" class="ltx_Math" alttext="6\,x-5" display="inline"><mrow><mrow><mn>6</mn><mspace width=0.166em /><mi>x</mi></mrow><mo>−</mo><mn>5</mn></mrow></math>
+<br class="ltx_break">
+<span class="ltx_text" style="color:#CC3333;">(%i67)</span> <span class="ltx_text" style="color:#000099;">integrate (f(x), x);
+<br class="ltx_break"></span>
+(%o67)   <math id="S11.p12.m3" class="ltx_Math" alttext="x^{3}-\dfrac{5\,x^{2}}{2}" display="inline"><mrow><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mstyle displaystyle="true"><mfrac><mrow><mn>5</mn><mspace width=0.166em /><msup><mi>x</mi><mn>2</mn></msup></mrow><mn>2</mn></mfrac></mstyle></mrow></math></p>
+</blockquote>
+</div>
+<div id="S11.p13" class="ltx_para">
+<p class="ltx_p">Notice that in <span class="ltx_text" style="color:#CC3333;">(%i66)</span> and <span class="ltx_text" style="color:#CC3333;">(%67)</span> Maxima would first get
+the output of function <math id="S11.p13.m1" class="ltx_Math" alttext="f" display="inline"><mi>f</mi></math> when the its input is <math id="S11.p13.m2" class="ltx_Math" alttext="x" display="inline"><mi>x</mi></math>, leading to the
+result <math id="S11.p13.m3" class="ltx_Math" alttext="3\,x^{2}-5\,x" display="inline"><mrow><mrow><mn>3</mn><mspace width=0.166em /><msup><mi>x</mi><mn>2</mn></msup></mrow><mo>−</mo><mrow><mn>5</mn><mspace width=0.166em /><mi>x</mi></mrow></mrow></math> and then the derivative or antiderivative are
+computed. Therefore, <span class="ltx_text" style="color:#CC3333;">(%i66)</span> does not really differentiate
+Maxima’s function <math id="S11.p13.m4" class="ltx_Math" alttext="f" display="inline"><mi>f</mi></math>, but rather the expression associated to it. And
+similarly in <span class="ltx_text" style="color:#CC3333;">(%67)</span></p>
+</div>
+<div id="S11.p14" class="ltx_para">
+<p class="ltx_p">When the output of Maxima’s function <math id="S11.p14.m1" class="ltx_Math" alttext="f(x)" display="inline"><mrow><mi>f</mi><mspace width=0.166em /><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow></math> is not an expression, (or
+a list of expressions), <span class="ltx_text" style="color:#000099;">diff</span> and <span class="ltx_text" style="color:#000099;">integrate</span> return the
+result of <math id="S11.p14.m2" class="ltx_Math" alttext="f(x)" display="inline"><mrow><mi>f</mi><mspace width=0.166em /><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow></math> without being differentiated or integrate, as in the
+following example</p>
+</div>
+<div id="S11.p15" class="ltx_para">
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i68)</span> <span class="ltx_text" style="color:#000099;">h(x) := if x &lt; 0 then x/2 else x^2;
+<br class="ltx_break"></span>
+(%o68)   <math id="S11.p15.m1" class="ltx_Math" alttext="\mathrm{h}(x):=\mathbf{if}\;x&lt;0\;\mathbf{then}\;\dfrac{x}{2}\;\mathbf{else}\;x%
+^{2}" display="inline"><mrow><mrow><mi mathvariant="normal">h</mi><mspace width=0.166em /><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mo>:=</mo><mrow><mi>𝐢𝐟</mi><mspace width=0.166em /><mi>x</mi></mrow><mo>&lt;</mo><mrow><mn>0</mn><mspace width=0.166em /><mi>𝐭𝐡𝐞𝐧</mi><mspace width=0.166em /><mstyle displaystyle="true"><mfrac><mi>x</mi><mn>2</mn></mfrac></mstyle><mspace width=0.166em /><mi>𝐞𝐥𝐬𝐞</mi><mspace width=0.166em /><msup><mi>x</mi><mn>2</mn></msup></mrow></mrow></math>
+<br class="ltx_break">
+<span class="ltx_text" style="color:#CC3333;">(%i69)</span> <span class="ltx_text" style="color:#000099;">diff (h(x), x);
+<br class="ltx_break"></span>
+(%o69) <math id="S11.p15.m2" class="ltx_Math" alttext="\dfrac{\mathrm{d}}{\mathrm{d}\,x}\,\left(\mathbf{if}\;x&lt;0\;\mathbf{then}\;%
+\dfrac{x}{2}\;\mathbf{else}\;x^{2}\right)" display="inline"><mrow><mstyle displaystyle="true"><mfrac><mi mathvariant="normal">d</mi><mrow><mi mathvariant="normal">d</mi><mspace width=0.166em /><mi>x</mi></mrow></mfrac></mstyle><mspace width=0.166em /><mrow><mo>(</mo><mrow><mrow><mi>𝐢𝐟</mi><mspace width=0.166em /><mi>x</mi></mrow><mo>&lt;</mo><mrow><mn>0</mn><mspace width=0.166em /><mi>𝐭𝐡𝐞𝐧</mi><mspace width=0.166em /><mstyle displaystyle="true"><mfrac><mi>x</mi><mn>2</mn></mfrac></mstyle><mspace width=0.166em /><mi>𝐞𝐥𝐬𝐞</mi><mspace width=0.166em /><msup><mi>x</mi><mn>2</mn></msup></mrow></mrow><mo>)</mo></mrow></mrow></math></p>
+</blockquote>
+</div>
+<div id="S11.p16" class="ltx_para">
+<p class="ltx_p">When given an expression with several variables, <span class="ltx_text" style="color:#000099;">diff</span> returns
+a partial derivative with respect to the differentiating variable and
+<span class="ltx_text" style="color:#000099;">integrate</span> assumes constant values for the variables not being
+integrated</p>
+</div>
+<div id="S11.p17" class="ltx_para">
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i70)</span> <span class="ltx_text" style="color:#000099;">diff (x^2*y-y^3, x);
+<br class="ltx_break"></span>
+(%o70)   <math id="S11.p17.m1" class="ltx_Math" alttext="2\,x\,y" display="inline"><mrow><mn>2</mn><mspace width=0.166em /><mi>x</mi><mspace width=0.166em /><mi>y</mi></mrow></math></p>
+</blockquote>
+</div>
+<div id="S11.p18" class="ltx_para">
+<p class="ltx_p">Function <span class="ltx_text" style="color:#000099;">integrate</span> can also be used to computed definite
+integrals, as in the following example</p>
+</div>
+<div id="S11.p19" class="ltx_para">
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i71)</span> <span class="ltx_text" style="color:#000099;">integrate (1/(1 + x^2), x, 0, 1);</span>
+(%o71)   <math id="S11.p19.m1" class="ltx_Math" alttext="\dfrac{\pi}{4}" display="inline"><mstyle displaystyle="true"><mfrac><mi>π</mi><mn>4</mn></mfrac></mstyle></math>
+<br class="ltx_break"></p>
+</blockquote>
+</div>
+</section>
+<section id="S12" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">12 </span>Plots</h2>
+
+<div id="S12.p1" class="ltx_para">
+<p class="ltx_p">The function <span class="ltx_text" style="color:#000099;">plot2d</span> is used to plot curves or points in two
+dimensions. For example, the plot
+of the polynomial <math id="S12.p1.m1" class="ltx_Math" alttext="t^{3}+t^{2}-2\,t" display="inline"><mrow><mrow><msup><mi>t</mi><mn>3</mn></msup><mo>+</mo><msup><mi>t</mi><mn>2</mn></msup></mrow><mo>−</mo><mrow><mn>2</mn><mspace width=0.166em /><mi>t</mi></mrow></mrow></math>, for values of <math id="S12.p1.m2" class="ltx_Math" alttext="t" display="inline"><mi>t</mi></math>
+between <math id="S12.p1.m3" class="ltx_Math" alttext="-3" display="inline"><mrow><mo>−</mo><mn>3</mn></mrow></math> and <math id="S12.p1.m4" class="ltx_Math" alttext="2" display="inline"><mn>2</mn></math>, can be done with the following command</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i72)</span> <span class="ltx_text" style="color:#000099;">plot2d (t^3+t^2-2*t,[t,-3,2]))$
+<br class="ltx_break"></span></p>
+</blockquote>
+</div>
+<figure id="S12.F2" class="ltx_figure"><img src="img/plot2d_curve.png" style="width:42.609em;max-width:100%;height:auto" id="S12.F2.g1" class="ltx_graphics ltx_centering" alt="Plot of the polynomial ">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 2: </span>Plot of the polynomial <math id="S12.F2.m2" class="ltx_Math" alttext="t^{3}+t^{2}-2\,t" display="inline"><mrow><mrow><msup><mi>t</mi><mn>3</mn></msup><mo>+</mo><msup><mi>t</mi><mn>2</mn></msup></mrow><mo>−</mo><mrow><mn>2</mn><mspace width=0.166em /><mi>t</mi></mrow></mrow></math>.</figcaption>
+</figure>
+<div id="S12.p2" class="ltx_para">
+<p class="ltx_p">The result of <code class="ltx_verbatim ltx_font_typewriter">(%o72)</code>, shown in Figure <a href="#S12.F2" title="Figure 2 ‣ 12 Plots ‣ A Maxima tutorial" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2</span></a>, will
+appear in a separate window. Moving the mouse over the plot, the
+coordinates of the point where the cursor is are shown.</p>
+</div>
+<div id="S12.p3" class="ltx_para">
+<p class="ltx_p">The expression to plot can also be an equation with 2 variables. In
+that case it is necessary to give ranges of values for those two
+variables, as in the following examples that plots the ellipse shown
+in Figure <a href="#S12.F3" title="Figure 3 ‣ 12 Plots ‣ A Maxima tutorial" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3</span></a>.</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i73)</span> <span class="ltx_text" style="color:#000099;">plot2d(x^2/9+y^2/4=1,[x,-4,4],[y,-3,3]);</span></p>
+</blockquote>
+</div>
+<figure id="S12.F3" class="ltx_figure"><img src="img/plot2d_implicit.png" style="width:42.609em;max-width:100%;height:auto" id="S12.F3.g1" class="ltx_graphics ltx_centering" alt="Plot of the ellipse ">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 3: </span>Plot of the ellipse <math id="S12.F3.m2" class="ltx_Math" alttext="\dfrac{x^{2}}{9}+\dfrac{y^{2}}{4}=1" display="inline"><mrow><mrow><mstyle displaystyle="true"><mfrac><msup><mi>x</mi><mn>2</mn></msup><mn>9</mn></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><msup><mi>y</mi><mn>2</mn></msup><mn>4</mn></mfrac></mstyle></mrow><mo>=</mo><mn>1</mn></mrow></math>.</figcaption>
+</figure>
+<div id="S12.p4" class="ltx_para">
+<p class="ltx_p">To plot several functions in the same window, those functions are
+placed inside a list. For instance:</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%74)</span> <span class="ltx_text" style="color:#000099;">plot2d ( [sin(x), cos(x)], [x, -2*%pi, 2*%pi]);</span></p>
+</blockquote>
+</div>
+<div id="S12.p5" class="ltx_para">
+<p class="ltx_p">The resulting plot is shown in Figure <a href="#S12.F4" title="Figure 4 ‣ 12 Plots ‣ A Maxima tutorial" class="ltx_ref"><span class="ltx_text ltx_ref_tag">4</span></a>.</p>
+</div>
+<figure id="S12.F4" class="ltx_figure"><img src="img/plot2d_multiple.png" style="width:42.609em;max-width:100%;height:auto" id="S12.F4.g1" class="ltx_graphics ltx_centering" alt="Plot of functions sin and cosine.">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 4: </span>Plot of functions sin and cosine.</figcaption>
+</figure>
+<div id="S12.p6" class="ltx_para">
+<p class="ltx_p">To show several points in a plot, the coordinates of the points can be
+given as lists, within another, with lists of points in a
+two-coordinate system. The two coordinates of each point can be given
+as a list, inside another list with all the points. For example, to
+show the three points (1.1, 5), (1.9, 7) and (3.2,9) in a plot, the
+points coordinates can be placed inside a list linked to the symbol
+<span class="ltx_text" style="color:#000099;">p</span>:</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i75)</span> <span class="ltx_text" style="color:#000099;">p: [[1.1, 5], [1.9, 7], [3.2, 9]]$</span></p>
+</blockquote>
+</div>
+<div id="S12.p7" class="ltx_para">
+<p class="ltx_p">To create the plot, it is necessary to give <span class="ltx_text" style="color:#000099;">plot2d</span> a list that
+starts with the keyword <span class="ltx_text" style="color:#000099;">discrete</span>, followed by the list of
+points. In this case it is not mandatory to specify an interval of
+values for the variable in the horizontal axis:</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i76)</span> <span class="ltx_text" style="color:#000099;">plot2d ( [discrete, p] );</span></p>
+</blockquote>
+</div>
+<div id="S12.p8" class="ltx_para">
+<p class="ltx_p">The plot is shown in Figure <a href="#S12.F5" title="Figure 5 ‣ 12 Plots ‣ A Maxima tutorial" class="ltx_ref"><span class="ltx_text ltx_ref_tag">5</span></a>.</p>
+</div>
+<figure id="S12.F5" class="ltx_figure"><img src="img/plot2d_discrete.png" style="width:42.609em;max-width:100%;height:auto" id="S12.F5.g1" class="ltx_graphics ltx_centering" alt="Plot of a line defined by three points.">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 5: </span>Plot of a line defined by three points.</figcaption>
+</figure>
+<div id="S12.p9" class="ltx_para">
+<p class="ltx_p">By default, the points are linked by line segments; to show only the
+points, without line segments, the option <span class="ltx_text" style="color:#000099;">[style, points]</span> is
+used.</p>
+</div>
+<div id="S12.p10" class="ltx_para">
+<p class="ltx_p">Command plot3d is used to plot functions of two variables. For
+example, the following command creates the plot shown in
+Figure <span class="ltx_ref ltx_missing_label ltx_ref_self">LABEL:fig:plot3d.pdf</span>:</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i77)</span> <span class="ltx_text" style="color:#000099;">plot3d ( sin(x)*sin(y), [x, 0, 2*%pi], [y, 0, 2*%pi]);</span></p>
+</blockquote>
+</div>
+<figure id="S12.F6" class="ltx_figure"><img src="img/plot3d.png" style="width:42.609em;max-width:100%;height:auto" id="S12.F6.g1" class="ltx_graphics ltx_centering" alt="Plot of function ">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 6: </span>Plot of function <math id="S12.F6.m2" class="ltx_Math" alttext="\sin(x)\sin(y)" display="inline"><mrow><mrow><mi>sin</mi><mspace width=0.11em /><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mrow><mspace width=0.166em /><mrow><mi>sin</mi><mspace width=0.11em /><mrow><mo stretchy="false">(</mo><mi>y</mi><mo stretchy="false">)</mo></mrow></mrow></mrow></math>.</figcaption>
+</figure>
+<div id="S12.p11" class="ltx_para">
+<p class="ltx_p">Moving the mouse over the plot, while its left-side button is pressed,
+the surface will be rotated showing how it looks from different sides.
+The command plot3d also accepts a list of several functions to be
+plotted in the same window. It is also possible to give a list o 3
+functions of 2 parameters, that define the 3 components of a position
+vector that describes a surface (parametric plot).</p>
+</div>
+<div id="S12.p12" class="ltx_para">
+<p class="ltx_p">Both <span class="ltx_text" style="color:#000099;">plot2d</span> and <span class="ltx_text" style="color:#000099;">plot3d</span> accept the options <span class="ltx_text" style="color:#000099;">pdf_file</span>, <span class="ltx_text" style="color:#000099;">png_file</span> and
+<span class="ltx_text" style="color:#000099;">ps_file</span> which are used to save the plot into a file in PDF, PNG or
+PostScript format. For instance, the following command saves the plot
+produced by command <code class="ltx_verbatim ltx_font_typewriter">(\%i74)</code> into a PNG file:</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i78)</span> <span class="ltx_text" style="color:#000099;">plot2d ( [sin(x), cos(x)], [x, -2*%pi, 2*%pi], [png_file,"./plot1.png"]);
+<br class="ltx_break"></span>
+(%o78)   [./plot1.png]</p>
+</blockquote>
+</div>
+<div id="S12.p13" class="ltx_para">
+<p class="ltx_p">The result shows a list with the files created, in this case only
+one. The initial characters “./” indicate that the file named
+“plot1.png” is located in the current directory where Maxima is
+running. If you don’t give any initial characters “./” and you
+finished the plot2d command with a semicolon, the output will show you
+in which directory the file was placed, in a default directory.</p>
+</div>
+<div id="S12.p14" class="ltx_para">
+<p class="ltx_p">There are many other options for <span class="ltx_text" style="color:#000099;">plot2d</span> and <span class="ltx_text" style="color:#000099;">plot3d</span>, as
+well as other graphic functions, which are explained in the Maxima
+manual.</p>
+</div>
+</section>
+<section id="S13" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">13 </span>Functions</h2>
+
+<div id="S13.p1" class="ltx_para">
+<p class="ltx_p">In Maxima what is usually referred to as a function is a program with
+some input arguments and an output. Those functions can be defined
+using Maxima’s syntax or using Lisp commands. It is even possible to
+redefine any of the functions mentioned in previous sections; for
+instance, if in the Maxima version being used some function has a bug
+that has already been fixed in a more recent version, it is possible
+to load the new version of the function and, unless it introduces
+conflicts with other older functions, it should work correctly.</p>
+</div>
+<div id="S13.p2" class="ltx_para">
+<p class="ltx_p">Maxima functions are normally called by giving their name followed by
+its input inside parenthesis, as in <span class="ltx_text" style="color:#000099;">diff(cos(x),x)</span>. Functions
+with only one input argument can also be defined to be used just by
+giving their name before or after their argument, as in 34! which
+computes the factorial of 34; the name of the function is ! and 34 is
+its input argument (see documentation for <span class="ltx_text" style="color:#000099;">prefix</span> and
+<span class="ltx_text" style="color:#000099;">potfix</span>). And functions of two input arguments can be defined to
+be used by just giving their name in between the two arguments, as in
+<span class="ltx_text" style="color:#000099;">3*7</span> (see documentation for <span class="ltx_text" style="color:#000099;">infix</span>).</p>
+</div>
+<div id="S13.p3" class="ltx_para">
+<p class="ltx_p">As a first example, let us create our own version of the factorial
+function, which we will name <span class="ltx_text" style="color:#000099;">fact</span>:</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i79)</span> <span class="ltx_text" style="color:#000099;">fact(n) := if n &lt;= 1 then 1 else n*fact(n-1);
+<br class="ltx_break"></span>
+(%o79)   <math id="S13.p3.m1" class="ltx_Math" alttext="\mathrm{fact}(n):=\mathbf{if}\,n\leq 1\,\mathbf{then}\,1\,\mathbf{else}\,n\,%
+\mathrm{fact}(n-1)" display="inline"><mrow><mrow><mi>fact</mi><mspace width=0.166em /><mrow><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow></mrow><mo>:=</mo><mrow><mi>𝐢𝐟</mi><mspace width=0.166em /><mi>n</mi></mrow><mo>≤</mo><mrow><mn>1</mn><mspace width=0.166em /><mi>𝐭𝐡𝐞𝐧</mi><mspace width=0.166em /><mn> 1</mn><mspace width=0.166em /><mi>𝐞𝐥𝐬𝐞</mi><mspace width=0.166em /><mi>n</mi><mspace width=0.166em /><mi>fact</mi><mspace width=0.166em /><mrow><mo stretchy="false">(</mo><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><mo stretchy="false">)</mo></mrow></mrow></mrow></math>
+<br class="ltx_break">
+<span class="ltx_text" style="color:#CC3333;">(%i80)</span> <span class="ltx_text" style="color:#000099;">fact(6);
+<br class="ltx_break"></span>
+(%o80) 720</p>
+</blockquote>
+</div>
+<div id="S13.p4" class="ltx_para">
+<p class="ltx_p">It is not necessary to use any command to return the output, since the
+output of the last command in the function will become the output of
+the function. A function can call itself recursively as it has been
+done in this example.</p>
+</div>
+<div id="S13.p5" class="ltx_para">
+<p class="ltx_p">Several Maxima commands can be grouped together by placing them inside
+parenthesis and separating them by commas. Those commands are run
+sequentially and the result of the last command will be the result of
+the whole group. Each command can be indented and can expand more than
+one line. The following example defines a function that adds all the
+arguments given to it:</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i81)</span> <span class="ltx_text" style="color:#000099;">add([v]) := block([s: 0],
+<br class="ltx_break"></span>
+  <span class="ltx_text" style="color:#000099;">for i:1 thru length(v) do
+<br class="ltx_break"></span>
+    <span class="ltx_text" style="color:#000099;">(s : s + v[i]),
+<br class="ltx_break"></span>
+  <span class="ltx_text" style="color:#000099;">s)$
+<br class="ltx_break"></span>
+<span class="ltx_text" style="color:#CC3333;">(%i82)</span> <span class="ltx_text" style="color:#000099;">add (45,2^3);
+<br class="ltx_break"></span>
+(%o82)   53
+<br class="ltx_break">
+<span class="ltx_text" style="color:#CC3333;">(%i83)</span> <span class="ltx_text" style="color:#000099;">add (3,log(x),5+x);
+<br class="ltx_break"></span>
+(%o83)   <math id="S13.p5.m1" class="ltx_Math" alttext="\log x+x+8" display="inline"><mrow><mrow><mi>log</mi><mspace width=0.11em /><mi>x</mi></mrow><mo>+</mo><mi>x</mi><mo>+</mo><mn>8</mn></mrow></math></p>
+</blockquote>
+</div>
+<div id="S13.p6" class="ltx_para">
+<p class="ltx_p">A list was used as the argument for the function, which makes the
+function accept any number of input parameters (or none) and all the
+arguments given will be placed in a list linked to the local symbol
+<span class="ltx_text" style="color:#000099;">v</span>. Function <span class="ltx_text" style="color:#000099;">block</span> was used to define another local
+symbol <span class="ltx_text" style="color:#000099;">s</span>, initially linked to the value 0, which by the end of
+the function will be linked to the sum of the input variables. The
+first element given to <span class="ltx_text" style="color:#000099;">block</span> must be a list, with the names of
+symbols that are to be considered local to the function, each one with
+or without an initial value, and the remaining commands after that
+list define the function. The function <span class="ltx_text" style="color:#000099;">for</span> iterates the local
+variable <span class="ltx_text" style="color:#000099;">i</span> —in this case from 1 up to the length of the
+list— with increments, by default, equal to 1 (option <span class="ltx_text" style="color:#000099;">step</span>
+can be given to modify the default value of that increment). After the
+<span class="ltx_text" style="color:#000099;">for</span> loop, we gave the name of variable <span class="ltx_text" style="color:#000099;">s</span>, to make it
+become the output of the function.</p>
+</div>
+<div id="S13.p7" class="ltx_para">
+<p class="ltx_p">When an unknown function is used no errors are triggered; instead, the
+unknown function is echoed in the output; for example:</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i84)</span> <span class="ltx_text" style="color:#000099;">2*4*maximum(3,5,2);
+<br class="ltx_break"></span>
+(%o84)   <math id="S13.p7.m1" class="ltx_Math" alttext="8\,\mathrm{maximum}(3,5,2)" display="inline"><mrow><mn>8</mn><mspace width=0.166em /><mi>maximum</mi><mspace width=0.166em /><mrow><mo stretchy="false">(</mo><mn>3</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></mrow></math></p>
+</blockquote>
+</div>
+<div id="S13.p8" class="ltx_para">
+<p class="ltx_p">Most of Maxima functions behave the same way when they fail to give
+a result. For instance,</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i85)</span> <span class="ltx_text" style="color:#000099;">log(x^2+3+x);
+<br class="ltx_break"></span>
+(%o85)   <math id="S13.p8.m1" class="ltx_Math" alttext="\log\left(x\^{}{2}+x+3\right)" display="inline"><mrow><mi>log</mi><mspace width=0.11em /><mrow><mo>(</mo><mrow><mrow><mi>x</mi><mspace width=0.166em /><mtext>^</mtext><mspace width=0.166em /><mn>2</mn></mrow><mo>+</mo><mi>x</mi><mo>+</mo><mn>3</mn></mrow><mo>)</mo></mrow></mrow></math></p>
+</blockquote>
+</div>
+<div id="S13.p9" class="ltx_para">
+<p class="ltx_p">That behavior is very useful, because it makes it possible to
+change the value of the arguments later on and to reevaluate
+the function. For example, substituting
+the symbol <span class="ltx_text" style="color:#000099;">x</span> in this last result by the
+floating-point number 2.0, the logarithm
+would then be computed and its numerical value shown:</p>
+<blockquote class="ltx_quote ltx_role_verse">
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i86)</span> <span class="ltx_text" style="color:#000099;">subst (x=2.0, %);
+<br class="ltx_break"></span>
+(%o86)   2.197</p>
+</blockquote>
+</div>
+</section><div class="ltx_rdf" about="" property="dcterms:creator" content="Jaime E. Villate"></div>
+<div class="ltx_rdf" about="" property="dcterms:subject" content="Maxima,CAS,Computer Algebra Systems,Free Software"></div>
+<div class="ltx_rdf" about="" property="dcterms:subject" content="Computer Algebra"></div>
+<div class="ltx_rdf" about="" property="dcterms:title" content="A Maxima tutorial"></div>
+
+</article>
+</div>
+<footer class="ltx_page_footer">
+<p>&copy; 2023, Jaime E. Villate</p>
+<p>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a></p>
+<div class="ltx_page_logo">Generated  on Sat Dec  9 12:51:31 2023 by <a href="http://dlmf.nist.gov/LaTeXML/">LaTeXML </a>
+</div></footer>
+</div>
+</body>
+</html>
