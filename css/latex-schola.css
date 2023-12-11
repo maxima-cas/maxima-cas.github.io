@@ -39,24 +39,24 @@ body { margin: 0; }
 nav {
     margin: 0; position: -webkit-sticky; position: sticky; top: 0;
     font-size: 0.8em; font-family: Arial, Helvetica, sans-serif;
-    color: #000; background-color: #bdbab5; border-bottom: 2px solid #f18458;
+    color: #000; background-color: #bdbab5; border-bottom: 2px solid #a4b7d8;
     width: 100%; overflow: hidden; }
 nav span {
     float: left; display: block; color: #000000; text-align: center;
     padding: 3px 6px; }
 nav a {
-    float:left; display: block; color: #c96201; padding: 3px 7.5px;
+    float:left; display: block; color: #6633ff; padding: 3px 7.5px;
     text-align: center; }
-nav a:hover { background-color: #828282; color: #fabf77; }
-a { color: #c96201; text-decoration: none; }
-a:hover { background-color: #828282; color: #fabf77; }
+nav a:hover { background-color: #334669; color: #dee7f5; }
+a { color: blue; text-decoration: none; }
+a:hover { background-color: #334669; color: #dee7f5; }
 article { padding-bottom: 1em; }
 footer {
     margin: 0; width: 100%; padding-top: 1.5em; padding-bottom: 1.5em;
     clear: both; text-align: center; font-family: Arial, Helvetica, sans-serif;
-    border-top: 2px solid  #f18458; color: #828282;
+    border-top: 2px solid  #a4b7d8; color: #334669;
     background-color: #303030; }
-footer a { color: #f18458}
+footer a { color: #a4b7d8}
 div.ltx_theorem_example {
     border: 1px solid blue; padding: 0; background-color: #cccccc;
     width: 100%; }
@@ -67,8 +67,8 @@ span.ltx_tag_theorem {
 .htmlmathparagraph, m|mtext, .ltx_p, .ltx_quote, .ltx_block, .ltx_para, .ltx_caption {
     font-family: TeX Gyre Schola; }
 blockquote.ltx_role_verse {
-    border:1px solid #d4bfa9; line-height:2em; word-wrap:break-word;
-    padding-left:0.8em; background-color:#fffff0; }
+    border:1px solid #334669; line-height:2em; word-wrap:break-word;
+    padding-left:0.8em; background-color: #dee7f5; }
 blockquote.ltx_role_verse > p.ltx_p { font-family: Monospace; }
 m|math {
     font-family: TeX Gyre Schola Math; }

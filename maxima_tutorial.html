@@ -2,8 +2,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>A Maxima tutorial</title>
-<!--Generated on Sat Dec  9 12:51:31 2023 by LaTeXML (version 0.8.6) http://dlmf.nist.gov/LaTeXML/.-->
-<!--Document created on December 9, 2023.-->
+<!--Generated on Mon Dec 11 21:44:50 2023 by LaTeXML (version 0.8.6) http://dlmf.nist.gov/LaTeXML/.-->
+<!--Document created on December 11, 2023.-->
 
 <link rel="stylesheet" href="css/latex-schola.css" type="text/css">
 <link rel="stylesheet" href="css/ltx-article.css" type="text/css">
@@ -21,7 +21,7 @@
 <br class="ltx_break"><em class="ltx_emph ltx_font_italic">University of Porto, Portugal</em>
 </span></span>
 </div>
-<div class="ltx_dates">(December 9, 2023)</div>
+<div class="ltx_dates">(December 11, 2023)</div>
 
 <div class="ltx_pagination ltx_role_newpage"></div>
 <section id="S1" class="ltx_section">
@@ -228,7 +228,7 @@ result <code class="ltx_verbatim ltx_font_typewriter">(%o2)</code> obtained abov
 <span class="ltx_text" style="color:#000099;">%o2</span>, to get a floating-point approximation of that result we
 would write:</p>
 <blockquote class="ltx_quote ltx_role_verse">
-<p class="ltx_p"><span class="ltx_text" style="color:#000099;">(%i4)</span> <span class="ltx_text" style="color:#000099;">float (%o2);
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i4)</span> <span class="ltx_text" style="color:#000099;">float (%o2);
 <br class="ltx_break"></span>
 (%o4)   <math id="S4.p2.m1" class="ltx_Math" alttext="3.604365338911716" display="inline"><mn>3.604365338911716</mn></math></p>
 </blockquote>
@@ -1036,9 +1036,12 @@ unless for some known numbers for which the exact result is known, as
 in the following example. Function <span class="ltx_text" style="color:#000099;">float</span> can be used to get an
 approximate floating-point result</p>
 <blockquote class="ltx_quote ltx_role_verse">
-<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i52)</span> <span class="ltx_text" style="color:#000099;">[sin(-0.5), cos(-1/2), tan(%pi/3)];</span>
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i52)</span> <span class="ltx_text" style="color:#000099;">[sin(-0.5), cos(-1/2), tan(%pi/3)];
+<br class="ltx_break"></span>
 (%o52)   <math id="S10.p2.m1" class="ltx_Math" alttext="\left[-0.4794,\cos\left(\dfrac{1}{2}\right),\sqrt{3}\right]" display="inline"><mrow><mo>[</mo><mrow><mo>−</mo><mn>0.4794</mn></mrow><mo>,</mo><mrow><mi>cos</mi><mspace width=0.11em /><mrow><mo>(</mo><mstyle displaystyle="true"><mfrac><mn>1</mn><mn>2</mn></mfrac></mstyle><mo>)</mo></mrow></mrow><mo>,</mo><msqrt><mn>3</mn></msqrt><mo>]</mo></mrow></math>
-<span class="ltx_text" style="color:#CC3333;">(%i53)</span> <span class="ltx_text" style="color:#000099;">float(%);</span>
+<br class="ltx_break">
+<span class="ltx_text" style="color:#CC3333;">(%i53)</span> <span class="ltx_text" style="color:#000099;">float(%);
+<br class="ltx_break"></span>
 (%o53)   <math id="S10.p2.m2" class="ltx_Math" alttext="\left[-0.4794,0.8776,1.732\right]" display="inline"><mrow><mo>[</mo><mrow><mo>−</mo><mn>0.4794</mn></mrow><mo>,</mo><mn>0.8776</mn><mo>,</mo><mn>1.732</mn><mo>]</mo></mrow></math></p>
 </blockquote>
 </div>
@@ -1052,7 +1055,8 @@ tangent has many branches and the branch chosen in Maxima goes from
 function <span class="ltx_text" style="color:#000099;">atan2</span> and it will compute the correct angle:
 </p>
 <blockquote class="ltx_quote ltx_role_verse">
-<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i54)</span> <span class="ltx_text" style="color:#000099;">atan2(1, -1);</span>
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i54)</span> <span class="ltx_text" style="color:#000099;">atan2(1, -1);
+<br class="ltx_break"></span>
 (%o54)   <math id="S10.p3.m11" class="ltx_Math" alttext="\dfrac{3\,\pi}{4}" display="inline"><mstyle displaystyle="true"><mfrac><mrow><mn>3</mn><mspace width=0.166em /><mi>π</mi></mrow><mn>4</mn></mfrac></mstyle></math></p>
 </blockquote>
 </div>
@@ -1061,7 +1065,8 @@ function <span class="ltx_text" style="color:#000099;">atan2</span> and it will 
 <math id="S10.p4.m1" class="ltx_Math" alttext="\pi" display="inline"><mi>π</mi></math> and divided by 180. In the following example we compute the sine
 of <math id="S10.p4.m2" class="ltx_Math" alttext="60^{\circ}" display="inline"><msup><mn>60</mn><mo>∘</mo></msup></math></p>
 <blockquote class="ltx_quote ltx_role_verse">
-<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i55)</span> <span class="ltx_text" style="color:#000099;">sin(60*%pi/180);</span>
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i55)</span> <span class="ltx_text" style="color:#000099;">sin(60*%pi/180);
+<br class="ltx_break"></span>
 (%o55)   <math id="S10.p4.m3" class="ltx_Math" alttext="\dfrac{\sqrt{3}}{2}" display="inline"><mstyle displaystyle="true"><mfrac><msqrt><mn>3</mn></msqrt><mn>2</mn></mfrac></mstyle></math></p>
 </blockquote>
 <p class="ltx_p">and to convert the results of the arc functions from radians to
@@ -1072,7 +1077,8 @@ degrees, they should be multiplied by 180 and divided by <math id="S10.p4.m4" cl
 expressions. Function <span class="ltx_text" style="color:#000099;">trigexpand</span> expands sines and cosines of
 sums of angles:</p>
 <blockquote class="ltx_quote ltx_role_verse">
-<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i56)</span> <span class="ltx_text" style="color:#000099;">trigexpand(sin(u+v)*cos(u)^3);</span>
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i56)</span> <span class="ltx_text" style="color:#000099;">trigexpand(sin(u+v)*cos(u)^3);
+<br class="ltx_break"></span>
 (%o56) <math id="S10.p5.m1" class="ltx_Math" alttext="\cos^{3}u\,\left(\cos u\,\sin v+\sin u\,\cos v\right)" display="inline"><mrow><mrow><msup><mi>cos</mi><mn>3</mn></msup><mspace width=0.11em /><mi>u</mi></mrow><mspace width=0.166em /><mrow><mo>(</mo><mrow><mrow><mrow><mi>cos</mi><mspace width=0.11em /><mi>u</mi></mrow><mspace width=0.166em /><mrow><mi>sin</mi><mspace width=0.11em /><mi>v</mi></mrow></mrow><mo>+</mo><mrow><mrow><mi>sin</mi><mspace width=0.11em /><mi>u</mi></mrow><mspace width=0.166em /><mrow><mi>cos</mi><mspace width=0.11em /><mi>v</mi></mrow></mrow></mrow><mo>)</mo></mrow></mrow></math></p>
 </blockquote>
 </div>
@@ -1081,7 +1087,8 @@ sums of angles:</p>
 into a sum of terms with a single trigonometric function:
 </p>
 <blockquote class="ltx_quote ltx_role_verse">
-<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i57)</span> <span class="ltx_text" style="color:#000099;">trigreduce(%);</span>
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i57)</span> <span class="ltx_text" style="color:#000099;">trigreduce(%);
+<br class="ltx_break"></span>
 (%o57) <math id="S10.p6.m1" class="ltx_Math" alttext="\dfrac{\sin\left(v+4\,u\right)+\sin\left(v-2\,u\right)}{8}+\dfrac{3\,\sin\left%
 (v+2\,u\right)+3\,\sin v}{8}" display="inline"><mrow><mstyle displaystyle="true"><mfrac><mrow><mrow><mi>sin</mi><mspace width=0.11em /><mrow><mo>(</mo><mrow><mi>v</mi><mo>+</mo><mrow><mn>4</mn><mspace width=0.166em /><mi>u</mi></mrow></mrow><mo>)</mo></mrow></mrow><mo>+</mo><mrow><mi>sin</mi><mspace width=0.11em /><mrow><mo>(</mo><mrow><mi>v</mi><mo>−</mo><mrow><mn>2</mn><mspace width=0.166em /><mi>u</mi></mrow></mrow><mo>)</mo></mrow></mrow></mrow><mn>8</mn></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true"><mfrac><mrow><mrow><mn>3</mn><mspace width=0.166em /><mrow><mi>sin</mi><mspace width=0.11em /><mrow><mo>(</mo><mrow><mi>v</mi><mo>+</mo><mrow><mn>2</mn><mspace width=0.166em /><mi>u</mi></mrow></mrow><mo>)</mo></mrow></mrow></mrow><mo>+</mo><mrow><mn>3</mn><mspace width=0.166em /><mrow><mi>sin</mi><mspace width=0.11em /><mi>v</mi></mrow></mrow></mrow><mn>8</mn></mfrac></mstyle></mrow></math></p>
 </blockquote>
@@ -1092,9 +1099,12 @@ into a sum of terms with a single trigonometric function:
 trying to write the expression using only sines and cosines, as in the
 following example</p>
 <blockquote class="ltx_quote ltx_role_verse">
-<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i58)</span> <span class="ltx_text" style="color:#000099;">tan(x)*sec(x)^2 + cos(x)*(1 - sin(x)^2);</span>
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i58)</span> <span class="ltx_text" style="color:#000099;">tan(x)*sec(x)^2 + cos(x)*(1 - sin(x)^2);
+<br class="ltx_break"></span>
 (%o58) <math id="S10.p7.m2" class="ltx_Math" alttext="\sec^{2}x\,\tan x+\cos x\,\left(1-\sin^{2}x\right)" display="inline"><mrow><mrow><mrow><msup><mi>sec</mi><mn>2</mn></msup><mspace width=0.11em /><mi>x</mi></mrow><mspace width=0.166em /><mrow><mi>tan</mi><mspace width=0.11em /><mi>x</mi></mrow></mrow><mo>+</mo><mrow><mrow><mi>cos</mi><mspace width=0.11em /><mi>x</mi></mrow><mspace width=0.166em /><mrow><mo>(</mo><mrow><mn>1</mn><mo>−</mo><mrow><msup><mi>sin</mi><mn>2</mn></msup><mspace width=0.11em /><mi>x</mi></mrow></mrow><mo>)</mo></mrow></mrow></mrow></math>
-<span class="ltx_text" style="color:#CC3333;">(%i59)</span> <span class="ltx_text" style="color:#000099;">trigsimp(%);</span>
+<br class="ltx_break">
+<span class="ltx_text" style="color:#CC3333;">(%i59)</span> <span class="ltx_text" style="color:#000099;">trigsimp(%);
+<br class="ltx_break"></span>
 (%o59)   <math id="S10.p7.m3" class="ltx_Math" alttext="\dfrac{\sin x+\cos^{6}x}{\cos^{3}x}" display="inline"><mstyle displaystyle="true"><mfrac><mrow><mrow><mi>sin</mi><mspace width=0.11em /><mi>x</mi></mrow><mo>+</mo><mrow><msup><mi>cos</mi><mn>6</mn></msup><mspace width=0.11em /><mi>x</mi></mrow></mrow><mrow><msup><mi>cos</mi><mn>3</mn></msup><mspace width=0.11em /><mi>x</mi></mrow></mfrac></mstyle></math></p>
 </blockquote>
 </div>
@@ -1229,7 +1239,8 @@ integrals, as in the following example</p>
 </div>
 <div id="S11.p19" class="ltx_para">
 <blockquote class="ltx_quote ltx_role_verse">
-<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i71)</span> <span class="ltx_text" style="color:#000099;">integrate (1/(1 + x^2), x, 0, 1);</span>
+<p class="ltx_p"><span class="ltx_text" style="color:#CC3333;">(%i71)</span> <span class="ltx_text" style="color:#000099;">integrate (1/(1 + x^2), x, 0, 1);
+<br class="ltx_break"></span>
 (%o71)   <math id="S11.p19.m1" class="ltx_Math" alttext="\dfrac{\pi}{4}" display="inline"><mstyle displaystyle="true"><mfrac><mi>π</mi><mn>4</mn></mfrac></mstyle></math>
 <br class="ltx_break"></p>
 </blockquote>
@@ -1486,7 +1497,7 @@ would then be computed and its numerical value shown:</p>
 <footer class="ltx_page_footer">
 <p>&copy; 2023, Jaime E. Villate</p>
 <p>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a></p>
-<div class="ltx_page_logo">Generated  on Sat Dec  9 12:51:31 2023 by <a href="http://dlmf.nist.gov/LaTeXML/">LaTeXML </a>
+<div class="ltx_page_logo">Generated  on Mon Dec 11 21:44:50 2023 by <a href="http://dlmf.nist.gov/LaTeXML/">LaTeXML </a>
 </div></footer>
 </div>
 </body>
