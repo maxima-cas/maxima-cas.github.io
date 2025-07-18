@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A Maxima tutorial</title>
+<!--Generated on Fri Jul 18 16:15:27 WEST 2025 by latextohtml.tcl, by J. Villate -->
+<link rel="stylesheet" href="/home/villate/css/tutorial.css">
+<link rel="icon" type="image/svg+xml" href="img/maxima.svg">
+<link rel="alternate icon" href="img/favicon.ico">
+</head>
+<body id="top">
+<header>
+<h1>A Maxima tutorial</h1>
+<p>Jaime E. Villate<br> <i>University of Porto, Portugal</i><br>
+July 18, 2025</p>
+</header>
+<section>
+<h2>1 Introduction</h2>
+<p>
+<span class="concept">Maxima</span> is a <span class="concept">Free Software</span> package for the
+manipulation of symbolic and numerical expressions, including
+differentiation, integration, Taylor series, Laplace transforms,
+ordinary differential equations, systems of linear equations,
+polynomials, sets, lists, vectors, matrices and tensors and more. It
+can be freely downloaded from its Website
+(<a href="https://maxima.sourceforge.net">https://maxima.sourceforge.net</a>) which also includes reference
+manuals and tutorials in several languages. There is an active
+community of developers and users; questions about Maxima can be sent
+to its main mailing-list address at
+<tt>maxima-discuss@lists.sourceforge.net</tt>.
+</p>
+<p>
+Maxima is one of the oldest Computer Algebra Systems (CAS). It was
+created by MIT's MAC group in the 1960s and it was initially called
+<span class="concept">Macsyma</span> (<span class="concept">project MAC's SYmbolic MAnipulator</span>).
+<span class="concept">Macsyma</span> was originally developed for the
+DEC-PDP-10 large-scale computers that were used in various academic
+institutions at that time.
+</p>
+<p>
+In the 1980s, its code was ported to several new platforms and one of
+those derived versions was called <span class="concept">Maxima</span>.  In 1982 the MIT
+decided to sell <span class="concept">Macsyma</span> as proprietary software and
+simultaneously Professor William Schelter of the University of Texas
+continued to develop the <span class="concept">Maxima</span> version. In the late 1980s
+other proprietary CAS systems similar to <span class="concept">Macsyma</span> appeared,
+such as <span class="concept">Maple</span> and <span class="concept">Mathematica</span>. In 1998, Professor
+Schelter obtained authorization from the DOE (Department of Energy),
+which held the copyright for the original version of
+<span class="concept">Macsyma</span>, to distribute the source code of <span class="concept">Maxima</span>
+as free software.  When Professor Schelter passed away in 2001, a
+group of volunteers was formed to continue to develop and distribute
+<span class="concept">Maxima</span> as free software.
+</p>
+<p>
+In the case of CAS software, the advantages of free software are very
+important. When a method fails or gives very complicated answers it is
+quite useful to have access to the details of the underlying
+implementation of the methods used. On the other hand, as one's
+research and teaching becomes dependent on the results of a CAS, it is
+desirable to have good documentation of the methods involved and its
+implementation and to be assured that there are no legal barriers
+forbidding the examination and modification of that code.
+</p>
+</section>
+<section>
+<h2>2 Graphical interfaces for maxima</h2>
+<p>
+Maxima is a program that uses a command shell (or a console or text
+terminal) to interact with the user. There are also several graphical
+interfaces to work with Maxima, such as <span class="concept">wxMaxima</span>, which is a
+software package separate from Maxima; you might have to install that
+package separately, if it's not bundled to the package you download to
+install Maxima. Two other graphical interfaces, <span class="concept">imaxima</span> and
+<span class="concept">Xmaxima</span>, are being developed and distributed together with
+Maxima. The left-hand side of Figure <a href="#fig:xmaxima">1</a> shows some
+commands being run in Xmaxima, and the right-hand side shows the same
+commands as being run in imaxima, which runs from within the
+<span class="concept">Emacs</span> text editor
+</p>
+<figure class="center" id="fig:xmaxima">
+<img class="fig" src="img/maxima_interfaces.png" style="width:33.978em;max-width:100%;height:auto">
+<figcaption>
+<b>Figure 1:</b>  Xmaxima's graphical interface.
+</figcaption>
+</figure>
+<p>
+The graphical interfaces connect to the Maxima program, send the
+commands that the user types to Maxima, and show the result it
+returns. Some interfaces, such as wxMaxima and imaxima, convert those
+results to a graphic that resembles closer what the user would find in
+a textbook, while Xmaxima leaves the result as given by Maxima, namely
+simple text that can take several lines in the case of fractions,
+powers or long output.
+</p>
+<p>
+Xmaxima usually opens two windows (Figure <a href="#fig:xmaxima">1</a>). One of
+them, called the <span class="concept">browser</span>, shows a tutorial and allows the
+user to read the manual or other Web pages. The second window is the
+<span class="concept">console</span>, where Maxima commands should be written and their
+output will appear.
+</p>
+<p>
+In the &quot;Edit&quot; menu there are options to navigate the list of
+previous commands (&quot;previous input&quot;) or to copy and paste text; some
+options in the menus can also be accessed with the shortcut keys shown
+next to them.  Different colors are used to distinguish commands that
+have already been processed (in blue) from the command that is being
+written and has not yet been sent to Maxima (in green); the results
+are shown in black (see Figure <a href="#fig:xmaxima">1</a>).
+</p>
+<p>
+When changing a command already executed or when starting a new
+command, care must be taken that what is being written appears in
+green or blue, to ensure that it will be sent to Maxima. Sometimes it
+may be necessary to use the options &quot;Interrupt&quot; or &quot;Input prompt&quot;,
+in the &quot;File&quot; menu to recover the state in which Xmaxima is
+accepting commands.
+</p>
+<p>
+It is also possible to move the prompt symbol to some older entry in
+the screen (in blue), change it, and press enter to repeat the same
+command with the modifications.
+</p>
+</section>
+<section>
+<h2>3 Data input and output</h2>
+<p>
+When a Maxima session starts, the tag <tt>(%i1)</tt> will appear, which
+refers to <span class="concept">input</span> 1. A valid command should be written next to
+that tag, ended with a semi-colon and when the enter key is pressed,
+that input will be parsed, simplified, linked to an internal variable
+<tt>%i1</tt> and its result will be shown following a tag (%o1),
+referring to <span class="concept">output</span> 1. That result will also be linked to an
+internal variable <tt>%o1</tt>. Another tag <tt>(%i2)</tt> will then
+appear, to mark the place where a second command may be written and so
+on. The most basic usage of Maxima is as a calculator, as in the
+following examples.
+</p>
+<pre class="maxima">
+<span class="maxp">(%i1)</span> <span class="maxi">2.5*3.1;</span>
+    
+(%o1)                           7.75
+    
+<span class="maxp">(%i2)</span> <span class="maxi">5.2*log(2);</span>
+    
+(%o2)                        5.2 log(2)
+</pre>
+<p>
+The result in <tt>%o2</tt> shows two important aspects of
+Maxima. First, the natural logarithm of 2 was not computed, because
+its result is an irrational number which cannot be represented exactly
+with a finite number of numerical digits. The second important aspect
+is that the symbol <tt>*</tt> which is always required when a product is
+entered and the parenthesis, which have to be used to specify the
+argument of a function, were not included in the output. That happened
+because, by default, the output is shown in a mode called display2d,
+in which the output tries to resemble the way mathematical expressions
+are usually shown in books. The expression &quot;<tt>5.2 log 2</tt>&quot; most
+probably will be interpreted correctly by a reader, as the product of
+5.2 times the logarithm of 2; however, if that same ambiguous
+expression was given as input to Maxima it would trigger an error,
+because Maxima syntax requires an operator between 5.2 and the
+logarithm function, and the argument of the logarithm must be inside
+parenthesis. In spite of the form of the output, variable <tt>%o2</tt>
+has been linked to an expression with correct syntax, so it can be
+reused in later Maxima commands without syntax errors.
+</p>
+<p>
+To look up the documentation of a function or special variable in the
+manual, for instance the function <tt>log</tt> that was just used, the
+describe function is used, which can be abbreviated with a question
+mark followed by space and the name of the function:
+</p>
+<pre class="maxima">
+<span class="maxp">(%i3)</span> <span class="maxi">? linel;</span>
+
+ -- Option variable: linel
+     Default value: '79'
+
+     'linel' is the assumed width (in characters) of the console display
+     for the purpose of displaying expressions.  'linel' may be assigned
+     any value by the user, although very small or very large values may
+     be impractical.  Text printed by built-in Maxima functions, such as
+     error messages and the output of 'describe', is not affected by
+     'linel'.
+
+  There are also some inexact matches for `linel'.
+  Try `?? linel' to see them.
+
+(%o3)                             true
+</pre>
+</section>
+<section>
+<h2>4 Numbers</h2>
+<p>
+Maxima accepts real and complex numbers. Real numbers in Maxima can be
+integers, rationals, such as 3/5, or floating-point numbers, for
+instance, 2.56 and 25.6e-1, which is a short notation for
+<math id="eqn1" display="inline"><mrow><mn>25.6</mn><mi>×</mi><msup><mn>10</mn><mrow><mo>−</mo><mn>1</mn></mrow></msup></mrow></math>. Irrational numbers, such as <tt>sqrt(2)</tt> or
+<tt>log(2)</tt> (natural logarithm of 2) are left in that form, without
+being approximated by floating-point numbers, and later calculations,
+such as <tt>sqrt(2)*sqrt(2)</tt> or <tt>exp(log(2))</tt> will lead to the exact
+result 2.
+</p>
+<p>
+Floating-point numbers are &quot;contagious&quot;; namely, the operations in
+which they enter will be carried out in that format. For example, if
+instead of writing <tt>log(2)</tt> we would write <tt>log(2.0)</tt>, the
+logarithm would be computed approximately in floating-point. Another
+way to force an expression to be computed as a floating-point number
+consists on using the function <tt>float</tt>. For instance, since the
+result (%o2) above has been stored in variable <tt>%o2</tt>, to get a
+floating-point approximation of that result we would write:
+<pre class="maxima">
+<span class="maxp">(%i4)</span> <span class="maxi">float (%o2);</span>
+
+(%o4)                    3.6043653389117156
+</pre>
+<p>
+The function float computed the product <math id="eqn2" display="inline"><mrow><mn>5.2</mn><mspace width="0.167em" /><mi>log</mi><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></math> approximately,
+using 16 significant digits in floating-point format. The
+floating-point format used in Maxima stores each number in 64 binary
+bits, which leads to between 15 and 17 significant digits when
+expressed in decimal base. That format is known as \concept{double
+  precision}.
+</p>
+<p>
+A frequent source of confusion arises from the fact that those numbers
+are being represented internally in binary base and not in decimal
+base; thus, certain numbers that can be represented in decimal base
+with a few digits, for instance 0.1, would need an infinite number of
+binary digits to be represented accurately in binary base. It is the
+situation as with the fraction 1/3 in decimal base, which in
+floating-point form has an infinite number of digits: 0.333\ldots,
+while in base 3 that fraction would simply be 0.1.
+</p>
+<p>
+The fractions that lead to an infinite number of digits are not the
+same in the decimal and binary base. Consider the following results,
+which would appear in any system that uses binary base and
+double-precision format and which might puzzle somebody used to
+working with in decimal base:
+<pre class="maxima">
+<span class="maxp">(%i5)</span> <span class="maxi">2*0.1;</span>
+
+(%o5)                           0.2
+
+<span class="maxp">(%i6)</span> <span class="maxi">6*0.1;</span>
+
+(%o6)                    0.6000000000000001
+</pre>
+<p>
+Some computing systems ignore the last digits in the results obtained
+from double-precision calculations, showing the result as 0.6, but
+whenever binary double-precision is used, the result of 6×0.1 will not
+be exactly 0.6.
+</p>
+<p>
+The best approximation of 1/3 in decimal base, using only 3
+significant digits, is <math id="eqn3" display="inline"><mrow><mn>333</mn><mo>/</mo><msup><mn>10</mn><mn>3</mn></msup><mo>=</mo><mn>0.333</mn></mrow></math>. In binary base, it is
+represented as <math id="eqn4" display="inline"><mrow><mi>n</mi><mo>/</mo><msup><mn>2</mn><mi>m</mi></msup></mrow></math> (<math id="eqn5" display="inline"><mrow><mi>n</mi></mrow></math> and <math id="eqn6" display="inline"><mrow><mi>m</mi></mrow></math> integers); with the 52 significant
+digits used in the double-precision standard, <math id="eqn7" display="inline"><mrow><mi>n</mi></mrow></math> has to be less than
+<math id="eqn8" display="inline"><mrow><msup><mn>2</mn><mrow><mn>52</mn></mrow></msup></mrow></math>. Maxima's function rationalize shows the approximate
+representation being used for a number, in the form of a fraction. For
+instance the approximation to <math id="eqn9" display="inline"><mrow><mn>0.1</mn></mrow></math> is
+<pre class="maxima">
+<span class="maxp">(%i7)</span> <span class="maxi">rationalize (0.1);</span>
+
+                         3602879701896397
+(%o7)                    ─────────────────
+                         36028797018963968
+</pre>
+<p>
+where 3602879701896397 is less than <math id="eqn10" display="inline"><mrow><msup><mn>2</mn><mrow><mn>52</mn></mrow></msup></mrow></math> and bigger than <math id="eqn11" display="inline"><mrow><msup><mn>2</mn><mrow><mn>51</mn></mrow></msup></mrow></math>,
+and the denominator is a power of 2 (<math id="eqn12" display="inline"><mrow><mn>36028797018963968</mn><mo>=</mo><msup><mn>2</mn><mrow><mn>55</mn></mrow></msup></mrow></math>). That
+fraction is not exactly equal to <math id="eqn13" display="inline"><mrow><mn>0.1</mn></mrow></math>, but it is the best possible
+approximation using double-precision.
+</p>
+<p>
+There is a Maxima specific format which accepts bigger number of
+significant digits to represent floating-point numbers, called
+<span class="concept">bigfloat</span>. To use it, one should write &quot;b&quot;, instead of
+&quot;e&quot; for the exponents; for example, <math id="eqn14" display="inline"><mrow><mn>2.56</mn><mi>×</mi><msup><mn>10</mn><mrow><mn>20</mn></mrow></msup></mrow></math>, written as
+2.56e20 would be represented internally in double-precision format,
+with 16 significant digits, and any calculations made with it would
+result in other double-precision numbers. But if the same number was
+written as 2.56b20, it would be stored in the bigfloat format and any
+calculations involving it would produce other bogfloat numbers. By
+default, bigfloat format uses the same 16 significant digits as
+double-precision, but that can be changed by changing the value of the
+system variable <tt>fpprec</tt> (floating-point precision).
+</p>
+<p>
+Function <tt>bfloat</tt> converts a number into bigfloat. For example,
+to show an approximation to the result save in variable <tt>%o2</tt>
+with 60 significant digits, the following commands can be used:
+<pre class="maxima">
+<span class="maxp">(%i8)</span> <span class="maxi">fpprec: 60;</span>
+
+(%o8)                            60
+
+<span class="maxp">(%i9)</span> <span class="maxi">bfloat (%o2);</span>
+
+(%o9) 
+     3.60436533891171573209728052144843624984298344312084369367127b0
+</pre>
+<p>
+The letter b followed by zero at the end of (%o9) means that the
+number is stored in bigfloat format and it should be multiplied by a
+factor of <math id="eqn15" display="inline"><mrow><msup><mn>10</mn><mn>0</mn></msup><mo>=</mo><mn>1</mn></mrow></math>.
+</p>
+<p>
+In the rest of this tutorial we will show all floating-point results
+with only 4 significant digits. That is achieved by changing system
+variable <tt>fpprintprec</tt> from its default value of 0 to 4:
+<pre class="maxima">
+<span class="maxp">(%i10)</span> <span class="maxi">fpprintprec: 4;</span>
+
+(%o10)                           4
+</pre>
+<p>
+Internally, all floating-point double-precision numbers will continue
+to have 16 significant digits and bigfloat numbers will have the
+number of significant digits set by <tt>fpprec</tt>, but whenever a
+number has to be printed in the screen, it will be rounded to 4
+significant digits. If we would like to see all the significant digits
+stored internally, variable <tt>fpprintprec</tt> should be set to its
+default value of 0.
+</p>
+</section>
+<section>
+<h2>5 Variables</h2>
+<p>
+To bind a numerical value or other objects to a variable, we use a
+colon &quot;:&quot; and not the equal sign &quot;=&quot; which is reserved to define
+mathematical equations. The name of the variables can be any
+combination of letters, numbers and the characters % and _, but the
+first character cannot be a number. Maxima is case sensitive. Here are
+some examples:
+<pre class="maxima">
+<span class="maxp">(%i11)</span> <span class="maxi">a: 2$</span>
+
+<span class="maxp">(%i12)</span> <span class="maxi">[b, c]: [-2, -4];</span>
+
+(%o12)                       [- 2, - 4]
+
+<span class="maxp">(%i13)</span> <span class="maxi">c;</span>
+
+(%o13)                          - 4
+
+<span class="maxp">(%i14)</span> <span class="maxi">Root1: (-b + sqrt(b^2 - 4*a*c))/(2*a);</span>
+
+(%o14)                           2
+
+<span class="maxp">(%i15)</span> <span class="maxi">d: sqrt(z^2 + a*c);</span>
+
+                                   2
+(%o15)                      sqrt(z  - 8)
+</pre>
+<p>
+variables <tt>a</tt>, <tt>b</tt>, <tt>c</tt> and <tt>Root1</tt> were bound to
+the numerical values 2, <math id="eqn16" display="inline"><mrow><mo>−</mo><mn>2</mn></mrow></math>, <math id="eqn17" display="inline"><mrow><mo>−</mo><mn>4</mn></mrow></math> and 2, while variable <tt>d</tt> was
+bound to an expression.
+</p>
+<p>
+Notice that input <tt>(%i11)</tt> was ended with a dollar sign $,
+rather than a semi-colon. That will make the command to be executed
+without showing its result on the screen. In spite of not being
+displayed on the screen, that result has been bound to the symbol
+<tt>%o11</tt> so it can be used later on.
+</p>
+<p>
+Input <tt>(%i12)</tt> shows how to bind several variables to several
+values with a single command. When the name of a variable is written,
+as in input <tt>(%i13)</tt>, the output will be the value bound to
+that variable or the name of the variable itself if it has not been
+bound to any value. In <tt>(%i14)</tt>, the values bound to
+<tt>a</tt>, <tt>b</tt> and <tt>c</tt> were replaced and the result was
+bound to variable <tt>Root1</tt>. If the values bound to
+<tt>a</tt>, <tt>b</tt> or <tt>c</tt> are later changed, that will not affect
+the value already bound to <tt>Root1</tt>.
+</p>
+<p>
+In <tt>(%i15)</tt> since <tt>z</tt> has not yet been bound to any
+value, it is just a symbol and variable <tt>d</tt> is then bound to
+an expression that depends on that symbol. Variables can be bound
+to numerical values, expressions with abstract symbols, equations and
+several other objects that will be described in the following
+sections. That means that when you add two variables, you could be
+adding a mix of numbers, expressions, equations and so on; the result
+could lead to some other valid object or to an error it Maxima can not
+sum those objects.
+</p>
+<p>
+To remove the value bound to a variable, the function <tt>remvalue</tt>
+can be used; in the following example the value bound to <tt>a</tt>
+is removed and an expression that depends on the symbol <tt>a</tt> is
+then bound to <tt>Root1</tt>:
+<pre class="maxima">
+<span class="maxp">(%i16)</span> <span class="maxi">remvalue (a)$</span>
+
+<span class="maxp">(%i17)</span> <span class="maxi">Root1: (-b + sqrt(b^2 - 4*a*c))/(2*a);</span>
+
+                         sqrt(16 a + 4) + 2
+(%o17)                   ──────────────────
+                                2 a
+</pre>
+<p>
+The command <tt>remvalue(all)</tt> removes all
+values bound to variables
+</p>
+<p>
+The following 2 commands will show the value obtained from the
+expression bound to <tt>Root1</tt>, when <tt>a</tt> is replaced by 1 and
+the result is approximated to a floating-point number.
+<pre class="maxima">
+<span class="maxp">(%i18)</span> <span class="maxi">subst (a=1, Root1);</span>
+
+                           2 sqrt(5) + 2
+(%o18)                     ─────────────
+                                 2
+
+<span class="maxp">(%i19)</span> <span class="maxi">float(%o18);</span>
+
+(%o19)                         3.236
+</pre>
+<p>
+The objects associated to <tt>a</tt> and <tt>Root1</tt> are not modified
+after <tt>(%i18)</tt>; <tt>a</tt> continues to be an abstract symbol
+and <tt>Root1</tt> is associated to an expression that depends on the
+symbol <tt>a</tt>.
+</p>
+<p>
+Maxima uses several system variables, whose names start by %. Some
+examples are the variables <tt>%i2</tt> and <tt>%o2</tt>, linked to an
+input command and its result. The character <tt>%</tt> itself
+represents the last result obtained. For instance, in <tt>(%i19)</tt>
+it would have been enough to write down <tt>%</tt> instead of
+<tt>%o18</tt>. The two commands <tt>(%i18)</tt> and <tt>(%i19)</tt> could
+have been combined into a single command
+<tt>float (subst (a=1, Root1))</tt>.
+</p>
+<p>
+A variable can also be associated to an algebraic equation, as in the
+following example
+<pre class="maxima">
+<span class="maxp">(%i20)</span> <span class="maxi">second_law: F = m*a;</span>
+
+(%o20)                        F = a m
+</pre>
+<p>
+Maxima does some simplifications to the input commands before executing
+them. In this last example, the result of that
+simplification was to change the order of the product,
+to put the two symbols in alphabetical order. If any of the 3 symbols
+<tt>F</tt>, <tt>m</tt> or <tt>a</tt> were associated to a value or other
+object, that object would have been substituted by the simplifier. To
+prevent the value of a variable to be replaced, its name can be
+preceded by an apostrophe (<tt>'a</tt> refers to the symbol a and not to
+any object associated to it).
+</p>
+<p>
+The following example shows how the equation associated to
+<tt>second_law</tt> does not change when one of the symbols in it s then
+associated to a value
+<pre class="maxima">
+<span class="maxp">(%i21)</span> <span class="maxi">a: 3;</span>
+
+(%o21)                           3
+
+<span class="maxp">(%i22)</span> <span class="maxi">second_law;</span>
+
+(%o22)                        F = a m
+</pre>
+<p>
+The function <tt>subst</tt> is used to substitute values of the symbols
+in <tt>second_law</tt>. Several values can be replaced at once, as in
+the following example
+<pre class="maxima">
+<span class="maxp">(%i23)</span> <span class="maxi">subst([m=2,'a=5], second_law);</span>
+
+(%o23)                         F = 10
+</pre>
+<p>
+The first argument in the <tt>subst</tt> command in <tt>(%i23)</tt> is a
+list, whose elements are separated by commas and within square
+brackets. The two elements in that list are equations. In the second
+equation <tt>'a</tt> was quoted to prevent it from being replaced by the
+value 3 associated to symbol <tt>a</tt>. Without the quote, the
+<tt>subst</tt> command would have been simplified as
+<pre class="maxima">
+<span class="maxp">(%i24)</span> <span class="maxi">subst([m=2, 3=5], second_law);</span>
+
+(%o24)                        F = 2 a
+</pre>
+<p>
+and then only <tt>m</tt> is replaced and the statement &quot;3=5&quot; is simply
+ignored because it does not name any variable in the expression where
+the substitution is done.
+</p>
+</section>
+<section>
+<h2>6 Lists</h2>
+<p>
+As seen in the previous section, lists can be created using square
+brackets and commas. The following example creates a list with the
+squares of the first five natural numbers and associates it to the
+variable <tt>squares</tt>
+<pre class="maxima">
+<span class="maxp">(%i25)</span> <span class="maxi">squares: [1, 4, 9, 16, 25]$</span>
+</pre>
+<p>
+Many of the operations among numbers can also
+be done among lists. For example, let us create another list in which
+each element is the square root of the corresponding element of
+<tt>squares</tt>, multiplied by 3
+<pre class="maxima">
+<span class="maxp">(%i26)</span> <span class="maxi">3*sqrt(squares);</span>
+
+(%o26)                   [3, 6, 9, 12, 15]
+</pre>
+<p>
+The elements of a list are indexed by integers starting with 1. To
+refer to an element in the list, the corresponding index is written
+within square brackets; for instance the third element in the list
+<tt>squares</tt> is
+<pre class="maxima">
+<span class="maxp">(%i27)</span> <span class="maxi">squares[3];</span>
+
+(%o27)                           9
+</pre>
+<p>
+A very useful function to create lists is <tt>makelist</tt>. One way to
+use it is to expand an expression depending on a dummy index, for
+several values of that index. The first argument must be the
+expression to be expanded, followed by the dummy index, the initial
+value for it, the upper bound for the index values and the increments
+between successive values of the index. If the increment is not given,
+its default value is 1. Here are two examples:
+<pre class="maxima">
+<span class="maxp">(%i28)</span> <span class="maxi">cubes1: makelist ( i^3, i, 1, 5 );</span>
+
+(%o28)                  [1, 8, 27, 64, 125]
+
+<span class="maxp">(%i29)</span> <span class="maxi">cubes2: makelist ( i^3, i, 2, 6, 0.6);</span>
+
+(%o29)     [8, 17.58, 32.77, 54.87, 85.18, 125.0, 175.6]
+</pre>
+<p>
+The first list has the cubes of 1, 2, 3, 4 and 5. The second one has
+the cubes of 2, 2.6, 3.2, 3.8, 4.4, 5.0 and 5.6. Notice that the
+elements of <tt>cubes2</tt> are shown with only 4 significant digits,
+because in <tt>(%i10)</tt> we changed the value of the system variable
+<tt>fpprintprec</tt>. In a fresh Maxima session they would be shown with
+16 significant digits.
+</p>
+<p>
+Instead of giving an initial value and an upper bound for the dummy
+index, we can give a list of values for it. And that list can have
+objects of different types. The following example creates a list with
+the cubes of 5, the expression <math id="eqn18" display="inline"><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msqrt><mrow><mi>y</mi></mrow></msqrt></mrow></math>, <math id="eqn19" display="inline"><mrow><mo>−</mo><mn>3.2</mn></mrow></math> (in bigfloat
+format) and the equation <math id="eqn20" display="inline"><mrow><mi>E</mi><mo>=</mo><mi>m</mi><mspace width="0.167em" /><msup><mi>c</mi><mn>2</mn></msup></mrow></math>
+<pre class="maxima">
+<span class="maxp">(%i30)</span> <span class="maxi">makelist (i^3, i, [5, x^2+sqrt(y), -3.2b0, E=m*c^2]);</span>
+
+                            2 3              3         3
+(%o30)    [125, (sqrt(y) + x ) , - 3.277b1, E  = 4096 m ]
+</pre>
+</section>
+<section>
+<h2>7 Useful constants</h2>
+<p>
+There are some system variables associated to predefined mathematical
+constants. Most of them have names starting with %. Three of those
+variables are <tt>%pi</tt> (<math id="eqn21" display="inline"><mrow><mi>π</mi></mrow></math>, the length of a circumference
+divided by its diameter), <tt>%e</tt>, the Euler number <math id="eqn22" display="inline"><mrow><mi>e</mi></mrow></math>, base of
+the natural logarithms, and <tt>%i</tt>, which is the imaginary number
+<math id="eqn23" display="inline"><mrow><mi>i</mi><mo>=</mo><msqrt><mrow><mo>−</mo><mn>1</mn></mrow></msqrt></mrow></math>. Functions <tt>float</tt> and <tt>bfloat</tt> produce
+floating-point approximations of <tt>%pi</tt> and <tt>%e</tt>.
+</p>
+<p>
+The following example computes the product between two complex numbers
+written using variable <tt>%i</tt>.
+<pre class="maxima">
+<span class="maxp">(%i31)</span> <span class="maxi">(3 + %i*4)*(2 + %i*5);</span>
+
+(%o31)                 (4 %i + 3) (5 %i + 2)
+</pre>
+<p>
+Function <tt>rectform</tt>, which stands for <span class="concept">rectangular form</span>,
+would show the previous result separating the real and imaginary
+parts:
+<pre class="maxima">
+<span class="maxp">(%i32)</span> <span class="maxi">rectform(%);</span>
+
+(%o32)                       23 %i - 14
+</pre>
+</section>
+<section>
+<h2>8 Batch files</h2>
+<p>
+The command
+<tt>stringout(&quot;filename&quot;,input)</tt>
+will store all the input commands that have been entered during a
+Maxima session, into a file named &quot;filename&quot;. That file can be
+loaded in a future Maxima session, to redo all those commands, with
+the command <tt>batch(&quot;filename&quot;)</tt>. The name
+of Maxima <span class="concept">batch</span> files are usually given the extension
+<tt>.mac</tt> to identify them as Maxima batch files.
+</p>
+<p>
+You can also create a Maxima batch file with a text editor. Just write
+the input commands (without any %i labels) and then
+execute it in Maxima with
+<tt>batch(&quot;filename&quot;)</tt>. That is a useful way
+to use Maxima to solve a problem. You write your commands to solve the
+problem in a text editor, save them into a file, and without closing
+the editor open Maxima in another window and run that file. If there
+is an error or you don't get the result you wanted, you just have to
+go back to the editor window, make the necessary modifications, save
+them and back in the Maxima window rerun the batch file. Be careful
+not to use <tt>%o</tt> variables in batch files, because the number
+after <tt>%o</tt> might be different every time you execute them.
+</p>
+<p>
+Many additional functionalities of Maxima come into batch files which
+you execute in Maxima using
+<tt>load(&quot;filename&quot;)</tt>. The difference between
+<tt>batch</tt> and <tt>load</tt> is that <tt>load</tt> will not show the
+result of the commands being executed. Both commands have a predefined
+list of directories where they will look for the file with name
+&quot;filename&quot;.
+</p>
+<p>
+Batch files can include any comments, opening with the two characters
+<tt>/*</tt> and closing with <tt>*/</tt>. Any commands entered directly
+into Maxima or written into a batch file
+can contain blank spaces and new lines between numbers, operators,
+variables and other objects, in order to make them more
+readable.
+</p>
+<p>
+Some commands that are used repeatedly in different working sessions,
+for instance, the definition a frequently used function, can be placed
+inside a batch file which can be loaded in future sessions. If the
+name of a batch file to be loaded does not include a complete path but
+just the file name and that file name does not exist in the current
+directory, Maxima will look for it in a set of directories. That set
+of directories includes a sub-directory of the users home
+directory. The name of that sub-directory can be different in
+different systems but it is always stored in Maxima's system variable
+<tt>maxima_userdir</tt>. You can look at the value of that variable and
+if the referred sub-directory does not exist, created them. Any batch
+files you put into that sub-directory can then be loaded into Maxima
+by giving its name, independently of the working directory being used
+in the current Maxima session.
+</p>
+<p>
+Every time Maxima starts it tries to load a user's batch file in that
+<tt>maxima_userdir</tt>, with the name <tt>maxima-init.mac</tt>, before
+showing the first input prompt. That means that you can create that
+file, if it doesn't already exist, and add commands that you want to
+be used in all your Maxima sessions. For example, the contents of file
+<tt>maxima-init.mac</tt> could be the following
+<pre class="prog">
+ratprint: false$
+  
+linel: 66$
+</pre>
+<p>
+The first command prevents Maxima from showing warning messages every
+time a floating-point number is replaced by a fraction, something many
+Maxima functions do, and the second command limits the maximum length
+of output lines to 66 characters. In a <span class="concept">Linux</span> system that
+file would be located in <tt>/home/username/.maxima/</tt> and in
+Windows, in a folder <tt>maxima</tt> within the user's directory.
+</p>
+<p>
+Any other valid Maxima commands can be placed into that file, but keep
+in mind that if any of those commands fail, the error might prevent
+Maxima from starting until that initial batch file is corrected.
+</p>
+</section>
+<section>
+<h2>9 Algebra</h2>
+<p>
+Expressions can include mathematical functions, such as the function
+cosine in the following example
+<pre class="maxima">
+<span class="maxp">(%i33)</span> <span class="maxi">3*x^2 + 2*cos(t)$</span>
+</pre>
+<p>
+Those expressions can then be manipulated producing new
+expressions. In the next example we find the square of the expression
+above and add <math id="eqn24" display="inline"><mrow><msup><mi>x</mi><mn>3</mn></msup></mrow></math> to it
+<pre class="maxima">
+<span class="maxp">(%i34)</span> <span class="maxi">%^2 + x^3;</span>
+
+                          2            2    3
+(%o34)                (3 x  + 2 cos(t))  + x
+</pre>
+<p>
+As we have already mentioned besides numbers and expressions, other
+kind of object we can manipulate is an equation as the following one
+<pre class="maxima">
+<span class="maxp">(%i35)</span> <span class="maxi">3*x^3 + 5*x^2 = x - 6;</span>
+
+                           3      2
+(%o35)                  3 x  + 5 x  = x - 6
+</pre>
+<p>
+Most functions used to manipulate expressions can also be used for
+equations. For example, Maxima's function <tt>allroots</tt> finds a
+numerical approximation to the roots of a polynomial, such as
+<math id="eqn25" display="inline"><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>−</mo><mn>1</mn></mrow></math>; if <tt>allroots</tt> is given the equation <math id="eqn26" display="inline"><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>=</mo><mn>1</mn></mrow></math>, it will
+interpreted as <math id="eqn27" display="inline"><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>=</mo><mn>0</mn></mrow></math> and find the roots of <math id="eqn28" display="inline"><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>−</mo><mn>1</mn></mrow></math>. Therefore,
+when given the expression in <tt>%o35</tt>, <tt>allroots</tt> will find
+the roots of <math id="eqn29" display="inline"><mrow><mn>3</mn><mspace width="0.167em" /><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>5</mn><mspace width="0.167em" /><mi>x</mi><mo>−</mo><mi>x</mi><mo>+</mo><mn>6</mn></mrow></math>
+<pre class="maxima">
+<span class="maxp">(%i36)</span> <span class="maxi">allroots(%o35);</span>
+
+(%o36) [x = 0.9073 %i + 0.2776, x = 0.2776 - 0.9073 %i, x = - 2.222]
+</pre>
+<p>
+Two of those roots are complex numbers. The three roots are shown as
+a list of three equations, instead of just numbers. That way of
+presenting the result may seem odd, but it will prove convenient to
+interact with other functions of Maxima. For example, to
+check that the third root shown is in fact a root of the polynomial
+<math id="eqn30" display="inline"><mrow><mn>3</mn><mspace width="0.167em" /><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mn>5</mn><mspace width="0.167em" /><mi>x</mi><mo>−</mo><mi>x</mi><mo>+</mo><mn>6</mn></mrow></math>, we write
+<pre class="maxima">
+<span class="maxp">(%i37)</span> <span class="maxi">subst(%o36[3], 3*x^3+5*x^2-x+6);</span>
+
+(%o39)                       7.105e-15
+</pre>
+<p>
+The notation <tt>%o36[3]</tt> means the third element in the list
+associated to variable <tt>%o36</tt>, which is the equation <math id="eqn31" display="inline"><mrow><mi>x</mi><mo>=</mo><mo>−</mo><mn>2.222</mn></mrow></math>
+and it is exactly what we need to tell <tt>subst</tt> to substitute <math id="eqn32" display="inline"><mrow><mi>x</mi></mrow></math>
+by <math id="eqn33" display="inline"><mrow><mo>−</mo><mn>2.222</mn></mrow></math>. It is in fact substituted to by <math id="eqn34" display="inline"><mrow><mo>−</mo><mn>2.221834293486762</mn></mrow></math>
+which is the value stored in list <tt>%o36</tt>; the output (%o36) is
+the exact result rounded to 4 significant digits, since set the number
+of displayed digits for floating-point numbers equal to 4 in
+<tt>(%i10)</tt>. The floating-point values in the list bound to
+<tt>%o36</tt> all have approximately 16 digits (the default for
+<i>double-precision</i> binary numbers). The result (%o37) is not
+zero, because <tt>allroots</tt> is a numerical algorithm and its results
+have a numerical error which in double-precision is of the order of
+<math id="eqn35" display="inline"><mrow><msup><mn>10</mn><mrow><mo>−</mo><mn>15</mn></mrow></msup></mrow></math>.
+</p>
+<p>
+There are other functions to find the exact solution to an algebraic
+equation without numerical approximations. Function <tt>solve</tt> can
+find the exact solutions to some algebraic equations or systems of
+algebraic equations (see the documentation for <tt>solve</tt> if you
+would like to know the type of equations that it can solve). In the
+case of equation <tt>(%o35)</tt>, the exact algebraic expressions for
+the three solutions in <tt>%o36</tt> can be found with:
+<pre class="maxima">
+<span class="maxp">(%i38)</span> result: <span class="maxi">solve ( 3*x^3 + 2*x^2 = x - 6, x )$</span>
+</pre>
+<p>
+Since the result is very lengthy, we didn't show it on the screen but
+saved it into the list <tt>result</tt>. The third root is the 3 element
+of that list, which can be written in a simpler form using one of the
+simplifying functions for algebraic equations. In the next 3 commands
+we will use three of those simplifying functions.
+</p>
+<pre class="maxima">
+<span class="maxp">(%i39)</span> <span class="maxi">factor (result[3]);</span>
+
+                                         2/3
+(%o39) x = ((27 sqrt(2393) - 764 sqrt(3))
+      1/6                              1/3       1/3
+ - 2 3    (27 sqrt(2393) - 764 sqrt(3))    + 13 3   )
+   13/6                              1/3
+/(3     (27 sqrt(2393) - 764 sqrt(3))   )
+
+<span class="maxp">(%i40)</span> <span class="maxi">xthru (result[3]);</span>
+
+(%o40) x = 
+        5/2                  2/3       5/2                  1/3
+      (3    sqrt(2393) - 764)    - 2 (3    sqrt(2393) - 764)    + 13
+      ──────────────────────────────────────────────────────────────
+                           5/2                  1/3
+                       9 (3    sqrt(2393) - 764)
+
+<span class="maxp">(%i41)</span> <span class="maxi">ratsimp (result[3]);</span>
+
+                                         2/3
+(%o41) x = ((27 sqrt(2393) - 764 sqrt(3))
+      1/6                              1/3       1/3
+ - 2 3    (27 sqrt(2393) - 764 sqrt(3))    + 13 3   )
+   13/6                              1/3
+/(3     (27 sqrt(2393) - 764 sqrt(3))   )
+</pre>
+<p>
+Which of the 3 previous expressions is simpler is just a matter of
+taste; they are all equivalent. Thus, when simplifying algebraic
+results you should try with those different functions and choose the
+result that you like the most. In this case functions <tt>ratsimp</tt>
+and <tt>factor</tt> gave the same result, but in other cases they might
+give different results. There are other simplifying functions; one
+that is also used often is <tt>radcan</tt>.
+</p>
+<p>
+You can also try to look at the two complex roots in <tt>result</tt>,
+using function <tt>rectform</tt> to separate the real and imaginary
+parts.
+</p>
+<p>
+Systems of linear equations and some nonlinear systems can also be
+solved using <tt>solve</tt>. The two equations must be given into a
+list, as in the following example
+<pre class="maxima">
+<span class="maxp">(%i42)</span> <span class="maxi">exp1: (4 + 8)*x1 - 8* x2 = 6 + 4$</span>
+
+<span class="maxp">(%i43)</span> <span class="maxi">exp2: (2 + 8 + 5 + 1)*x2 - 8*x1 = -4$</span>
+
+<span class="maxp">(%i44)</span> <span class="maxi">solve ( [exp1, exp2], [x1, x2] );</span>
+
+                                        1
+(%o44)                   [[x1 = 1, x2 = ─]]
+                                        4
+</pre>
+<p>
+There are two features of <tt>solve</tt> involved in the previous
+example. First, instead of 2 equations, we provided two expressions;
+every expression given to <tt>solve</tt> is then interpreted as that
+expression being equal to zero. Second, there is an optional argument,
+after the equations, with the variable or list of variables to be
+solved; if given, the number of variables must be equal to the number
+of equations. In the examples we have given there is no need to name
+the variables, because those variables are the only ones that appear
+in the equations. However, in some cases the name of the variables is
+necessary; for instance to solve just one equation <math id="eqn36" display="inline"><mrow><mi>x</mi><mo>/</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><msqrt><mrow><mi>z</mi></mrow></msqrt></mrow></math>
+with three variables, we must specify what variable we want to get
+in terms of the other two.
+</p>
+<p>
+The result saved in variable <tt>%o44</tt> is a list of solutions,
+where each possible solution is represented by a list. In this case
+there is only one solution which then appears as a list within another
+list.
+</p>
+<p>
+Function <tt>expand</tt> will expand products and powers of
+expressions, as in the following example
+<pre class="maxima">
+<span class="maxp">(%i45)</span> <span class="maxi">expand ((4*x^2*y + 2*y^2)^3);</span>
+
+                  6       2  5       4  4       6  3
+(%o45)         8 y  + 48 x  y  + 96 x  y  + 64 x  y
+</pre>
+<p>
+Function <tt>subst</tt>, which we used before to substitute numerical
+values, can also be used to substitute other expressions. In the next
+example we substitute <math id="eqn37" display="inline"><mrow><mi>x</mi></mrow></math> by <math id="eqn38" display="inline"><mrow><mn>1</mn><mo>/</mo><mi>z</mi></mrow></math>, and <math id="eqn39" display="inline"><mrow><mi>y</mi></mrow></math> by <math id="eqn40" display="inline"><mrow><msqrt><mrow><mi>z</mi></mrow></msqrt></mrow></math> in the
+expression <tt>%o43</tt>:
+<pre class="maxima">
+<span class="maxp">(%i46)</span> <span class="maxi">subst([x=1/z, y=sqrt(z)], %o43);</span>
+
+(%o46)                   16 x2 - 8 x1 = - 4
+</pre>
+<p>
+We can save that result into a variable, for instance <tt>r</tt>
+<pre class="maxima">
+<span class="maxp">(%i47)</span> <span class="maxi">r: %$</span>
+</pre>
+<p>
+Algebraic expressions are represented internally as lists; hence, some
+Maxima functions for lists can also be used with expressions. For
+instance, function <tt>length</tt> gives the length of a list and it can
+also be used to compute the number of terms in an expression; for
+instance,
+<pre class="maxima">
+<span class="maxp">(%i48)</span> <span class="maxi">length(r);</span>
+
+(%o48)                             2
+</pre>
+<p>
+Since the expression <tt>r</tt> was combined into a single fraction, the corresponding list has two elements, the numerator
+and denominator of that fraction. However, the two elements of the
+expression cannot be obtained with <tt>r[1]</tt> and <tt>r[2]</tt> as we
+have previously done with regular lists. In this case we have to use
+the functions <tt>first</tt> and <tt>second</tt>. The following command
+shows the numerator of <tt>r</tt>
+<pre class="maxima">
+<span class="maxp">(%i49)</span> <span class="maxi">first(r);</span>
+
+(%o49)                        16 x2 - 8 x1
+</pre>
+<p>
+and the length of that expression is
+<pre class="maxima">
+<span class="maxp">(%i50)</span> <span class="maxi">length(%);</span>
+
+(%o50)                             2
+</pre>
+<p>
+because it is the sum of three other expressions.
+</p>
+<p>
+A Maxima expression that cannot be further separated into other
+sub-expressions, for instance <math id="eqn41" display="inline"><mrow><mi>x</mi></mrow></math> or <math id="eqn42" display="inline"><mrow><mo>−</mo><mn>3.5</mn></mrow></math>, is dubbed an
+<span class="concept">atom</span>; functions that expect a list as its argument will
+usually trigger an error when they are given an atom as the argument.
+Function <tt>atom</tt> tells whether the argument given is an atom or
+not.
+</p>
+<p>
+A very useful function to manipulate lists or expressions is <tt>map</tt>,
+which will apply a given function to each element in a
+list. Here is an example: suppose we have the following expression,
+which we will save into a variable <tt>f</tt>
+<pre class="maxima">
+<span class="maxp">(%i51)</span> <span class="maxi">f: (x+y)^2 / (x-y)^2;</span>
+
+                                       2
+                                (y + x)
+(%o51)                          ────────
+                                       2
+                                (x - y)
+</pre>
+<p>
+We now would like to expand the squares in the numerator and
+denominator, but if we try to expand <tt>f</tt>, the result is the
+following
+<pre class="maxima">
+<span class="maxp">(%i52)</span> <span class="maxi">expand (f);</span>
+
+                 2                                   2
+                y                2 x y              x
+(%o52)    ─────────────── + ─────────────── + ───────────────
+           2            2    2            2    2            2
+          y  - 2 x y + x    y  - 2 x y + x    y  - 2 x y + x
+</pre>
+<p>
+The fraction was also expanded into 3 other fractions, which is not
+what we wanted. If we map <tt>expand</tt> to the two terms of the
+fraction, the numerator and denominator will be expanded separately
+giving the following result
+<pre class="maxima">
+<span class="maxp">(%i53)</span> <span class="maxi">map (expand, f);</span>
+
+                             2            2
+                            y  + 2 x y + x
+(%o53)                      ───────────────
+                             2            2
+                            y  - 2 x y + x
+</pre>
+</section>
+<section>
+<h2>10 Linear algebra</h2>
+<pre class="maxima">
+<span class="maxp">(%i54)</span> <span class="maxi">A: matrix ([3,2,-1],[-5,1,0],[-2,5,4]);</span>
+
+                            ┌             ┐
+                            │  3   2  - 1 │
+                            │             │
+(%o54)                      │ - 5  1   0  │
+                            │             │
+                            │ - 2  5   4  │
+                            └             ┘
+</pre>
+</section>
+<section>
+<h2>11 Trigonometry</h2>
+<p>
+Table <a href="#trig_functions">1</a> shows the names of the main trigonometric
+functions in Maxima. Angles are given in radians, and not in degrees.
+</p>
+<p>
+\begin{table}[hb!]
+\centering
+\caption{Trigonometric functions}
+\label{trig_functions}
+\begin{tabular}{ll}
+\toprule
+<b>Function\phantom{mm</b>} & <b>Description</b><br>[8pt]
+\midrule
+<tt>sin(x)</tt> &  Sin<br>[8pt]
+<tt>cos(x)</tt> &  Cosine<br>[8pt]
+<tt>tan(x)</tt> &  Tangent<br>[8pt]
+<tt>sec(x)</tt> &  Secant<br>[8pt]
+<tt>csc(x)</tt> &  Cosecant<br>[8pt]
+<tt>cot(x)</tt> &  Cotangent<br>[8pt]
+<tt>asin(x)</tt> &  Arc sine<br>[8pt]
+<tt>acos(x)</tt> &  Arc cosine<br>[8pt]
+<tt>atan(x)</tt> &  Arc tangent between <math id="eqn43" display="inline"><mrow><mo>−</mo><mi>π</mi><mo>/</mo><mn>2</mn></mrow></math> and <math id="eqn44" display="inline"><mrow><mi>π</mi><mo>/</mo><mn>2</mn></mrow></math><br>[8pt]
+<tt>atan2(y,x)</tt> & Arc tangent between <math id="eqn45" display="inline"><mrow><mo>−</mo><mi>π</mi></mrow></math> and <math id="eqn46" display="inline"><mrow><mi>π</mi></mrow></math><br>[8pt]
+<tt>asec(x)</tt> &  Arc secant<br>[8pt]
+<tt>acsc(x)</tt> &  Arc cosecant<br>[8pt]
+<tt>acot(x)</tt> &  Arc cotangent<br>[8pt]
+\bottomrule
+\end{tabular}
+\end{table}
+</p>
+<p>
+When applied to a floating-point number, these functions will give
+another floating-point number. But if the argument is not a
+floating-point number, the result is simplified but not computed,
+unless for some known numbers for which the exact result is known, as
+in the following example. Function <tt>float</tt> can be used to get an
+approximate floating-point result
+<pre class="maxima">
+<span class="maxp">(%i55)</span> <span class="maxi">[sin(-0.5), cos(-1/2), tan(%pi/3)];</span>
+
+                                     1
+(%o55)                [- 0.4794, cos(─), sqrt(3)]
+                                     2
+
+
+<span class="maxp">(%i56)</span> <span class="maxi">float(%);</span>
+
+(%o56)                 [- 0.4794, 0.8776, 1.732]
+</pre>
+<p>
+Consider the point with <math id="eqn47" display="inline"><mrow><mi>x</mi></mrow></math> coordinate <math id="eqn48" display="inline"><mrow><mo>−</mo><mn>1</mn></mrow></math> and <math id="eqn49" display="inline"><mrow><mi>y</mi></mrow></math> coordinate
+1; the position vector of that point makes an angle of <math id="eqn50" display="inline"><mrow><mn>3</mn><mspace width="0.167em" /><mi>π</mi><mo>/</mo><mn>4</mn></mrow></math>
+radians with the x-axis, and the tangent of that angle is <math id="eqn51" display="inline"><mrow><mo>−</mo><mn>1</mn></mrow></math> but if
+one computes <tt>atan(-1)</tt>, the result would be <math id="eqn52" display="inline"><mrow><mo>−</mo><mi>π</mi><mo>/</mo><mn>4</mn></mrow></math> because arc
+tangent has many branches and the branch chosen in Maxima goes from
+<math id="eqn53" display="inline"><mrow><mo>−</mo><mi>π</mi><mo>/</mo><mn>2</mn></mrow></math> to <math id="eqn54" display="inline"><mrow><mi>π</mi><mo>/</mo><mn>2</mn></mrow></math>. The <math id="eqn55" display="inline"><mrow><mi>y</mi></mrow></math> and <math id="eqn56" display="inline"><mrow><mi>x</mi></mrow></math> coordinates can be given to
+function <tt>atan2</tt> and it will compute the correct angle:
+<pre class="maxima">
+<span class="maxp">(%i57)</span> <span class="maxi">atan2(1, -1);</span>
+
+                                 3 %pi
+(%o57)                           ─────
+                                   4
+</pre>
+<p>
+To convert an angle from degrees into radians, it is multiplied by
+<math id="eqn57" display="inline"><mrow><mi>π</mi></mrow></math> and divided by 180. In the following example we compute the sine
+of <math id="eqn58" display="inline"><mrow><msup><mn>60</mn><mo>∘</mo></msup></mrow></math>
+<pre class="maxima">
+<span class="maxp">(%i58)</span> <span class="maxi">sin(60*%pi/180);</span>
+
+                                sqrt(3)
+(%o58)                          ───────
+                                   2
+</pre>
+<p>
+and to convert the results of the arc functions from radians to
+degrees, they should be multiplied by 180 and divided by <math id="eqn59" display="inline"><mrow><mi>π</mi></mrow></math>.
+</p>
+<p>
+There are some functions that simplify trigonometric
+expressions. Function <tt>trigexpand</tt> expands sines and cosines of
+sums of angles:
+<pre class="maxima">
+<span class="maxp">(%i59)</span> <span class="maxi">trigexpand(sin(u+v)*cos(u)^3);</span>
+
+                   3
+(%o59)          cos (u) (cos(u) sin(v) + sin(u) cos(v))
+</pre>
+<p>
+And function <tt>trigreduce</tt> tries to convert an expression
+into a sum of terms with a single trigonometric function:
+<pre class="maxima">
+<span class="maxp">(%i60)</span> <span class="maxi">trigreduce(%);</span>
+
+        sin(v + 4 u) + sin(v - 2 u)   3 sin(v + 2 u) + 3 sin(v)
+(%o60)  ─────────────────────────── + ─────────────────────────
+                     8                            8
+</pre>
+<p>
+Function <tt>trigsimp</tt> applies the trigonometric identity
+<math id="eqn60" display="inline"><mrow><msup><mi>sin</mi><mn>2</mn></msup><mi>x</mi><mo>+</mo><msup><mi>cos</mi><mn>2</mn></msup><mi>x</mi><mo>=</mo><mn>1</mn></mrow></math> and relations among trigonometric functions,
+trying to write the expression using only sines and cosines, as in the
+following example
+<pre class="maxima">
+<span class="maxp">(%i61)</span> <span class="maxi">tan(x)*sec(x)^2 + cos(x)*(1 - sin(x)^2);</span>
+
+                    2                            2
+(%o61)           sec (x) tan(x) + cos(x) (1 - sin (x))
+
+
+<span class="maxp">(%i62)</span> <span class="maxi">trigsimp(%);</span>
+
+                                        6
+                            sin(x) + cos (x)
+(%o62)                      ────────────────
+                                   3
+                                cos (x)
+</pre>
+</section>
+<section>
+<h2>12 Calculus</h2>
+<p>
+The simplest way to represent mathematical functions in Maxima is by
+using expressions. For example, to represent function
+<math id="eqn61" display="inline"><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><mn>3</mn><mspace width="0.167em" /><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>5</mn><mspace width="0.167em" /><mi>x</mi></mrow></math>, the expression on the right-hand-side is linked
+to variable <math id="eqn62" display="inline"><mrow><mi>f</mi></mrow></math>
+</p>
+<pre class="maxima">
+<span class="maxp">(%i63)</span> <span class="maxi">f: 3*x^2 - 5*x;</span>
+
+                                  2
+(%o63)                         3 x  - 5 x
+</pre>
+<p>
+The derivative of <math id="eqn63" display="inline"><mrow><mi>f</mi></mrow></math> with respect to <math id="eqn64" display="inline"><mrow><mi>x</mi></mrow></math> is computed using function
+<tt>diff</tt>
+</p>
+<pre class="maxima">
+<span class="maxp">(%i64)</span> <span class="maxi">diff (f, x);</span>
+
+(%o64)                          6 x - 5
+</pre>
+<p>
+and the antiderivative with respect to <math id="eqn65" display="inline"><mrow><mi>x</mi></mrow></math> is obtained with
+<tt>integrate</tt>
+</p>
+<pre class="maxima">
+<span class="maxp">(%i65)</span> <span class="maxi">integrate (f, x);</span>
+
+                                       2
+                                3   5 x
+(%o65)                         x  - ────
+                                     2
+</pre>
+<p>
+The value of the function at a point, for instance <math id="eqn66" display="inline"><mrow><mi>f</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></math>,
+can be obtained substituting <math id="eqn67" display="inline"><mrow><mi>x</mi></mrow></math> by 1 using
+<tt>subst</tt>, or with function <tt>at</tt>
+</p>
+<pre class="maxima">
+<span class="maxp">(%i66)</span> <span class="maxi">at (f, x=1);</span>
+
+(%o66)                            - 2
+</pre>
+<p>
+Maxima also has its own syntax to define general functions, which is
+the subject of a later section, and which can be used when the
+function's result is an expression. For example, the same function
+<math id="eqn68" display="inline"><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><mn>3</mn><mspace width="0.167em" /><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>5</mn><mspace width="0.167em" /><mi>x</mi></mrow></math> could have also be defined as follows
+</p>
+<pre class="maxima">
+<span class="maxp">(%i67)</span> <span class="maxi">f(x) := 3*x^2 - 5*x;</span>
+
+                                      2
+(%o67)                     f(x) := 3 x  - 5 x
+</pre>
+<p>
+The value of the function at a point, for instance <math id="eqn69" display="inline"><mrow><mi>x</mi><mo>=</mo><mn>1</mn></mrow></math>, and the
+function's derivative and antiderivative could then be obtained in
+this way
+</p>
+<pre class="maxima">
+<span class="maxp">(%i68)</span> <span class="maxi">f(1);</span>
+
+(%o68)                            - 2
+
+
+<span class="maxp">(%i69)</span> <span class="maxi">diff (f(x), x);</span>
+
+(%o69)                          6 x - 5
+
+
+<span class="maxp">(%i70)</span> <span class="maxi">integrate (f(x), x);</span>
+
+                                       2
+                                3   5 x
+(%o70)                         x  - ────
+                                     2
+</pre>
+<p>
+Notice that in <tt>(%i66)</tt> and <tt>(%67)</tt> Maxima would first get
+the output of function <math id="eqn70" display="inline"><mrow><mi>f</mi></mrow></math> when the its input is <math id="eqn71" display="inline"><mrow><mi>x</mi></mrow></math>, leading to the
+result <math id="eqn72" display="inline"><mrow><mn>3</mn><mspace width="0.167em" /><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>5</mn><mspace width="0.167em" /><mi>x</mi></mrow></math> and then the derivative or antiderivative are
+computed. Therefore, <tt>(%i66)</tt> does not really differentiate
+Maxima's function <math id="eqn73" display="inline"><mrow><mi>f</mi></mrow></math>, but rather the expression associated to it. And
+similarly in <tt>(%67)</tt>
+</p>
+<p>
+When the output of Maxima's function <math id="eqn74" display="inline"><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></math> is not an expression, (or
+a list of expressions), <tt>diff</tt> and <tt>integrate</tt> return the
+result of <math id="eqn75" display="inline"><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></math> without being differentiated or integrate, as in the
+following example
+</p>
+<pre class="maxima">
+<span class="maxp">(%i71)</span> <span class="maxi">h(x) := if x < 0 then x/2 else x^2;</span>
+
+                                          x       2
+(%o71)              h(x) := if x < 0 then ─ else x
+                                          2
+
+<span class="maxp">(%i72)</span> <span class="maxi">diff (h(x), x);</span>
+
+                      d                 x       2
+(%o72)                ── (if x < 0 then ─ else x )
+                      dx                2
+</pre>
+<p>
+When given an expression with several variables, <tt>diff</tt> returns
+a partial derivative with respect to the differentiating variable and
+<tt>integrate</tt> assumes constant values for the variables not being
+integrated
+</p>
+<pre class="maxima">
+<span class="maxp">(%i73)</span> <span class="maxi">diff (x^2*y-y^3, x);</span>
+
+(%o73)                           2 x y
+</pre>
+<p>
+Function <tt>integrate</tt> can also be used to computed definite
+integrals, as in the following example
+</p>
+<pre class="maxima">
+<span class="maxp">(%i74)</span> <span class="maxi">integrate (1/(1 + x^2), x, 0, 1);</span>
+
+                                  %pi
+(%o74)                            ───
+                                   4
+</pre>
+</section>
+<section>
+<h2>13 Plots</h2>
+<p>
+The function <tt>plot2d</tt> is used to plot curves or points in two
+dimensions. For example, the plot
+of the polynomial <math id="eqn76" display="inline"><mrow><msup><mi>t</mi><mn>3</mn></msup><mo>+</mo><msup><mi>t</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mspace width="0.167em" /><mi>t</mi></mrow></math>, for values of <math id="eqn77" display="inline"><mrow><mi>t</mi></mrow></math>
+between <math id="eqn78" display="inline"><mrow><mo>−</mo><mn>3</mn></mrow></math> and <math id="eqn79" display="inline"><mrow><mn>2</mn></mrow></math>, can be done with the following command
+<pre class="maxima">
+<span class="maxp">(%i75)</span> <span class="maxi">plot2d (t^3+t^2-2*t,[t,-3,2])$</span>
+</pre>
+<figure class="center" id="fig:plot2d_curve">
+<img class="fig" src="img/plot2d_curve.png" style="width:42.609em;max-width:100%;height:auto">
+<figcaption>
+<b>Figure 2:</b>  Plot of the polynomial <math id="eqn80" display="inline"><mrow><msup><mi>t</mi><mn>3</mn></msup><mo>+</mo><msup><mi>t</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mspace width="0.167em" /><mi>t</mi></mrow></math>.
+</figcaption>
+</figure>
+<p>
+The result of <tt>(%i74)</tt>, shown in Figure <a href="#fig:plot2d_curve">2</a>,
+will appear in a separate window. Moving the mouse over the plot, the
+coordinates of the point where the cursor is are shown.
+</p>
+<p>
+The expression to plot can also be an equation with 2 variables. In
+that case it is necessary to give ranges of values for those two
+variables, as in the following examples that plots the ellipse shown
+in Figure <a href="#fig:plot2d_implicit">3</a>.
+<pre class="maxima">
+<span class="maxp">(%i76)</span> <span class="maxi">plot2d(x^2/9+y^2/4=1,[x,-4,4],[y,-3,3]);</span>
+    
+(%o76)                          false
+
+</pre>
+<figure class="center" id="fig:plot2d_implicit">
+<img class="fig" src="img/plot2d_implicit.png" style="width:42.609em;max-width:100%;height:auto">
+<figcaption>
+<b>Figure 3:</b>  Plot of the ellipse <math id="eqn81" display="inline"><mrow><mstyle displaystyle="true" scriptlevel="0"><mfrac><mrow><msup><mi>x</mi><mn>2</mn></msup></mrow><mrow><mn>9</mn></mrow></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true" scriptlevel="0"><mfrac><mrow><msup><mi>y</mi><mn>2</mn></msup></mrow><mrow><mn>4</mn></mrow></mfrac></mstyle><mo>=</mo><mn>1</mn></mrow></math>.
+</figcaption>
+</figure>
+<p>
+In the command <tt>(%i75)</tt>, the semicolon at the end shows the
+result of the command, which could be a list o graphic files
+created. In this case the result <tt>false</tt> means that no files were
+used. Depending on the plot format used and the type of graphic, files
+might be created and listed in the result.
+</p>
+<p>
+To plot several functions in the same window, those functions must be
+placed inside a list. For instance, the following command shows the
+plots of functions sine and co-sine.
+<pre class="maxima">
+<span class="maxp">(%i77)</span> <span class="maxi">plot2d ( [sin(x), cos(x)], [x, -2*%pi, 2*%pi])$</span>
+</pre>
+<figure class="center" id="fig:plot2d_multiple">
+<img class="fig" src="img/plot2d_multiple.png" style="width:42.609em;max-width:100%;height:auto">
+<figcaption>
+<b>Figure 4:</b>  Plot of functions sin and cosine.
+</figcaption>
+</figure>
+<p>
+It would be enough to simply give the names of the functions, as in
+<tt>[sin, cos]</tt>. Provided they are functions of only one variable,
+<tt>plot2d</tt> will input into them the values of the variable, within
+its interval defined by <tt>[x, -2*%pi, 2*%pi]</tt>.
+</p>
+<p>
+The resulting plot is shown in Figure <a href="#fig:plot2d_multiple">4</a>. In
+the cases when you would like to plot functions that you defined, it
+is more fool-proof to just give the name of the function, making sure
+that it depends on only one input variable. In the cases when your
+function <math id="eqn82" display="inline"><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></math> gives as result an algebraic expression on <math id="eqn83" display="inline"><mrow><mi>x</mi></mrow></math>, it is
+equivalent to use <math id="eqn84" display="inline"><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></math> or <math id="eqn85" display="inline"><mrow><mi>f</mi></mrow></math>; but in the cases when <math id="eqn86" display="inline"><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></math> does not
+result in an algebraic expression of <math id="eqn87" display="inline"><mrow><mi>x</mi></mrow></math>, that will fail.
+</p>
+<p>
+To show several points in a plot, the coordinates of the points can be
+given as lists, within another, with lists of points in a
+two-coordinate system. The two coordinates of each point can be given
+as a list, inside another list with all the points. For example, to
+show the three points (1.1, 5), (1.9, 7) and (3.2,9) in a plot, the
+points coordinates can be placed inside a list linked to the symbol
+<tt>p</tt>:
+<pre class="maxima">
+<span class="maxp">(%i78)</span> <span class="maxi">p: [[1.1, 5], [1.9, 7], [3.2, 9]]$</span>
+</pre>
+<p>
+To create the plot, it is necessary to give <tt>plot2d</tt> a list that
+starts with the keyword <tt>discrete</tt>, followed by the list of
+points. In this case it is not mandatory to specify an interval of
+values for the variable in the horizontal axis:
+<pre class="maxima">
+<span class="maxp">(%i79)</span> <span class="maxi">plot2d ([discrete, p])$</span>
+</pre>
+<figure class="center" id="fig:plot2d_discrete">
+<img class="fig" src="img/plot2d_discrete.png" style="width:42.609em;max-width:100%;height:auto">
+<figcaption>
+<b>Figure 5:</b>  Plot of a line defined by three points.
+</figcaption>
+</figure>
+<p>
+The plot is shown in Figure <a href="#fig:plot2d_discrete">5</a>.  By default,
+the points are linked by line segments; to show only the points,
+without line segments, the option <tt>[style, points]</tt> is used.
+</p>
+<p>
+Command <tt>plot3d</tt> is used to plot functions of two variables. For
+example, the following command creates the plot shown in
+Figure <a href="#fig:plot3d">6</a>:
+<pre class="maxima">
+<span class="maxp">(%i80)</span> <span class="maxi">plot3d ( sin(x)*sin(y), [x, 0, 2*%pi], [y, 0, 2*%pi])$</span>
+</pre>
+<figure class="center" id="fig:plot3d">
+<img class="fig" src="img/plot3d.png" style="width:42.609em;max-width:100%;height:auto">
+<figcaption>
+<b>Figure 6:</b>  Plot of function <math id="eqn88" display="inline"><mrow><mi>sin</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mi>sin</mi><mo stretchy="false">(</mo><mi>y</mi><mo stretchy="false">)</mo></mrow></math>.
+</figcaption>
+</figure>
+<p>
+Moving the mouse over the plot, while its left-side button is pressed,
+the surface will be rotated showing how it looks from different sides.
+The command plot3d also accepts a list of several functions to be
+plotted in the same window.  It is also possible to give a list o 3
+functions of 2 parameters, that define the 3 components of a position
+vector that describes a surface (parametric plot).
+</p>
+<p>
+Both <tt>plot2d</tt> and <tt>plot3d</tt> accept the options
+<tt>pdf_file</tt>, <tt>png_file</tt> and <tt>ps_file</tt> which are used
+to save the plot into a file in PDF, PNG or PostScript format. For
+instance, the following command saves the plot produced by command
+<tt>(%i74)</tt> into a PNG file:
+<pre class="maxima">
+<span class="maxp">(%i81)</span> <span class="maxi">plot2d ([sin, cos], [x,-2*%pi,2*%pi], [png_file,"./plot1.png"]);</span>
+
+(%o81)                      [./plot1.png]
+</pre>
+<p>
+The command does not show the plot but shows a list with the file
+created, in this case a PNG file. The initial characters &quot;./&quot;
+indicate that the file named &quot;plot1.png&quot; is located in the current
+directory where Maxima is running. If you don't give any initial
+characters &quot;./&quot; and you finished the plot2d command with a
+semicolon, the output will show you in which directory the file was
+placed, in a default directory.
+</p>
+<p>
+There are many other options for <tt>plot2d</tt> and <tt>plot3d</tt>, as
+well as other graphic functions, which are explained in the Maxima
+manual.
+</p>
+</section>
+<section>
+<h2>14 Functions</h2>
+<p>
+In Maxima what is usually referred to as a function is a program with
+some input arguments and an output. Those functions can be defined
+using Maxima's syntax or using Lisp commands. It is even possible to
+redefine any of the functions mentioned in previous sections; for
+instance, if in the Maxima version being used some function has a bug
+that has already been fixed in a more recent version, it is possible
+to load the new version of the function and, unless it introduces
+conflicts with other older functions, it should work correctly.
+</p>
+<p>
+Maxima functions are normally called by giving their name followed by
+its input inside parenthesis, as in <tt>diff(cos(x),x)</tt>. Functions
+with only one input argument can also be defined to be used just by
+giving their name before or after their argument, as in 34! which
+computes the factorial of 34; the name of the function is ! and 34 is
+its input argument (see documentation for <tt>prefix</tt> and
+<tt>potfix</tt>). And functions of two input arguments can be defined to
+be used by just giving their name in between the two arguments, as in
+<tt>3*7</tt> (see documentation for <tt>infix</tt>).
+</p>
+<p>
+As a first example, let us create our own version of the factorial
+function, which we will name <tt>fact</tt>:
+<pre class="maxima">
+<span class="maxp">(%i82)</span> <span class="maxi">fact(n) := if n <= 1 then 1 else n*fact(n-1);</span>
+
+(%o82)       fact(n) := if n <= 1 then 1 else n fact(n - 1)
+
+
+<span class="maxp">(%i83)</span> <span class="maxi">fact(6);</span>
+
+(%o83)                            720
+</pre>
+<p>
+It is not necessary to use any command to return the output, since the
+output of the last command in the function will become the output of
+the function. A function can call itself recursively as it has been
+done in this example.
+</p>
+<p>
+Several Maxima commands can be grouped together by placing them inside
+parenthesis and separating them by commas. Those commands are run
+sequentially and the result of the last command will be the result of
+the whole group. Each command can be indented and can expand more than
+one line. The following example defines a function that adds all the
+arguments given to it:
+<pre class="maxima">
+<span class="maxp">(%i84)</span> <span class="maxi">add([v]) := block([s: 0],</span>
+                          <span class="maxi">for i:1 thru length(v) do</span>
+                             <span class="maxi">(s : s + v[i]),</span>
+                             <span class="maxi">s)$</span>
+
+<span class="maxp">(%i85)</span> <span class="maxi">add (45,2^3);</span>
+
+(%o85)                             53
+
+
+<span class="maxp">(%i86)</span> <span class="maxi">add (3,log(x),5+x);</span>
+
+(%o86)                       log(x) + x + 8
+</pre>
+<p>
+A list was used as the argument for the function, which makes the
+function accept any number of input parameters (or none) and all the
+arguments given will be placed in a list linked to the local symbol
+<tt>v</tt>. Function <tt>block</tt> was used to define another local
+symbol <tt>s</tt>, initially linked to the value 0, which by the end of
+the function will be linked to the sum of the input variables. The
+first element given to <tt>block</tt> must be a list, with the names of
+symbols that are to be considered local to the function, each one with
+or without an initial value, and the remaining commands after that
+list define the function. The function <tt>for</tt> iterates the local
+variable <tt>i</tt> ---in this case from 1 up to the length of the
+list--- with increments, by default, equal to 1 (option <tt>step</tt>
+can be given to modify the default value of that increment). After the
+<tt>for</tt> loop, we gave the name of variable <tt>s</tt>, to make it
+become the output of the function.
+</p>
+<p>
+When an unknown function is used no errors are triggered; instead, the
+unknown function is echoed in the output; for example:
+<pre class="maxima">
+<span class="maxp">(%i87)</span> <span class="maxi">2*4*maximum(3,5,2);</span>
+
+(%o87)                     8 maximum(3, 5, 2)
+</pre>
+<p>
+Most of Maxima functions behave the same way when they fail to give
+a result. For instance,
+<pre class="maxima">
+<span class="maxp">(%i88)</span> <span class="maxi">log(x^2+3+x);</span>
+
+                                 2
+(%o88)                      log(x  + x + 3)
+</pre>
+<p>
+That behavior is very useful, because it makes it possible to
+change the value of the arguments later on and to reevaluate
+the function.  For example, substituting
+the symbol <tt>x</tt> in this last result by the
+floating-point number 2.0, the logarithm
+would then be computed and its numerical value shown:
+<pre class="maxima">
+<span class="maxp">(%i89)</span> <span class="maxi">subst (x=2.0, %);</span>
+
+(%o89)                           2.197
+</pre>
+</section>
+<footer>
+<p>&copy; 2025, Jaime E. Villate</p>
+<p>This work is licensed under a <a rel="license"
+href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+Commons Attribution-ShareAlike 4.0 International License</a>.</p>
+<span>Last modified: Fri Jul 18 16:15:27 WEST 2025</span>
+</footer>
+</body>
+</html>

@@ -1,0 +1,153 @@
+* { box-sizing: border-box; }
+@namespace url('http://www.w3.org/1999/xhtml');
+@namespace m url('http://www.w3.org/1998/Math/MathML');
+
+@font-face {
+    font-family: TeX Gyre Schola;
+    src: local('TeXGyreSchola-Regular'),
+         url('texgyreschola-regular.woff2'),url('texgyreschola-regular.woff');
+}
+@font-face {
+    font-family: TeX Gyre Schola;
+    src: local('TeXGyreSchola-Bold'),
+         url('texgyreschola-bold.woff2'),url('texgyreschola-bold.woff');
+    font-weight: bold;
+}
+@font-face {
+    font-family: TeX Gyre Schola;
+    src: local('TeXGyreSchola-Italic'),
+         url('texgyreschola-italic.woff2'),url('texgyreschola-italic.woff');
+    font-style: italic;
+}
+@font-face {
+    font-family: TeX Gyre Schola;
+    src: local('TeXGyreSchola-BoldItalic'),
+         url('texgyreschola-bolditalic.woff2'),
+         url('texgyreschola-bolditalic.woff');
+    font-weight: bold; font-style: italic;
+}
+@font-face {
+    font-family: TeX Gyre Schola Math;
+    src: local('TeX Gyre Schola Math'),local('TeXGyreScholaMath-Regular'),
+         url('texgyreschola-math.woff2'),url('texgyreschola-math.woff');
+}
+@font-face {
+    font-family: Latin Modern Mono 12;
+    src: local('LatinModern-Mono-12'),
+         url('lmmono12-regular.woff');
+}
+body {
+    font-family: TeX Gyre Schola;
+    background-color: #d4d4d4;
+    margin: 0;
+    font-size: calc(12px + 0.25vw);
+}
+math { font-family: TeX Gyre Schola Math; }
+section { font-family: TeX Gyre Schola; }
+span.concept { font-style: italic; }
+span.maxp { color: red; }
+span.maxi { color: blue; }
+header {
+    background-color: #546284;
+    color: white;
+    padding-left: 0.5em;
+    padding-top: 1em;
+    border-bottom: 1px solid #3333aa;
+}
+header h1 {
+    font-size: 1.5em;
+    color: #dedab5;
+    text-shadow: 1px 1px 2px black;
+
+}
+header h2 {
+    font-size: 1.2em;
+    color: #dedab5;
+}
+header a { color: #bbccff; }
+main, section {
+    width: 100%;
+    background-color: white;
+    padding: 5px;
+}
+footer {
+    margin: 0;
+    width: 100%;
+    padding: 1.5em 1em;
+    clear: both;
+    text-align: center;
+    border-top: 1px solid  #a4b7d8;
+    color: #aaaaaa;
+    background-color: #303030;
+    font-size: 0.8em;
+}
+footer a { color: #5462d8; }
+figure {
+    margin-left: 0;
+    margin-right: 0;
+}
+figure.center { text-align: center; }
+img.fig {
+    max-width: 100%;
+    height: auto;
+}
+span.math { font-size: 1.2em; }
+.center { text-align: center; }
+.left   { text-align: left; }
+.right  { text-align: right; }
+tt {
+    font-family: Latin Modern Mono 12;
+    font-size: calc(10px + 0.25vw);
+}    
+pre.maxima {
+    font-family: Latin Modern Mono 12;
+    font-size: calc(10px + 0.25vw);
+    border: 1px solid #000099;
+    line-height: 1em;
+    padding: 1em 0.5em;
+    min-width: 44em;
+    background-color: #fffaee;
+    border-radius: 10px;
+}
+pre.prog {
+    font-family: Latin Modern Mono 12;
+    font-size: calc(10px + 0.25vw);
+    border: 1px solid #29639e;
+    line-height: 1em;
+    padding: 1em 0.5em;
+    background-color: #ddeeff;
+    border-radius: 10px;
+}
+@media screen and (min-width: 600px) {
+    body {
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+        border-left: 1px solid #3333aa;
+        border-right: 1px solid #3333aa;
+    }
+    header {
+        padding-left: 1.5em;
+        padding-top: 2em;
+    }
+    header h1 {
+        font-size: 2em;
+        line-height: 1.2em;
+    }
+    header h2 {
+        font-size: 1.6em;
+    }
+    footer { font-size: 0.8em; line-height: 2em; }
+    section { padding: 15px; }
+}
+@media screen and (min-width: 900px) {
+    header {
+        padding-left: 2.5em;
+        padding-top: 3em;
+    }
+    pre.maxima, pre.program { padding: 1em; }
+    section {
+        padding-left: 2em;
+        paddign-right: 2em;
+    }
+}
