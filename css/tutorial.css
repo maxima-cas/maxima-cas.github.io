@@ -105,7 +105,7 @@ pre.maxima {
     border: 1px solid #000099;
     line-height: 1em;
     padding: 1em 0.5em;
-    min-width: 44em;
+    overflow-x: auto;
     background-color: #fffaee;
     border-radius: 10px;
 }
@@ -115,6 +115,7 @@ pre.prog {
     border: 1px solid #29639e;
     line-height: 1em;
     padding: 1em 0.5em;
+    overflow-x: auto;
     background-color: #ddeeff;
     border-radius: 10px;
 }
