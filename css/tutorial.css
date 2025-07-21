@@ -31,11 +31,6 @@
     src: local('TeX Gyre Schola Math'),local('TeXGyreScholaMath-Regular'),
          url('texgyreschola-math.woff2'),url('texgyreschola-math.woff');
 }
-/* @font-face {
-    font-family: Latin Modern Mono 12;
-    src: local('LatinModern-Mono-12'),
-         url('lmmono12-regular.woff');
-} */
 @font-face {
     font-family: DejaVu Sans Mono;
     src: local('DejaVu Sans Mono'),
@@ -101,12 +96,12 @@ span.math { font-size: 1.2em; }
 .left   { text-align: left; }
 .right  { text-align: right; }
 tt {
-    font-family: Latin Modern Mono 12;
-    font-size: calc(10px + 0.25vw);
+    font-family: DejaVu Sans Mono, monospace;
+    font-size: calc(8px + 0.25vw);
 }    
 pre.maxima {
-    font-family: DejaVu Sans Mono;
-    font-size: calc(10px + 0.25vw);
+    font-family: DejaVu Sans Mono, monospace;
+    font-size: calc(8px + 0.25vw);
     border: 1px solid #000099;
     line-height: 1em;
     padding: 1em 0.5em;
@@ -115,8 +110,8 @@ pre.maxima {
     border-radius: 10px;
 }
 pre.prog {
-    font-family: Latin Modern Mono 12;
-    font-size: calc(10px + 0.25vw);
+    font-family: DejaVu Sans Mono, monospace;
+    font-size: calc(8px + 0.25vw);
     border: 1px solid #29639e;
     line-height: 1em;
     padding: 1em 0.5em;
