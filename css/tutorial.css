@@ -40,7 +40,7 @@ body {
     font-family: TeX Gyre Schola;
     background-color: #d4d4d4;
     margin: 0;
-    font-size: calc(12px + 0.25vw);
+    font-size: calc(12px + 0.36vw);
 }
 math { font-family: TeX Gyre Schola Math; }
 section { font-family: TeX Gyre Schola; }
@@ -97,11 +97,11 @@ span.math { font-size: 1.2em; }
 .right  { text-align: right; }
 tt {
     font-family: DejaVu Sans Mono, monospace;
-    font-size: calc(8px + 0.25vw);
+    font-size: calc(9px + 0.36vw);
 }    
 pre.maxima {
     font-family: DejaVu Sans Mono, monospace;
-    font-size: calc(8px + 0.25vw);
+    font-size: calc(9px + 0.36vw);
     border: 1px solid #000099;
     line-height: 1em;
     padding: 1em 0.5em;
@@ -111,7 +111,7 @@ pre.maxima {
 }
 pre.prog {
     font-family: DejaVu Sans Mono, monospace;
-    font-size: calc(8px + 0.25vw);
+    font-size: calc(9px + 0.36vw);
     border: 1px solid #29639e;
     line-height: 1em;
     padding: 1em 0.5em;

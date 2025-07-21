@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>A Maxima tutorial</title>
-<!--Generated on Fri Jul 18 16:15:27 WEST 2025 by latextohtml.tcl, by J. Villate -->
-<link rel="stylesheet" href="css/tutorial.css">
+<!--Generated on Mon Jul 21 19:56:01 WEST 2025 by latextohtml.tcl, by J. Villate -->
+<link rel="stylesheet" href="/home/villate/css/tutorial.css">
 <link rel="icon" type="image/svg+xml" href="img/maxima.svg">
 <link rel="alternate icon" href="img/favicon.ico">
 </head>
@@ -13,7 +13,7 @@
 <header>
 <h1>A Maxima tutorial</h1>
 <p>Jaime E. Villate<br> <i>University of Porto, Portugal</i><br>
-July 18, 2025</p>
+July 21, 2025</p>
 </header>
 <section>
 <h2>1 Introduction</h2>
@@ -80,7 +80,7 @@ commands as being run in imaxima, which runs from within the
 <span class="concept">Emacs</span> text editor
 </p>
 <figure class="center" id="fig:xmaxima">
-<img class="fig" src="figs/maxima_interfaces.png" style="width:33.978em;max-width:100%;height:auto">
+<img class="fig" src="img/maxima_interfaces.png" style="width:33.978em;max-width:100%;height:auto">
 <figcaption>
 <b>Figure 1:</b>  Xmaxima's graphical interface.
 </figcaption>
@@ -223,8 +223,7 @@ The function float computed the product <math id="eqn2" display="inline"><mrow><
 using 16 significant digits in floating-point format. The
 floating-point format used in Maxima stores each number in 64 binary
 bits, which leads to between 15 and 17 significant digits when
-expressed in decimal base. That format is known as \concept{double
-  precision}.
+expressed in decimal base. That format is known as <span class="concept">double precision</span>.
 </p>
 <p>
 A frequent source of confusion arises from the fact that those numbers
@@ -233,7 +232,7 @@ base; thus, certain numbers that can be represented in decimal base
 with a few digits, for instance 0.1, would need an infinite number of
 binary digits to be represented accurately in binary base. It is the
 situation as with the fraction 1/3 in decimal base, which in
-floating-point form has an infinite number of digits: 0.333\ldots,
+floating-point form has an infinite number of digits: 0.333&hellip;,
 while in base 3 that fraction would simply be 0.1.
 </p>
 <p>
@@ -969,7 +968,7 @@ giving the following result
 <section>
 <h2>11 Trigonometry</h2>
 <p>
-Table <a href="#trig_functions">1</a> shows the names of the main trigonometric
+Table 1 shows the names of the main trigonometric
 functions in Maxima. Angles are given in radians, and not in degrees.
 </p>
 <p>
@@ -1203,7 +1202,7 @@ between <math id="eqn78" display="inline"><mrow><mo>−</mo><mn>3</mn></mrow></m
 <span class="maxp">(%i75)</span> <span class="maxi">plot2d (t^3+t^2-2*t,[t,-3,2])$</span>
 </pre>
 <figure class="center" id="fig:plot2d_curve">
-<img class="fig" src="img/plot2d_curve.png" style="width:42.609em;max-width:100%;height:auto">
+<img class="fig" src="img/plot2d_curve.png" style="width:31.957em;max-width:100%;height:auto">
 <figcaption>
 <b>Figure 2:</b>  Plot of the polynomial <math id="eqn80" display="inline"><mrow><msup><mi>t</mi><mn>3</mn></msup><mo>+</mo><msup><mi>t</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mspace width="0.167em" /><mi>t</mi></mrow></math>.
 </figcaption>
@@ -1225,7 +1224,7 @@ in Figure <a href="#fig:plot2d_implicit">3</a>.
 
 </pre>
 <figure class="center" id="fig:plot2d_implicit">
-<img class="fig" src="img/plot2d_implicit.png" style="width:42.609em;max-width:100%;height:auto">
+<img class="fig" src="img/plot2d_implicit.png" style="width:31.957em;max-width:100%;height:auto">
 <figcaption>
 <b>Figure 3:</b>  Plot of the ellipse <math id="eqn81" display="inline"><mrow><mstyle displaystyle="true" scriptlevel="0"><mfrac><mrow><msup><mi>x</mi><mn>2</mn></msup></mrow><mrow><mn>9</mn></mrow></mfrac></mstyle><mo>+</mo><mstyle displaystyle="true" scriptlevel="0"><mfrac><mrow><msup><mi>y</mi><mn>2</mn></msup></mrow><mrow><mn>4</mn></mrow></mfrac></mstyle><mo>=</mo><mn>1</mn></mrow></math>.
 </figcaption>
@@ -1245,7 +1244,7 @@ plots of functions sine and co-sine.
 <span class="maxp">(%i77)</span> <span class="maxi">plot2d ( [sin(x), cos(x)], [x, -2*%pi, 2*%pi])$</span>
 </pre>
 <figure class="center" id="fig:plot2d_multiple">
-<img class="fig" src="img/plot2d_multiple.png" style="width:42.609em;max-width:100%;height:auto">
+<img class="fig" src="img/plot2d_multiple.png" style="width:31.957em;max-width:100%;height:auto">
 <figcaption>
 <b>Figure 4:</b>  Plot of functions sin and cosine.
 </figcaption>
@@ -1285,7 +1284,7 @@ values for the variable in the horizontal axis:
 <span class="maxp">(%i79)</span> <span class="maxi">plot2d ([discrete, p])$</span>
 </pre>
 <figure class="center" id="fig:plot2d_discrete">
-<img class="fig" src="img/plot2d_discrete.png" style="width:42.609em;max-width:100%;height:auto">
+<img class="fig" src="img/plot2d_discrete.png" style="width:31.957em;max-width:100%;height:auto">
 <figcaption>
 <b>Figure 5:</b>  Plot of a line defined by three points.
 </figcaption>
@@ -1303,7 +1302,7 @@ Figure <a href="#fig:plot3d">6</a>:
 <span class="maxp">(%i80)</span> <span class="maxi">plot3d ( sin(x)*sin(y), [x, 0, 2*%pi], [y, 0, 2*%pi])$</span>
 </pre>
 <figure class="center" id="fig:plot3d">
-<img class="fig" src="img/plot3d.png" style="width:42.609em;max-width:100%;height:auto">
+<img class="fig" src="img/plot3d.png" style="width:31.957em;max-width:100%;height:auto">
 <figcaption>
 <b>Figure 6:</b>  Plot of function <math id="eqn88" display="inline"><mrow><mi>sin</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mi>sin</mi><mo stretchy="false">(</mo><mi>y</mi><mo stretchy="false">)</mo></mrow></math>.
 </figcaption>
@@ -1458,7 +1457,7 @@ would then be computed and its numerical value shown:
 <p>This work is licensed under a <a rel="license"
 href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
 Commons Attribution-ShareAlike 4.0 International License</a>.</p>
-<span>Last modified: 2025/07/18 15:49:47 UTC</span>
+<span>Last modified: 2025/07/21 19:15:14 UTC</span>
 </footer>
 </body>
 </html>
