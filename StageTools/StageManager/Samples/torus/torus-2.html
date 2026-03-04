@@ -1,0 +1,98 @@
+<html>
+<head>
+<title>StageTools (StageManager/Samples/Torus):  Several Transformations at Once</title>
+<!-- Copyright (c) 1996-2006 by Davide P. Cervone.  All rights reserved. -->
+<!-- *Document-Format:  StageTools -->
+<!-- *Navigation-Data:
+  ^ ../welcome.html
+  - torus-1.html
+  + torus-3.html
+-->
+</head>
+<body>
+<!-- *Navigation-links -->
+<table width="100%" border="1" cellpadding="2" cellspacing="1">
+<tr><td bgcolor="#B8B8B8"><table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr><td width="20%" align="LEFT" nowrap><!--
+--></td>
+<td align="CENTER" width="60%"><!--
+--><nobr><b><small><a href="../../../welcome.html">StageTools</a> - Documentation<a></a> (StageManager/Samples/Torus)</small></b></nobr><!--
+--></td>
+<td align="RIGHT" width="20%" height="25" nowrap><!--
+--><a href="torus-1.html"><!--
+--><img src="../../../img/prev.gif" alt="[Prev]" border="0" width="25" height="25"></a><!--
+--><a href="../welcome.html"><!--
+--><img src="../../../img/up.gif" alt="[Up]" border="0" width="25" height="25"></a><!--
+--><a href="torus-3.html"><!--
+--><img src="../../../img/next.gif" alt="[Next]" border="0" width="25" height="25"></a><!--
+--></td></tr></table>
+</td></tr></table>
+<p>
+<!--BR-->
+<!-- *Begin-Document-Body -->
+
+<blockquote>
+<h1><a href="Torus-2.gif"><img src="Torus-2.jpg" align="MIDDLE"></a>
+Several Transformations at Once:</h1>
+
+In this movie, a torus is loaded and our initial view is set up, then
+the torus rotates, pauses, and finally does a compound rotation and
+scaling all at once.  The final position of the torus is the result of
+a transformation by a product of all three transformations in the
+final <code>Sequence</code> command.
+<p>
+The <code><a href="Torus.oogl">Torus.oogl</a></code> file was created
+using the file <code><a href="Torus.cs">Torus.cs</a></code> in CenterStage.
+The <code><a href="xyz.vect">xyz.vect</a></code>
+file is a standard one that comes with Geomview.
+<p>
+
+<h2><hr size="5"><a href="Torus-2.sm">Torus-2.sm</a><hr></h2>
+<pre>
+   Load Torus.oogl
+   Load xyz.vect
+
+   Transform {Scale .25} Torus.oogl
+   Transform {YZ -$pi/3}
+   Transform {XY -$pi/6}
+
+   Sequence {YZ $pi/2} 7 Torus.oogl
+   Pause 3
+   Sequence {Product {Scale .5} {XZ $pi} {YZ $pi/2}} 16 Torus.oogl
+   Pause 5
+</pre>
+</blockquote>
+<!-- *End-Document-Body -->
+<!-- *StageTools-Common-Footer -->
+<!--BR--><p>
+<hr size="3">
+<table border="0" cellpadding="0" cellspacing="0" width="98%" align="CENTER">
+<tr valign="MIDDLE"><td bgcolor="#B8B8B8" width="50%">
+<table border="0" cellpadding="0" cellspacing="8" align="CENTER">
+<tr valign="MIDDLE">
+<td><a href="../../../img/welcome.html"><img src="../../../img/home.gif" alt="[HOME]" border="1" width="40" height="40" hspace="5"></a></td>
+<td><small>StageTools Documentation web pages<br>
+Created:  03 Jun 1996<br>
+<!-- hhmts start -->
+Last modified:  Aug 17, 2006 10:01:20 AM
+<!-- hhmts end -->
+<br>
+Comments to:  <a href="mailto:dpvc@union.edu"><code>dpvc@union.edu</code></a><br>
+</small></td>
+</tr></table></td>
+<td width="1%"></td><td width="0%">
+<!-- *Navigation-Links -->
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td width="5" rowspan="10"></td><td></td><td width="5" rowspan="10"></td></tr>
+<tr><td><a href="torus-3.html"><img src="../../../img/next.gif" alt="[Next]" border="0" width="25" height="25"></a></td>
+<td><i><a href="torus-3.html">Several Objects in One Movie</a></i><br></td></tr>
+<tr><td><a href="../welcome.html"><img src="../../../img/up.gif" alt="[Up]" border="0" width="25" height="25"></a></td>
+<td><i><a href="../welcome.html">Sample StageManager Files</a></i><br></td></tr>
+<tr><td><a href="torus-1.html"><img src="../../../img/prev.gif" alt="[Prev]" border="0" width="25" height="25"></a></td>
+<td><i><a href="torus-1.html">Rotating a Torus</a></i><br></td></tr>
+</table>
+</td><td width="2%" bgcolor="#B8B8B8">&nbsp;</td>
+</tr></table>
+<hr size="3">
+</body>
+</html>

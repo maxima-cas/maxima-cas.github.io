@@ -1,0 +1,82 @@
+<!-- saved from url=(0113)https://web.archive.org/web/20190319211943/http://www.math.union.edu/software/StageTools/CenterStage/welcome.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>StageTools (CenterStage):  CenterStage Home Page</title>
+<!-- Copyright (c) 1997-2006 by Davide P. Cervone.  All rights reserved. -->
+<!-- *Document-Format:  StageTools -->
+<!-- *Navigation-Data:
+  ^ ../welcome.html
+  + CenterStage.txt
+-->
+</head>
+<body>
+<!-- *Navigation-links -->
+<table width="100%" border="1" cellpadding="2" cellspacing="1">
+<tbody><tr><td bgcolor="#B8B8B8"><table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tbody><tr><td width="20%" align="LEFT" nowrap=""><!--
+--></td>
+<td align="CENTER" width="60%"><!--
+--><nobr><b><small><a href="../welcome.html">StageTools</a> - Documentation<a></a> (CenterStage)</small></b></nobr><!--
+--></td>
+<td align="RIGHT" width="20%" height="25" nowrap=""><!--
+--><a href="../welcome.html"><!--
+--><img src="../img/up.gif" alt="[Up]" border="0" width="25" height="25"></a><!--
+--><a href="CenterStage.txt"><!--
+--><img src="../img/next.gif" alt="[Next]" border="0" width="25" height="25"></a><!--
+--></td></tr></tbody></table>
+</td></tr></tbody></table>
+<p>
+<!--BR-->
+<!-- *Begin-Document-Body -->
+</p><blockquote>
+<h1>CenterStage Home Page:</h1>
+The <b>CenterStage</b> module lets you create <a href="http://www.geom.umn.edu/locate/geomview/">Geomview</a> objects using 
+mathematical formulas.  It can generate parametric surfaces and curves, 
+polyhedra, vectors, and combinations of these (e.g., tubes around curves, 
+offset surfaces and curves, etc.).  These can be combined into 
+hierarchical, compound objects. Objects can include parameters that are 
+dependent on sliders, check-boxes, type-in areas, and other input devices 
+for their values.  <a href="..//StageManager/welcome.html">StageManager</a> 
+can be used to control these values, so that, for example, you can create a 
+movie that shows how a surface deforms in response to changes in its 
+parameters.
+<p>
+The documentation for CenterStage still needs to be put into HTML form; the 
+text version is available below.
+</p><p>
+</p><ul>
+<li><a href="CenterStage.txt">CenterStage text documentation</a>
+</li><li><a href="./Class/welcome.html">CenterStage Object Classes</a>
+</li><li><a href="./Samples/welcome.html">Examples</a>
+</li></ul>
+</blockquote>
+<!-- *End-Document-Body -->
+<!-- *StageTools-Common-Footer -->
+<!--BR--><p>
+</p><hr size="3">
+<table border="0" cellpadding="0" cellspacing="0" width="98%" align="CENTER">
+<tbody><tr valign="MIDDLE"><td bgcolor="#B8B8B8" width="50%">
+<table border="0" cellpadding="0" cellspacing="8" align="CENTER">
+<tbody><tr valign="MIDDLE">
+<td><a href="../welcome.html"><img src="../img/home.gif" alt="[HOME]" border="1" width="40" height="40" hspace="5"></a></td>
+<td><small>StageTools Documentation web pages<br>
+Created:  20 Aug 1997<br>
+<!-- hhmts start -->
+Last modified:  Aug 17, 2006 10:22:53 AM
+<!-- hhmts end -->
+<br>
+Comments to:  <a href="https://web.archive.org/web/20190319211943/mailto:dpvc@union.edu"><code>dpvc@union.edu</code></a><br>
+</small></td>
+</tr></tbody></table></td>
+<td width="1%"></td><td width="0%">
+<!-- *Navigation-Links -->
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody><tr><td width="5" rowspan="10"></td><td></td><td width="5" rowspan="10"></td></tr>
+<tr><td><a href="CenterStage.txt"><img src="../img/next.gif" alt="[Next]" border="0" width="25" height="25"></a></td>
+<td><i><a href="CenterStage.txt">CenterStage text documentation</a></i><br></td></tr>
+<tr><td><a href="../welcome.html"><img src="../img/up.gif" alt="[Up]" border="0" width="25" height="25"></a></td>
+<td><i><a href="../welcome.html">StageTools Home Page</a></i><br></td></tr>
+</tbody></table>
+</td><td width="2%" bgcolor="#B8B8B8">&nbsp;</td>
+</tr></tbody></table>
+<hr size="3">
+</body></html>

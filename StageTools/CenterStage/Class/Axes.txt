@@ -1,0 +1,26 @@
+CenterStage Object Class:  Axes
+Subclass of:  Arrows
+
+The arrow class provides an easy means of generating coordinate axes
+of various lengths and styles.  You specify the number of axes using
+the standard Axes directive.
+
+In addition to the standard directives, the Axes class has the
+following directives:
+
+    Length len
+    Length {xlen ylen zlen ...}
+
+	The Length directive tells how far from the origin the axes
+	will extend.  If only a single number is given, this is used
+	as the length for all the axes.  If more than one is given,
+	then each axis is scaled independently by the given amount.
+
+    Positive
+
+	If present, this directive indicates that only the positive
+	axes should be shown.  If not present, both positive and
+	negative axes are shown.
+
+The Axes class also allows the ArrowHead, ArrowScale, and ArrowMaxLen
+directives of the Arrow class.

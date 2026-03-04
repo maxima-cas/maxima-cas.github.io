@@ -1,0 +1,38 @@
+CenterStage Object Class:  RuledSurface
+Subclass of:  SurfaceFromCurve
+Requires reference to a Curve object
+
+The RuledSurface class builds a ruled surface from a given Curve
+object using a function that determines the ruling direction at each
+point along the curve.  This direction can be given in terms of
+absolute coordinates, or in terms of the Frenet frame for the curve.
+
+The first parameter in the domain for the ruled surface represents the
+parameter along the rulings, while the second represents the position
+along the curve.
+
+The RuledSurface class supports all the directives of the
+SurfaceFromCurve class (other than the Function directive), plus the
+following:
+
+    Vector param func [-frame | -absolute]
+
+	Here the "param" is the same as in the Curve class's Function
+	directive, and the "func" is a TCL script whose result is
+	interpreted as a vector that determines the direction of the
+	ruling for the surface at this parameter value.  If -frame is
+	specified, the vector is in terms of the Frenet frame (i.e.,
+	the x, y and z coordinates give distances along the tangent,
+	normal and binormal directions), while if -absolute is
+	specified (the default), then the vector's coordinates are in
+	the coordinates of the original curve.
+
+	The default Vector function yields the tangent developable
+	surface for the given curve.  The normal and binormal
+	developable surfaces are also easily produced.
+
+	For a plane curve, the normal developable can be used to view
+	normal lines to the original curve (using the DOMAIN/LINES
+	menu and selecting the first parameter) or a series of offset
+	curves to the original curve (by selecting the second
+	parameter in the DOMAIN/LINES menu).

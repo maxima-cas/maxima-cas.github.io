@@ -1,0 +1,98 @@
+OVERVIEW:
+
+StageStills is an external Geomview module that makes it easy to
+obtain snapshots of a Geomview window.  These snapshots can be in any
+image format, and you have control over how many colors to use, what
+size to make the image, and whether to produce a large image and then
+reduce it to the desired size (for anti-aliasing).
+
+The functionality of StageStills is also available within StageManager,
+but since snapshots are such a common thing to want, it seemed useful
+to have a separate module for obtaining images easily.
+
+
+STARTING STAGESTILLS:
+
+Once geomview is running, select StageStills from the modules panel.
+This will load StageStills, and after a moment, you should see the
+StageStills panel.
+
+
+THE STAGESTILLS PANEL:
+
+The StageStills panel contains a type-in area for the camera name,
+buttons for viewing images and taking snapshots, several pull-down
+menus, and a quit button.
+
+The type-in area lets you specify which Geomview camera you are
+interested in taking a snapshot of.  Usually this is "Camera" or "c0",
+but if you are using ND-view you may have several cameras to choose
+from.  Type the name of the camera here.
+
+The SIZE menu shows you the size of the image you will be making.  By
+default, it is set to the size of the window when StageHand was
+started, but you can change it either by selecting one of the standard
+sizes (MpegSize or VideoSize), by setting it to the current size of
+the camera window (Get Current Size), or by specifying the size
+explicitly (Set Size...).  The final image produces will be the size
+showing for this menu.
+
+The SCALE menu lets you specify the ratio between the image produced
+by Geomview and the final image produced by StageStills.  A ratio of
+1:1 means they are the same, but 2:1 means the image is first created
+at twice its final size, then reduces by 50% to produce the final
+image.  This can produce better-quality images, since anti-aliasing
+can be done to reduce the "jaggies" at the edges of objects.  The cost
+is that it takes longer to produce the image.
+
+The COLORS menu lets you specify how many colors to use in the final
+image.  Some formats (e.g., TIFF, PNM, JPEG) allow you to use millions of
+colors, but others (e.g., GIF) can only represent 256 colors.  You may
+also wish to reduce the number of colors to make the final file size
+smaller or for other effects.  The COLORS menu lets you do this.
+
+The COLORS menu also includes a check-box for DITHERING.  If this is
+checked, then the colors in the final image will be blended together
+(dithered) to prevent sharp transitions from one color to another.  As
+a result, however, there will be few large areas of a single color,
+including the background, so if you intend to have a transparent
+background color for a GIF image, you may not want to use dithering.
+
+The SHADER menu lets you specify the mechanism for generating the
+image.  SOFTWARE means that Geomview's internal software shader will be
+used.  HARDWARE means a snapshot of the actual Geomview window is used
+(this is only available on the SGI version of Geomview).  RENDERMAN
+means that Geomview will produce .rib files that are then passed to
+Renderman for processing.  This can take quite some time, but can also
+produce very high-quality images.  This option is only available if
+the "render" command is in your command path.  Finally, if the version
+of Geomview you are using was compiled with the mesa library, the MESA
+shader will be available as well.
+
+
+TAKING A SNAPSHOT:
+
+Once you have set the menus to your desired values, you should press
+the SNAPSHOT button to make your picture.  This will bring up a
+filename requester where you can specify the name of the file where
+the snapshot will be stored.  The file type will determine the image
+type, so if you want a GIF file, make sure your file name ends in
+".gif", etc.  When you press the "Save" button, your snapshot will be
+saved.
+
+To see what your snapshot looks like, press the VIEW button.  You will
+be asked to select a file to view, and then the image viewer will be
+launched to show you the image.  This way you can easily check the
+effects of different color/size/scale settings on the resulting image.
+You can specify the command to use to view files by setting the
+StageStills.viewer(Image) resource in your .Xdefaults file.
+
+
+KNOW BUGS:
+
+None.
+
+
+BUG REPORTS AND COMMENTS:
+
+Please send bug reports and comments to <mailto:dpvc@union.edu>.

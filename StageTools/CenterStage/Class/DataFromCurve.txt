@@ -1,0 +1,16 @@
+CenterStage Object Class:  DataFromCurve
+Subclass of:  Curve
+Requires a reference to a Curve object
+
+The DataFromCurve class provides a means of using the data already computed
+by another Curve object.  One reason to do this is to change the coloring
+or domain style without having to recompute the data.  Another is to make a
+ShowMe checkbox that can be used to turn the curve on and off without
+recomputing it (or any other objects linked to it).  To do this, make a
+Curve object that has its OBJECT/SHOW menu set to NEVER, and then create a
+DataFromCurve object that links to it and has the CheckBox and ShowMe
+directives.  When the DataFromCurve object is first shown, it will force
+the Curve object to compute the data, and then the DataFromCurve object
+will be able to use that data whenever it is shown, without recomputing it.
+
+The DataFromCurve object has no non-standard directives.

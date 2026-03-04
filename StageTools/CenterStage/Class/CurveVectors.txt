@@ -1,0 +1,30 @@
+CenterStage Object Class:  CurveVectors
+Subclass of:  Arrows
+Requires reference to a Curve object
+
+The CurveVectors class lets you generate different types of vectors
+associated with a curve.  Arrows will be generated at the endpoints of
+each subdivision of the curve (determined by the Domain directive).
+The types of arrows are listed in the VECTOR menu, and you may select
+as many as you want.  After selecting the vectors, press UPDATE to
+compute them.  The VECTOR/UNIT menu means that the vectors will be
+normalized to unit length.
+
+The types of vectors are:
+
+	Tangent		The unit tangent vector
+	Normal		The unit normal vector
+	Binormal	The unit binormal vector
+	Velocity	The first derivative vector
+	Acceleration	The second derivative vector 
+	Surface Normal	For a CurveOnSurface, the normal to the
+			  surface at the given point on the curve
+	Surface Fu	For a CurveOnSurface, the first partial
+			  derivative vector for the surface
+	Surface Fv	For a CurveOnSurface, the second partial
+			  derivative vector for the surface
+
+
+The CurveVectors class supports all the standard directives, together
+with the ArrowHead, ArrowScale and ArrowMaxLen directives of the Arrow
+class, and the Domain directive of the CurveFromCurve class.

@@ -1,0 +1,101 @@
+<html>
+<head>
+<title>StageTools (Customize):  Customization using config files</title>
+<!-- Copyright (c) 1997-2006 by Davide P. Cervone.  All rights reserved. -->
+<!-- *Document-Format:  StageTools -->
+<!-- *Navigation-Data:
+  ^ welcome.html
+  ++ ../start.html
+  + commands.html
+  - user.html
+-->
+</head>
+<body>
+<!-- *Navigation-links -->
+<table width="100%" border="1" cellpadding="2" cellspacing="1">
+<tr><td bgcolor="#B8B8B8"><table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr><td width="20%" align="LEFT" nowrap><!--
+--></td>
+<td align="CENTER" width="60%"><!--
+--><nobr><b><small><a href="../welcome.html">StageTools</a> - Documentation<a></a> (Customize)</small></b></nobr><!--
+--></td>
+<td align="RIGHT" width="20%" height="25" nowrap><!--
+--><a href="user.html"><!--
+--><img src="../img/prev.gif" alt="[Prev]" border="0" width="25" height="25"></a><!--
+--><a href="welcome.html"><!--
+--><img src="../img/up.gif" alt="[Up]" border="0" width="25" height="25"></a><!--
+--><a href="../start.html"><!--
+--><img src="../img/skip.gif" alt="[Skip]" border="0" width="25" height="25"></a><!--
+--><a href="commands.html"><!--
+--><img src="../img/next.gif" alt="[Next]" border="0" width="25" height="25"></a><!--
+--></td></tr></table>
+</td></tr></table>
+<p>
+<!--BR-->
+<!-- *Begin-Document-Body -->
+<blockquote>
+<h1>Customization using <code>config</code> files:</h1>
+Any time a StageTool module loads a TCL file, it looks for a user-defined 
+configuration file as well, and will load that after its normal TCL file if 
+it finds one.  These "config" files normally have the same names as the 
+original files, but are stored in a special directory called 
+<code>config</code>. The modules look in several places for these files: 
+first, it looks in the directory where Geomview was launched for a 
+directory called <code>config</code> and looks for the file there.  Then it 
+looks in the user's home directory for a directory called 
+<code>.StageTools/config</code>.  If not found, it looks in the main 
+StageTools directory for a <code>config</code> directory.  The 
+<code>config</code> directory (whichever one it is) should contain a 
+directory hierarchy mimicking the one in the main <code>StageTools</code> 
+directory.  For example, if CenterStage loads 
+<code>StageTools/module/CenterStage/file.tcl</code>, then it will look for 
+<code>module/CenterStage/file.tcl</code> in whichever <code>config</code> 
+directory contains one.
+<p>
+Note that the original TCL file is loaded first, then the 
+<code>config</code> version.  Thus your configuration files need not 
+include all the code that you are not changing, only the routine or commands 
+that you need to modify.  Since the configuration files are all stored in 
+the same <code>config</code> directory, it is easy tell what file you have 
+modified, and copy these modifications to any new distribution (after 
+comparing the modified routines to the new ones to see if anything has 
+been changed that you need to handle differently).
+<p>
+<i>[More examples should be given.]</i>
+</blockquote>
+<!-- *End-Document-Body -->
+<!-- *StageTools-Common-Footer -->
+<!--BR--><p>
+<hr size="3">
+<table border="0" cellpadding="0" cellspacing="0" width="98%" align="CENTER">
+<tr valign="MIDDLE"><td bgcolor="#B8B8B8" width="50%">
+<table border="0" cellpadding="0" cellspacing="8" align="CENTER">
+<tr valign="MIDDLE">
+<td><a href="../welcome.html"><img src="../img/home.gif" alt="[HOME]" border="1" width="40" height="40" hspace="5"></a></td>
+<td><small>StageTools Documentation web pages<br>
+Created:  20 Aug 1997<br>
+<!-- hhmts start -->
+Last modified:  17 Aug 2006 09:43:30
+<!-- hhmts end -->
+<br>
+Comments to:  <a href="mailto:dpvc@union.edu"><code>dpvc@union.edu</code></a><br>
+</small></td>
+</tr></table></td>
+<td width="1%"></td><td width="0%">
+<!-- *Navigation-Links -->
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td width="5" rowspan="10"></td><td></td><td width="5" rowspan="10"></td></tr>
+<tr><td><a href="commands.html"><img src="../img/next.gif" alt="[Next]" border="0" width="25" height="25"></a></td>
+<td><i><a href="commands.html">Customizing the External Commands</a></i><br></td></tr>
+<tr><td><a href="../start.html"><img src="../img/skip.gif" alt="[Skip]" border="0" width="25" height="25"></a></td>
+<td><i><a href="../start.html">Getting Started with StageTools</a></i><br></td></tr>
+<tr><td><a href="welcome.html"><img src="../img/up.gif" alt="[Up]" border="0" width="25" height="25"></a></td>
+<td><i><a href="welcome.html">Customization Instructions</a></i><br></td></tr>
+<tr><td><a href="user.html"><img src="../img/prev.gif" alt="[Prev]" border="0" width="25" height="25"></a></td>
+<td><i><a href="user.html">Customization using Initialization Files</a></i><br></td></tr>
+</table>
+</td><td width="2%" bgcolor="#B8B8B8">&nbsp;</td>
+</tr></table>
+<hr size="3">
+</body>
+</html>

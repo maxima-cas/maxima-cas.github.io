@@ -1,0 +1,21 @@
+CenterStage Object Class:  Group
+Subclass of the Root class
+
+The Group object allows you to create hierarchical, compound objects
+in Geomview.  See the CenterStage documentation, section CREATING
+HIERARCHICAL OBJECTS, for more information on how to create and
+manipulate groups.
+
+There are no special directives for the Group class, but several of
+the standard directives will be inherited by the objects within a
+group.
+
+The Axes directive, if not specified by an object in a group, will be
+inherited from the group object.
+
+Any sliders, check-boxes, type-ins or pop-ups that are created by the group
+object will be available to all the objects within the group.
+
+Whenever an object within a group is updated, it will first run the
+group's Setup script before its own is run.  This way, you can use the
+group Setup script to set values for all the objects in the group.

@@ -1,0 +1,17 @@
+CenterStage Object Class:  DataFromPolyhedron
+Subclass of:  Polyhedron
+Requires a reference to a Polyhedron object
+
+The DataFromPolyhedron class provides a means of using the data already
+computed by another Polyhedron object.  One reason to do this is to change
+the coloring or display attributes without having to recompute the data. 
+Another is to make a ShowMe checkbox that can be used to turn the
+polyhedron on and off without recomputing it (or any other objects linked
+to it).  To do this, make a Polyhedron object that has its OBJECT/SHOW menu
+set to NEVER, and then create a DataFromPolyhedron object that links to it
+and has the CheckBox and ShowMe directives.  When the DataFromPolyhedron
+object is first shown, it will force the Polyhedron object to compute the
+data, and then the DataFromPolyhedron object will be able to use that data
+whenever it is shown, without recomputing it.
+
+The DataFromPolyhedron object has no non-standard directives.

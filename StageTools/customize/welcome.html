@@ -1,0 +1,113 @@
+<html>
+<head>
+<title>StageTools (Customize):  Customization Instructions</title>
+<!-- Copyright (c) 1997-2006 by Davide P. Cervone.  All rights reserved. -->
+<!-- *Document-Format:  StageTools -->
+<!-- *Navigation-Data:
+  ^ ../othertools.html
+  ++ ../start.html
+  + x-resources.html
+-->
+</head>
+<body>
+<!-- *Navigation-links -->
+<table width="100%" border="1" cellpadding="2" cellspacing="1">
+<tr><td bgcolor="#B8B8B8"><table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr><td width="20%" align="LEFT" nowrap><!--
+--></td>
+<td align="CENTER" width="60%"><!--
+--><nobr><b><small><a href="../welcome.html">StageTools</a> - Documentation<a></a> (Customize)</small></b></nobr><!--
+--></td>
+<td align="RIGHT" width="20%" height="25" nowrap><!--
+--><a href="../othertools.html"><!--
+--><img src="../img/up.gif" alt="[Up]" border="0" width="25" height="25"></a><!--
+--><a href="../start.html"><!--
+--><img src="../img/skip.gif" alt="[Skip]" border="0" width="25" height="25"></a><!--
+--><a href="x-resources.html"><!--
+--><img src="../img/next.gif" alt="[Next]" border="0" width="25" height="25"></a><!--
+--></td></tr></table>
+</td></tr></table>
+<p>
+<!--BR-->
+<!-- *Begin-Document-Body -->
+<blockquote>
+<h1>Customizing StageTools:</h1>
+The StageTools suite has been designed so that it is possible to
+customize many of its features.  There are four main methods:
+<ol>
+<li><a href="x-resources.html">Setting X resources</a> in a user's
+<code>.Xdefaults</code> file;
+<li><a href="user.html">Setting up an initialization file</a> in a user's home
+directory;
+<li><a href="config.html">Providing <code>config</code> files</a> in a 
+user's home directory; 
+<li><a href="commands.html">Modifying the TCL code</a> in the StageTools
+directory.
+</ol>
+The first method is useful for the user who wants to individualize the
+appearance (fonts, sizes, widget geometry, etc.) of the StageTools modules.
+There is a wide range of X resources set up specifically for such purposes
+(see the <a href="x-resources.html">x resources</a> section).  There are
+also resources that can be used to specify the user's preferred image
+viewer, web browser, etc.  Using X resources is the easiest way to
+customize these aspects of StageTools.
+<p>
+The second method allows more advanced users to make more extensive changes
+to the StageTools modules.  Each module reads an initialization file from
+the user's home directory when it starts up.  For example, StageManager
+looks for <code>~/.StageManager</code> and executes it if it exists.  These
+initialization files are TCL files that can do pretty much anything you
+want: they can set the default values for menu choices, change the
+appearance of windows, even replace internal commands with customized
+versions.  See the section on <a href="user.html">user customization</a>
+for more information.
+<p>
+The third method provides a more sophisticated method of modifying the code 
+that is run by the StageTools modules by loading <code>config</code> files 
+that correspond to the actual source files for the code.  It is closely 
+related to the fourth method, but its advantage is that it separates the 
+changes you make from the main distribution of StageTools so that it is 
+much easier to update to a new version.  See the section on <a href="config.html">configuration files</a> for more details.
+<p>
+Finally, the fourth method makes it possible to perform system-wide
+customization.  Usually, this will not be necessary except perhaps to set
+the default fonts, sizes, etc.  The other reason to make such changes is to
+specify the unix commands that will be used to convert image formats and to
+combine images into MPEG movies and animated GIF files.  See
+<a href="commands.html">customizing the external commands</a> for more
+information.
+</blockquote>
+<!-- *End-Document-Body -->
+<!-- *StageTools-Common-Footer -->
+<!--BR--><p>
+<hr size="3">
+<table border="0" cellpadding="0" cellspacing="0" width="98%" align="CENTER">
+<tr valign="MIDDLE"><td bgcolor="#B8B8B8" width="50%">
+<table border="0" cellpadding="0" cellspacing="8" align="CENTER">
+<tr valign="MIDDLE">
+<td><a href="../welcome.html"><img src="../img/home.gif" alt="[HOME]" border="1" width="40" height="40" hspace="5"></a></td>
+<td><small>StageTools Documentation web pages<br>
+Created:  20 Aug 1997<br>
+<!-- hhmts start -->
+Last modified:  Aug 17, 2006 9:44:24 AM
+<!-- hhmts end -->
+<br>
+Comments to:  <a href="mailto:dpvc@union.edu"><code>dpvc@union.edu</code></a><br>
+</small></td>
+</tr></table></td>
+<td width="1%"></td><td width="0%">
+<!-- *Navigation-Links -->
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td width="5" rowspan="10"></td><td></td><td width="5" rowspan="10"></td></tr>
+<tr><td><a href="x-resources.html"><img src="../img/next.gif" alt="[Next]" border="0" width="25" height="25"></a></td>
+<td><i><a href="x-resources.html">Customization using X Resources</a></i><br></td></tr>
+<tr><td><a href="../start.html"><img src="../img/skip.gif" alt="[Skip]" border="0" width="25" height="25"></a></td>
+<td><i><a href="../start.html">Getting Started with StageTools</a></i><br></td></tr>
+<tr><td><a href="../othertools.html"><img src="../img/up.gif" alt="[Up]" border="0" width="25" height="25"></a></td>
+<td><i><a href="../othertools.html">Other Required Software</a></i><br></td></tr>
+</table>
+</td><td width="2%" bgcolor="#B8B8B8">&nbsp;</td>
+</tr></table>
+<hr size="3">
+</body>
+</html>

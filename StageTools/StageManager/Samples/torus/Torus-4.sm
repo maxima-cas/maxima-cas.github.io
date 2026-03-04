@@ -1,0 +1,39 @@
+##############################
+#
+#  File:     Torus-4.sm
+#  Created:  Tue Nov 23 16:51:43 EST 1999
+#  By:       StageManager v2.5
+#
+
+_smVersion 2.5 geomview 1.0
+
+Movie Torus-4 {
+Load Torus.oogl
+Load xyz.vect
+
+Transform \{Scale .25\} Torus.oogl
+Transform \{YZ -$pi/3\}
+Transform \{XY -$pi/6\}
+Transform \{YZ $pi/2\} Torus.oogl
+
+Load square.quad
+Color square.quad \{1 1 0\}
+Transform \{Translate \{0 -2.5 0\}\} square.quad
+
+Script for Torus.oogl \{
+  Sequence \{Product \{XZ $pi\} \{YZ $pi/2\}\} 16
+\}
+
+Script for square.quad \{
+  Sequence \{Translate \{0 2.5 0\}\} 16
+\}
+
+Script action
+Pause 3
+Delete World
+Pause 5
+} {
+  {{6 forever {}} {1 1 1} {8 6 10 Cross2 Logarithmic 1 IPPPPP Full 10 1} {0 end 0 1}}
+  {1 0}
+  {{{scene-0 1}} {400 400 200 200 200x200 2 gif 256 90 1 ppm}}
+}

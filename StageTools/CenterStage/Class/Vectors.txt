@@ -1,0 +1,22 @@
+CenterStage Object Class:  Vectors
+Subclass of:  Arrows
+
+The Vectors class allows you to specify arrows by giving a basepoint and an 
+offset vector from that basepoint.  You can specify colors and other 
+characteristics on a vector-by-vector basis, or for groups of vectors.
+
+The Vectors class supports all the standard directives, plus the following:
+
+    Vectors {vector-list}
+
+        The vector-list should be formed by pairs of points.  The first of 
+        each pair represents the basepoint of the vector, and the second 
+        gives the vector's direction and length.  (The vector's tail will 
+        be at the basepoint and its head at the sum of the two points).
+
+	The vector list can specify vector attributes using the "<-" 
+	symbol, just as in the Arrows directive for the Arrows class.  
+	Vectors support the same attributes as the Arrows class.
+	
+The Vectors class also supports the ArrowHead, ArrowScale and ArrowMaxLen 
+directives of the Arrows class.

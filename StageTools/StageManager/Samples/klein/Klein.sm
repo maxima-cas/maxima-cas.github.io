@@ -1,0 +1,29 @@
+##############################
+#
+#  File:     Klein.sm
+#  Created:  Tue Nov 23 17:37:11 EST 1999
+#  By:       StageManager v2.5
+#
+
+_smVersion 2.5 geomview 1.0
+
+Movie Klein {
+CenterStage Start
+CenterStage File "Klein.cs"
+CenterStage ::cs::GUI Display "Klein"
+CenterStage Klein Update
+
+Background \{0.855 0.855 0.855\}
+Transform \{Scale .8\}
+Transform \{Translate \{-.2 0 0\}\}
+Transform \{XZ $pi/4\}
+
+Loop 35 \{
+  set n [Percent .15 1]
+  CenterStage Klein Slider w Set $n
+\}
+} {
+  {{6 forever {}} {1 1 1} {8 6 10 Cross2 Logarithmic 1 IPPPPP Full 10 1} {0 end 0 1}}
+  {1 0}
+  {{{scene-0 1}} {400 400 200 200 200x200 2 gif 256 90 1 ppm}}
+}

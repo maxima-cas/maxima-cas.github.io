@@ -1,0 +1,53 @@
+CenterStage Object Class:  SurfaceFromCurve
+Subclass of:  Surface
+Requires reference to a Curve object
+
+The SurfaceFromCurve lets you create a Surface object that relates to
+an existing curve object.  The second parameter for the surface is used as 
+the parameter for the curve, and at each value of the parameter, the curve 
+function is evaluated.  Then for each value of the other parameter, the 
+surface function is computed, and the two are added, either in absolute 
+coordinates, or in terms of the Frenet frame of the curve.
+
+In addition to the standard Surface directives, SurfaceFromCurve supports
+the following:
+
+   Function params func [vfunc] [-frame | -sframe | -absolute]
+
+	Here the "params", "func" and "vfunc" arguments are the same as for
+	the standard Surface.  The -frame, -sframe and -absolute options
+	determine whether the result of the function is in the coordinate
+	system of the Frenet frame for the reference curve, the surface
+	frame of the linked curve (for CurveOnSurface objects) or in
+	absolute coordinates (the default).  If -frame or -sframe is
+	specified, then both the surface and the curve must be in 3-space,
+	and the frame is computed numerically.  For -frame, the x, y and z
+	coordinates correspond to the tangent, normal and binormal
+	directions for the linked curve; for -sframe, they correspond to
+	the surface normal and the parametric directions with respect to
+	the first and second variables for the curve's linked surface.
+
+	If only one of the parameters is specified for the function, the
+	second is taken from the reference curve.
+
+        For example:
+
+                Function {s} {
+                  let (T,N,B) = r (0,cos s,sin s)
+                } -frame
+
+                Axes {T N B}
+
+                Slider r 0 2 .1
+
+        produces a circular tube centered around the reference curve.  The 
+        radius is controlled by a slider, so it is easy to investigate the 
+        family of tubes around the curve.
+
+
+    Domain {{umin umax udivs} {Inherit}}
+        
+	This special form of the domain command can be used to inherit the 
+	domain from the original curve.  Standard Domain specifications can 
+	also be used to provide a domain other than the one of the original 
+	curve.

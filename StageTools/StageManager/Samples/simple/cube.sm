@@ -1,0 +1,20 @@
+##############################
+#
+#  File:     cube.sm
+#  Created:  Tue Nov 23 17:54:06 EST 1999
+#  By:       StageManager v2.5
+#
+
+_smVersion 2.5 geomview 1.0
+
+Movie Cube {
+Load cube
+Transform \{YZ -$pi/3\}
+Transform \{XY -$pi/6\}
+
+Sequence \{XY 2*$pi\} 30
+} {
+  {{6 forever {}} {1 1 1} {3 3 3 Cross2 Exhaustive 1 IBPPBP Full 10 1} {0 end 0 1}}
+  {1 0}
+  {{{scene-0 1}} {400 400 200 200 200x200 2 gif 256 90 1 ppm}}
+}

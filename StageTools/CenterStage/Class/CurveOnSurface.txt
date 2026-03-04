@@ -1,0 +1,14 @@
+CenterStage Object Class:  CurveOnSurface
+Subclass of:  Curve
+Requires reference to a Surface object
+
+The CurveOnSurface class lets you create a curve that lies on a
+surface that you have already defined.  You give the curve
+parametrically in the domain of the surface and the resulting curve
+will the the composition of the one you specified with the linked
+surface.
+
+The CurveOnSurface class supports the standard Curve directives, with
+the exception that the curve function now specifies the curve
+parametrically in the domain of the surface (i.e., it's two first
+coordinates are used as the parameters to the surface's function).

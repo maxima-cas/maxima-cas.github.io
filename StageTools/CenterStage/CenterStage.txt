@@ -1,0 +1,2098 @@
+OVERVIEW:
+
+CenterStage is a Geomview external module that allows you to create
+geomview objects easily and interactively.  It can create parametric
+surfaces and curves, polyhedra, vectors, and objects that build on other
+objects, such as tubes around curves, and offset surfaces and curves. 
+Objects can be grouped into compound, hierarchical objects.  You can
+control an object's coloration and appearance in a variety of ways, and
+there are several different surface and curve domain styles (solid, grid,
+bands, lines, dots, checkerboard, etc).  CenterStage also provides a means
+of tying sliders, check-boxes, type-in areas and other input devices to
+parameters for the objects it creates, and will update them automatically
+when these values are changed.  Moreover, StageManager can be used to
+control these values, so, for example, you can make a movie of a surface
+deforming as its parameters change.
+
+CenterStage is intended as an easy means of producing geometric objects for
+use within Geomview.
+
+
+STARTING CENTERSTAGE:
+
+Once geomview is running, select CenterStage from the modules panel.  This
+will load CenterStage.  CenterStage has a fairly long startup sequence, so
+it tells you what it is doing via the message bar at the bottom of its
+window.  When the menu bar becomes active, CenterStage is ready to go.
+
+To exit from CenterStage, press the QUIT button.
+
+
+CREATING OBJECTS:
+
+The main purpose of CenterStage is to be able to create objects for
+Geomview to display.  To create an object, you first select the NEW item
+from the OBJECT menu.  You will be asked to select the type of object to
+create and to give the object a name.  The basic object types are SURFACE,
+CURVE, and POLYHEDRON, plus some specialized objects like AXES, and ARROWS.
+The pop-up menu at the top of the panel lets you select more advanced types
+of object; they are grouped by categories.  Once you have selected the type
+you want, click the OK button to create it.  The name of your object should
+appear in the objects list at the right, and the object's type will be
+shown in blue at the far right of the menu bar.
+
+For your convenience, a template for the type of object that you have
+selected will be displayed in the type-in area.  The template gives you a
+place to start creating your object.  For example, if you have selected a
+surface, you will get a template for the domain and the function
+definition.  You can edit these to suit your requirements.  The template
+usually does not include all possible types of data you can specify for the
+object; to obtain a template for one of the optional directives, select the
+item from the TEMPLATES submenu in the OBJECT menu.
+
+Once you have defined the object to your liking, press the UPDATE button to
+have it computed and displayed in Geomview.  CenterStage is designed for
+flexibility, not speed, so this may take a few moments.  It is usually best
+to keep your domain sizes small to begin with until you are sure it is the
+way you want it to be, then increase the size for the final version of the
+object.
+
+For more information about a specific object type, see the documentation
+for that object class.
+
+If you make edits to your object, CenterStage will show a small diamond
+next to the object type at the right of the menu bar.  This indicates that
+you need to update your object.  If this diamond is showing, then the
+object being displayed by geomview may not correspond to the data that
+appears in the CenterStage window.  Press UPDATE to be sure the object
+showing in geomview is up to date.
+
+
+CENTERSTAGE MENUS:
+
+The FILE menu controls the file you are editing.  Each file can contain any
+number of objects (these are listed in the OBJECTS list at the right).  By
+default, CenterStage object files have the type ".cs".  The items in the
+FILE menu are:
+
+    NEW     Clears the contents of definition area and deletes all the
+            objects in the list.  Resets the settings to their
+            default.  This is like starting CenterStage from scratch.
+
+    OPEN    Opens an existing CenterStage file (.cs) and loads the
+            objects that it contains.
+
+    SAVE    Save the currently defined objects and menu settings to
+            the same file they were read from.  You should do this
+            periodically to be sure that your edits are saved.
+
+    SAVE AS Saves the objects and menu settings under a new name.  A
+            new file is created and it becomes the current files.  The
+            original file is not altered.
+
+    REVERT  Rereads the objects and menus settings from the file, thus
+            eliminating all edits that occurred since the last save.
+
+    IMPORT  This item lets you load an object (or collection of
+            objects) into the current file from some other file.  This
+            differs from the OPEN menu in that OPEN forgets about the
+            current file and starts using the new file, whereas IMPORT
+            incorporates the contents of the new file into the current
+            one, making the current file larger.
+
+    EXPORT  This item saves the current object (and only the current
+            object, unless the object is a group, in which case all
+            the objects contained in the group as well) to a file.
+            This differs from the SAVE AS menu in that SAVE AS saves
+            ALL the objects to the named file and makes that file the
+            current one, whereas EXPORT saves a single object to a
+            file but does not change the current file.  Thus EXPORT
+            and IMPORT provide a mechanism for copying objects from
+            one file to another.
+
+    SAVE OOGL
+            This item will cause CenterStage to write an OOGL file
+            that contains the data for the current object.  This file
+            can be read directly into Geomview without requiring
+            CenterStage to recompute it.  Note, however, that
+            CenterStage can not read an OOGL file, only a file that
+            was created with SAVE, SAVE AS or EXPORT.
+
+    LIBRARY This item brings up a panel that lets you specify
+            arbitrary TCL files that should be included when this file
+            is loaded.  For example, if you have defined your own
+            class of objects, you may want to include the .tcl file
+            that defines the object so that your new class will always
+            be available when the file is loaded.
+
+    QUIT    Exits CenterStage.
+
+The EDIT menu provides standard editing features, and lists their keyboard
+equivalents.  These commands operate on regions of text selected with the
+left mouse button, or by holding down the SHIFT key and using the arrow
+keys.  The standard X-windows selection mechanism also works for copying
+text from one window to another.
+
+The EDIT menu includes a PREFERENCES item.  The first preference controls
+whether CenterStage uses the old 'let' statement (that does not understand
+mathematics very well) or the new one that allows you to write more
+mathematical statements.  This preference is mainly for backward
+compatibility with files created by older versions of CenterStage.  The
+second preference controls the level of detail used for error messages. 
+The ONE LINE choice makes error messages show as single lines in the
+message area at the bottom of the screen.  SHORT means that the standard TK
+"bgerror" dialog will be used, but that the error info will be shortened to
+not include some of the calls that are part of the CenterStage program
+itself.  FULL gives the complete stack trace for the error message.
+
+The OBJECT menu lets you create and manipulate objects.  It has the
+following items:
+
+    NEW     This item lets you create a new object.  You will be asked
+            to select an object type (surface, curve, etc.) and to
+            give the object a name.  If the new object requires a link
+            to an existing object, you will be requested to make the
+            link at this point.  The new object is created at the same
+            level of the hierarchy as the currently selected object.
+
+    ADD     Similar to NEW, this menu item creates a new object, but if
+            the currently selected object is a group, the new object
+            is added to the group.
+
+    RENAME  This item lets you rename the selected object.
+
+    DUPLICATE
+            This lets you create a duplicate of the selected object.
+            You will be asked for a new name for the duplicate.
+
+    DELETE  This item lets you delete the current object and remove it
+            from the objects list.  There is no way to undo this
+            operation, so be careful!
+
+    TEMPLATE
+            This menu contains items for each type of information that
+            you can specify for the given object.  You can get a
+            template for the directives that were not included in the
+            original template for the object.  For example, if you
+            want to add a slider bar, you can select the template for
+            Slider to see how to specify one (items in parentheses
+            should be replaced by corresponding values).  Some
+            templates do not show all possible optional values or
+            flags.  See the documentation for the object type you are
+            using for more complete details on the directives that can
+            be supplied.
+
+    LINK TO Many objects build on other objects in some way; for example,
+            the TUBE object requires a CURVE object and builds a tube
+            around the curve.  When such an object is created, you must
+            supply a link to an object of the appropriate type; however, if
+            you want to change the link, you can use this menu item to
+            select a new one to link to.  Those objects that do not build
+            on some others also can be linked to objects; in this case,
+            when the referenced object is updated, it will force the
+            current object also to be updated.
+
+    MOVE TO GROUP
+            This menu item lets you move the current object into an
+            existing group.  You will be asked to select the group
+            from a list of the currently available groups.  You can
+            move objects from one group to another using this menu
+            item.
+
+    REMOVE FROM GROUP
+            This menu item makes the currently selected object a
+            top-level object (i.e., it is removed from any group it is
+            in).
+
+    UPDATE  This menu lets you update the current object in different
+            ways.  The DEFINITION option causes the current object to
+            process the script area, but not recompute the object at
+            this time.  You may want to use this if you have added,
+            for example, a ColorFunction and want to be able to select
+            it in the COLOR menu without having to update the object
+            unnecessarily.  The COLORS item recomputes the object's
+            colors (without recomputing its data), and the APPEARANCE
+            item updates the object's appearance characteristics
+            without recomputing the object's data.  The OBJECT item
+            updates the entire object (just like pressing the UPDATE
+            button).  These items are most useful when the AUTOMATIC
+            checkbox is unchecked.  If AUTOMATIC is checked, then the
+            object is updated automatically whenever you select a new
+            item in the COLORS and APPEARANCE menu.  If you want to
+            make several changes without having to wait for an update
+            after each one, you should uncheck the AUTOMATIC checkbox.
+
+    SHOW    This menu controls when Geomview shows the current object.
+            Normally, only the selected object will be displayed in
+            Geomview.  If you want the current object always to be
+            shown, even when it is not selected, chose the ALWAYS
+            item.   If you never want Geomview to show this object,
+            select NEVER; this is useful for objects that are merely
+            needed to define other objects.  For example, if you have a
+            curve object that is used as a reference for a tube
+            object, you may not want the curve to be displayed, so you
+            should select the NEVER item for the curve.
+
+    NORMALIZE
+            By default, Geomview scales and centers any object it displays
+            so that it will fit into a unit sphere at the origin.  This
+            makes sure you can see the entire object, but it also means
+            that if you have several objects, their position and size may
+            not be correctly represented relative to each other.  You can
+            use this menu to help overcome that problem.  NONE means
+            Geomview will not normalize the object, so if you have several
+            objects with normalization NONE, they will be properly
+            positioned.  KEEP means it will normalize the object when it
+            first appears, but then will not renormalize it if the object
+            changes.  If you have a dynamically changing object, this may
+            be the best setting for you.  EACH is the default Geomview
+            action: any time the object changes it is re-normalized.  ALL
+            means that Geomview will renormalize the object only if it gets
+            bigger.  The NORMALIZE/AGAIN item means Geomview should
+            normalize the object now, but then KEEP the current normalization. 
+
+            Another way around the normalization problem is to place all
+            the objects into a group object, as Geomview only normalizes
+            the group as a whole, not the individual objects within the
+            group.
+
+    WINDOW  This menu lets you bring the slider, type-in, check-box, pop-up,
+            or other input device windows to the front, in case they have fallen
+            behind the CenterStage or Geomview windows and can no longer be
+            seen, or in case you have closed them to get them out of the way.  
+            Only those windows that actually contain active items will be 
+            available in this menu.  The WINDOWS submenu of the WINDOWS 
+            menu lists any active windows created by the Window directive.
+
+
+The COLOR menu lets you specify how the object should be colored.  There
+are several standard colorations that you can apply, or you can define your
+own using the ColorFunction directive.
+
+    BY PARAMETER
+            For a parametric surface or curve, this will color the
+            object by spreading the colors from the lowest to the
+            highest value of one of the parameters:  all the points
+            with the same parameter value will be colored the same
+            color.
+
+    BY COORDINATE
+            Here, all the points on the object that have the same
+            value for the coordinate you choose will be colored the
+            same color.
+
+    BY FUNCTION
+            This lets you choose from among the color functions that
+            you have defined (or that are defined automatically by the
+            system).  You can create a new coloring function via the
+            ColorFunction directive (see the template for
+            ColorFunction).  You give the function a name and a means
+            of computing the function's value, witch is either an index
+            into the color table or an RGB color value (depending on
+            whether the result is a single number or a triple of
+            numbers).  You can use color functions to produce
+            virtually any coloration of the object.
+
+    SOLID   This specifies that the object should be a solid color.
+            The menu lets you specify the color to use, or NONE, which
+            means no color is applied to the object (Geomview's lights
+            also may cause the object to be colored).  If you want a
+            solid color that does not appear on the list, you can use
+            the OTHER... item to specify RGB values for the color.
+            You can also edit the color table to provide additional
+            named colors.
+
+    NORMALIZE
+            This check-box determines whether CenterStage will scale
+            all the color values so that they use the full spread of
+            colors.  The color table uses indices from 0 to 1 to
+            determine which color to use, so if your color function
+            gives values outside this range, or doesn't use the full
+            range, the object would be colored strangely.  If
+            NORMALIZE is checked, however, CenterStage will scale
+            whatever range of color values you specify so that they
+            will always be between 0 and 1 (unless there is only one
+            value to start with).  This means you don't have to be
+            careful about making sure your function always returns a
+            number from 0 to 1.  Similarly, for RGB values,
+            CenterStage will scale all the coordinates so that the
+            range of red, green and blue values used over the entire
+            surface is between 0 and 1.  If NORMALIZE is not checked,
+            then the exact values you specify will be used, even if
+            they are outside of 0 to 1.
+
+    WRAP COLORS
+            If checked, this menu item means that the color table will
+            have the same color at 0 and 1 (so that the color table
+            can be used to color a periodic function more easily).
+            Otherwise the two ends of the color table will be
+            different colors.
+
+    INHERIT COLORS
+            If checked, this means that the object will inherit its
+            color table from its parent object (if it is part of a
+            group) or from the default color table.
+
+    EDIT COLORS
+            This item brings up the color-table editor.  Currently it
+            is pretty crude, but it lets you specify named colors and
+            their RGB values, plus a count of how many entries in the
+            color table should be used to go from this color to the
+            next one.  Higher counts mean more gradations are
+            possible.  Currently there is no way to edit the default
+            color table, but you can copy and paste the complete color
+            list from one object to another.
+
+
+The APPEARANCE menu lets you specify Geomview appearance characteristics,
+such as shading and line thickness.
+
+    SHADING This menu lets you choose the way Geomview will shade the
+            object.  CONSTANT means no lighting effects will be used,
+            and each face will be a single color.  FLAT means each
+            face is a single color, but the lighting will be used to
+            determine the color.  SMOOTH means that each vertex of a
+            face can have its own color and that the color of the rest
+            of the face will be determined by linearly interpolating
+            the vertex colors (this can make even coarsely
+            parameterized surfaces look remarkably smooth).  CSMOOTH
+            means the same as SMOOTH but with no lighting effects.
+
+    TRANSPARENCY
+            This menu lets you specify how transparent an object
+            should be.  Transparency is only available via hardware
+            support (on some SGIs).
+
+    FACES   This check-box lets you control whether the object's faces
+            are shown.
+
+    EDGES   This check-box lets you control whether the object's edges
+            are shown.
+
+    NORMALS This check-box lets you specify whether the object's
+            normal vectors are shown (the vectors that are used for
+            lighting computations).
+
+    INHERIT This menu lets you specify which appearance
+            characteristics are inherited from the object's parent
+            object (if it is part of a group).  If a characteristic is
+            NOT inherited, then its setting above will override the
+            group's appearance characteristic.  If it IS inherited,
+            then the group's value will be used.
+
+
+The DOMAIN menu is available for parametric curves and surfaces.  This menu
+lets you specify the style of the domain.  For surfaces, you can specify
+that it is a solid patch, a grid, a checkerboard, etc., and for curves, you
+can make the domain be a solid line, a dashed line or a dotted line.  See
+the documentation for the curve and surface classes for more information.
+
+The VECTOR menu is available for CurveVectors and SurfaceVectors objects. 
+It lets you select the type of vectors that will be showing.  You can
+select more than one type of vector at a time.  For example, you can choose
+the tangent, normal and binormal vectors to get the Frenet frame.  If UNIT
+is selected, then all the vectors will be normalized to unit length.  See
+the documentation for these object classes for more information.
+
+
+CONTROLLING OBJECT VISIBILITY:
+
+Since CenterStage lets you define many objects at once, you may not want
+them all to be displayed simultaneously.  By default, CenterStage only
+displays the object that currently is selected in the OBJECTS list at the
+right-hand side of the CenterStage window; as you select different objects,
+previous objects will be removed from Geomview.
+
+You can change this behavior via the OBJECT/SHOW menu.  If you select
+ALWAYS, the object will always be displayed, even if it is not selected. 
+If you choose NEVER, the object will not be displayed, even if you do
+select it.  This is useful if the object is merely being used as the basis
+for some other object; for example, if you are building a tube around a
+curve, you may not want the curve itself to be displayed.
+
+By default, objects in Geomview are centered and scaled so that they fit
+within a unit sphere.  If you have several objects created by CenterStage,
+this normalization that Geomview performs may cause their relative sizes
+and positions to be inaccurate.  For example, if you create a curve and a
+tube around the curve and display them both, the tube may not appear to be
+properly centered around the curve since Geomview scales the two
+differently.
+
+To overcome this problem, you can request that Geomview not normalize the
+objects.  This is controlled via the OBJECT/NORMALIZE menu item (do not
+confuse this with the COLOR/NORMALIZE menu, which specifies whether the
+color values are scaled to between 0 and 1).  If you set OBJECT/NORMALIZE
+to NONE, then geomview will display the objects properly; however, you may
+need to scale the scene by hand in order to see the complete objects.
+
+Another alternative is to create a GROUP object rather than a collection of
+individual objects.  Since Geomview only scales top-level objects (not
+individual parts of an object), this will guarantee that the parts of the
+group are in proper relation to each other.  Geomview will scale the entire
+group so that you can see it, so this gives you the best of both worlds. 
+You may wish to specify OBJECT/NORMALIZE as KEEP, so that as you change the
+parts of the object, GEOMVIEW will not rescale the group.
+
+
+CHANGING COLORS:
+
+Objects can be colored in a variety of ways, and these are specified by the
+COLOR menu.  For parametric objects, you can color the object by one of its
+parameters (all the points with the same parameter will be colored the same
+color, and the colors will be spread across the different values of the
+parameter).  Any object can be colored by its coordinates.  For example, if
+an object has coordinates x, y and z, then coloring by x means that all the
+points on the object with the same x-coordinate will be colored the same
+color.  Objects can also be colored solid colors or with no color at all
+(Geomview will use its default grey color, which may be modified by the
+lighting colors).
+
+You can specify an arbitrary coloring function via the ColorFunction
+directive.  This requires you to specify a name and a function.  The
+function will be evaluated whenever a color is needed, and it should
+produce either a single value which will be used as an index into the color
+table (usually a number between 0 and 1) or a triple of numbers that
+represent RGB values for the color.  For example:
+
+        ColorFunction distance {sqrt(x^2+y^2)}
+
+will define a color function called "distance" that returns the distance of
+(x,y) from the origin.  If you select this function in the COLOR/BY
+FUNCTION menu, the object will be colored so that concentric cylinders
+around the z-axis will have the same color.
+
+If you specify:
+
+        ColorFunction myRGB {(x,y,z)}
+
+then the three coordinates will be used as the values of red, green and
+blue for the color at that point.  (This color function is always available
+as "RGB=XYZ" in the COLOR/BY FUNCTION menu, and it gives a rather soft
+shading to most objects).
+
+The function in a ColorFunction is not a TCL script that is executed, but
+rather an expression that is evaluated; however, variable substitution and
+command evaluation is performed on the expression before it is computed, so
+if you need to do a more complicated calculation for the color function,
+you can do so by calling a TCL procedure, as for example:
+
+        ColorFunction TwoColor {ChooseColor(x,y,z)}
+        
+        proc ChooseColor {x y z} {
+          let len = Norm(x,y,z)
+          if {$len > 2} {set color 1} else {set color 0}
+          return $color
+        }
+
+The braces around the brackets in the ColorFunction are necessary to
+prevent the execution of the ChooseColor procedure until the ColorFunction
+is used (without them, CenterStage would call ChooseColor at the time it
+was trying to define ColorFunction and would use its result as the
+definition of TwoColor; you would probably get an error that variable x
+does not exist because when CenterStage is processing the directives, it
+doesn't).
+
+
+CREATING HIERARCHICAL OBJECTS:
+
+CenterStage lets you create hierarchical objects using objects of type
+GROUP. To create such an object, first select the OBJECT/NEW menu and
+select the GROUP type.  Give the group a name, and click OK. The object
+should show up in the object list and the type-in area will be blank (there
+is no template for groups).  To add an object to the group, select
+OBJECT/ADD, choose the type you want, give it a name, and click OK.
+
+The object should appear in the object list just below the group object but
+indented.  This means the object is part of the group object.  You can add
+more objects to the group by selecting OBJECT/ADD again, or by selecting
+OBJECT/NEW when the current object is part of the group you want to add to.
+
+You can add as many objects to a group as you like.  You can also add group
+objects to a group, so you can nest groups as deeply as you want.
+
+If you have created a top-level object and then later decide you want to
+move it into a group, you can do that using the OBJECT/MOVE TO GROUP
+command.  You will be asked to select a group to add the object to; simply
+double-click on the group in which you want the object to appear. 
+Similarly, you can move an object out of a group by selecting OBJECT/MOVE
+TO GROUP and selecting a different group.
+
+You can remove an object from a group by selecting the OBJECT/REMOVE FROM
+GROUP menu item.  CenterStage will remove the object from the group and
+make it a top-level object.
+
+
+LINKED OBJECTS:
+
+Some types of objects in CenterStage are defined in terms of other objects. 
+For example, the Tube class requires a Curve object about which the tube is
+generated.  We call the object defined in terms of another the "referrer"
+or the "referring object", and the object it refers to the "linked object"
+or the "reference object".  In the example above, the Tube is the referrer
+and the Curve is the reference object.
+
+When you create an object that requires a reference, you will be asked to
+select the reference object from a list of all possible references (only
+the objects of the required type will be shown).  You must pick an object
+from this list.
+
+If the reference object is updated, the referrer is updated automatically
+so that the two are always synchronized properly.  You can link two objects
+together even if the referrer doesn't require a reference.  For example, if
+you have a surface and a plane that is a tangent plane to the surface, you
+may want to link the tangent plane to the surface so that it will be
+updated whenever the surface is changed.  To do so, select the referrer in
+the object list and choose the OBJECT/LINK TO menu.  You will be able to
+link the object to any object.  Whenever that object is updated, the
+current object will be updated automatically.
+
+It is possible to create loops this way, so be careful.  CenterStage tries
+to detect these and should be able to process them correctly, but some
+situations may cause CenterStage to go into an infinite loop.
+
+
+INPUT AND OUTPUT DEVICES (WIDGETS):
+
+Frequently, your objects may be defined in terms of a parameter that can be
+changed; i.e., you really have a family of objects.  For example, you can
+define a cylinder that has its radius as a parameter.  For such objects, is
+is often convenient to have a slider, type-in area, checkbox, menu, or
+other input device where the value of the parameter can be specified. 
+CenterStage lets you create such devices, which we call "widgets".  There
+are a number of widget classes:
+
+        Slider       the value is set by dragging a scroll bar
+        TypeIn       the value can be typed in
+        CheckBox     the value is a toggle switch (0 or 1)
+        PopUp        the value is given by selecting a menu item
+	Button       the value is 1 if pressed, 0 otherwise
+        TypeOut      the value is for display only (it shows the contents
+                       of a variable)
+
+There are also two animation widgets that provide for iterative 
+computation:
+
+        Evolve       updates the value of a variable by calling a
+                       given function to compute the new value
+        Animate      attaches to Slider or TypeIn values to move
+                       them through a given range of values
+
+Normally, each type of widget appears in a window devoted to that type of
+input device (i.e., all the sliders are on one window, while all the
+type-ins are in another).  You can create your own custom control panels
+using the following directives:
+
+        Window       creates a window in which you can place other widgets
+        Frame        creates an organizational sub-window within a window
+
+Each directive has its own syntax, described below, but all of them have 
+several options in common.  These are:
+
+        -bg color
+        -background color
+            These two options are equivalent and allow you to specify the
+            background color for the widget being defined.  If unspecified,
+            the color will be inherited from the window or frame in which
+            the widget appears.  You may specify the color as an x-window
+            color name, or as an RGB value in hexadecimal, e.g., "#A05933"
+
+        -fg color
+        -foreground color
+            These two options are equivalent and allow you to specify the
+            foreground color for the widget being defined.  If unspecified,
+            the color will be inherited from the window or frame in which
+            the widget appears.  You may specify the color as an x-window
+            color name, or as an RGB value in hexadecimal, e.g., "#A05933"
+
+        -title string
+            This specifies the title used to label the widget in the window
+            where it appears.  If unspecified, the default title is the
+            name of variable associated with the widget followed by a
+            colon.  For example, the default title for "CheckBox a" would
+            be "a:".
+
+        -simpletitle
+            For widgets appearing in their default windows (i.e., for which
+            -in is NOT specified), if the widget belongs to a child of the
+            currently selected object (rather than the object itself) or to
+            an object linked by the object or its parents or children, then
+            the title will include the name of the object in parentheses. 
+            This helps you distinguish between two input devices with the
+            same name coming from different objects.  For example, if a
+            group has a "Slider a" and its child named "Curve" also has a
+            "Slider a", then when the group is selected, both sliders will
+            appear in the sliders window, but the first will be labelled
+            "a:" while the second is labelled "(Curve) a:".  The
+            -simpletitle directive suppresses the object name regardless of
+            whether the widget comes from the selected object or not.
+
+        -disabled
+            This directive causes the widget to be disabled initially.  It
+            will not be responsive to user input until it has been enabled. 
+            Usually this is done via a call to the widgets "Enable"
+            function.  For example,
+
+                        Slider a 0 1 -disabled
+                        CheckBox use_a 0 -title "Use a" -command {
+                          if {$use_1} {Self Slider a Enable} \
+                            else {Self Slider a Disable}
+                        }
+
+            will generate a slider that is initially disable together with
+            a checkbox that can be used to enable or disable the slider.
+
+	-command script
+            This specifies that the specified script should be executed 
+            when the value of the widget changes, rather than recomputing
+            the object.  This is useful when the value of a widget does not 
+            change the geometry of an object, but rather causes some other 
+            action to occur.  The script can cause an update to occur 
+            either by calling the Update routine directly, or by setting 
+            the value of some other widget that does cause an update to 
+            occur.  For example,
+
+			Slider t 0 1
+			Button set_t -title "Set t to 1/2" \
+			   -command {Self Slider t Set .5}
+
+            Here, the button is used to set the slider to a specific 
+            value.  In this case, the object will be updated, not because 
+            the button was pressed, but because the value of the slider 
+            changed and that causes an update.
+
+        -in window
+	    This specifies that the widget should appear in the specified
+	    window rather than in the default window for the widget's
+	    class.  Widgets can be placed in windows belonging to their
+	    parent groups; this makes it easy to put all the controls for
+	    a hierarchical object into one window.
+
+	-at {x y [w] [h]}
+            When the -in option is used, you must specify where in the 
+            window the widget should appear.  The -at option does this.  
+            You give the column and row (as x and y) and optionally the 
+            number of columns and number of rows occupied by the object
+            (w and h); these are 1 by default.  Note that you can place 
+            objects on top of each other this way, so be careful about 
+            where you put them.  See the discussion of the Window and 
+            Frame directives below for more information on specifying 
+            locations.
+
+
+THE SLIDER WIDGET CLASS:
+
+The Slider directive has the following form:
+
+        Slider name min max [init] [options]
+
+where "name" is the name of the parameter, "min" is the minimum value for
+the slider, "max" is the maximum value, and "init" is the initial value for
+the slider.  Once the slider has been created, it is bound to a TCL
+variable of the same name, and it can be used just like any other variable
+when your object is being computed.  For example, you can define a surface
+as follows:
+
+        Domain {{-1 1 10} {-1 1 10}}
+
+        Function {x y} {
+          let z = a(x^2-y^2)
+        }
+
+        Slider a -1 1
+
+Here, the slider value controls the factor by which the z coordinate is
+multiplied in the function definition.  Whenever the slider's value is
+changed, the surface will be recomputed using the new value.
+
+The Slider directive has the following options in addition to the standard 
+ones:
+
+        -resolution r
+            The value of r specifies the units by which the value of
+            the slider can change.  For example, -resolution 1 means
+            the slider will change by integers only, while
+            -resolution .1 means the slider will change by 10ths.
+
+        -ticks r
+            If r is not 0, this means that the slider should include
+            reference numbers at increments of r.  So -ticks .5 means
+            there should be labels every .5 starting from the minimum.
+
+        -digits n
+            This specifies how many digits to use for the slider's
+            value.  This provides an alternative to the -resolution
+            specification.
+
+        -width n
+            This specifies the size of the slider bar.  By default it will 
+            be 300 pixels.  This may be too wide if you are placing the 
+            slider in a custom window, for example.
+
+        -[no]drag
+            This option lets you specify whether or not the slider should
+            cause updates to occur as the slider is being dragged (-drag)
+            or only when the slider is released (-nodrag, the default). 
+            Most objects are too complex to update fast enough to use
+            -drag, but for some limited cases, this may be useful.
+
+You may have as many sliders as you want for a given object.  Sliders for
+group objects are inherited by the objects within the group.  Sliders for
+different objects can have the same name, but it is not a good idea to use
+the same name in an object and its parent group (if you do, the object's
+slider takes precedence).
+
+
+THE TYPEIN WIDGET CLASS:
+
+Some values are better handled by typing in the value rather than using a
+slider.  For this reason, CenterStage provides a TypeIn directive, with the
+following form:
+
+        TypeIn name init [options]
+
+where "name" is the name for this type-in (used as a variable just as
+with sliders above) and "init" is the initial value for the type-in.
+In addition to the standard options are:
+
+        -width n
+            This specifies the width of the type-in area, in case you
+            need a larger one than the default.
+
+        -lines n
+            This specifies the number of lines to use for the type-in.
+            The default is to use one, but you can have a multi-line
+            type-in by specifying some larger number of lines.  In
+            this case, the type-in will have a scroll bar for vertical
+            scrolling.
+
+        -[no]evaluate
+            The -evaluate option specifies that the text should be
+            evaluated as a mathematical expression before assigning it
+            to the named TCL variable.  (The -noevaluate option specifies
+            that the text should be used literally).  For example, 
+
+                TypeIn r "pi/2" -evaluate
+
+            would cause the variable "r" to get the value 1.57079632679
+            rather than the string "pi/2".
+
+	-titlewidth n
+            This specifies the width (in characters) of the title area for 
+            the widget when a widget appears in a custom window (using -in).
+            TypeIns appearing in the default type-in window have their 
+            title widths adjusted automatically so that they line up 
+            nicely, but for type-ins that you place within your own 
+            windows, you may need to adjust this width by hand to get the 
+            type-in areas to line up.
+
+Whenever the value of a type-in is changed (and you press RETURN), the
+object will be recomputed using the new value.  If you press ENTER, the
+value is updated, but the object is not computed (you can then make changes
+to other type-ins before recomputing the object).
+
+You may have as many type-ins as you want for a given object.  Type-Ins for
+group objects are inherited by the objects within the group.  Type-Ins for
+different objects can have the same name, but it is not a good idea to use
+the same name in an object and its parent group (if you do, the object's
+type-in takes precedence).
+
+
+THE CHEKBOX WIDGET CLASS:
+
+Sometimes you want the be able to select a boolean value, for example, you
+want to be able to select whether a part of a group should be displayed or
+not.  For this reason, CenterStage provides you with a CheckBox directive. 
+The format for the checkbox is:
+
+        CheckBox name [init] [options]
+
+where "name" is the name of the variable that will contain the value of the
+check-box and "init" is the initial value of the check-box (1 or 0).
+The only options available for the checkbox are the standard options 
+available for all widget directives.
+
+Whenever the value of a check-box is changed, the object will be recomputed
+using the new value.
+
+You may have as many check-boxes as you want for a given object. 
+Check-Boxes for group objects are inherited by the objects within the
+group.  Check-Boxes for different objects can have the same name, but it is
+not a good idea to use the same name in an object and its parent group (if
+you do, the object's check-box takes precedence).
+
+
+THE POPUP WIDGET CLASS:
+
+Sometimes you want to be able to select the value of variable from among a
+fixed set of choices.  For this reason, CenterStage provides the PopUp
+directive.  Its format is:
+
+        PopUp name items [options]
+
+where "name" is the name of the variable that will contain the value of the
+pop-up menu selection, "items" is the list of choices for the menu, and
+"options" are discussed below.  For example
+
+        PopUp n {Circle Sphere Cylinder}
+
+will create a pop-up menu containing the entries "Circle", "Sphere" and 
+"Cylinder" and places the currently selected value into the variable "n".
+
+The options in addition to the standard ones are:
+
+        -init value
+            This specifies the menu item to be selected initially (if not
+            specified, then the first menu item is selected by default). 
+            For example,
+
+                PopUp n {Circle Sphere Cylinder} -init Sphere
+
+            will cause the second menu item to be selected initially.
+
+        -values {list}
+            This specifies the values of each menu item.  If this option is
+            not specified, the value will be the same as the menu label,
+            but this list can be used to override the defaults.
+
+        -width n
+            This specifies the width of the pop-up menu, in case you need a
+            larger one than the default.
+
+	-titlewidth n
+            This specifies the width (in characters) of the title area for 
+            the widget when a widget appears in a custom window (using -in).
+            PopUps appearing in the default pop-up window have their 
+            title widths adjusted automatically so that they line up 
+            nicely, but for pop-ups that you place within your own 
+            windows, you may need to adjust this width by hand to get the 
+            menus to line up.
+
+Whenever the value of a pop-up menu is changed, the object will be
+recomputed using the new value.
+
+You may have as many menus as you want for a given object.  Pop-ups for
+group objects are inherited by the objects within the group.  Pop-ups for
+different objects can have the same name, but it is not a good idea to use
+the same name in an object and its parent group (if you do, the object's
+pop-up takes precedence).
+
+
+THE BUTTON WIDGET CLASS:
+
+Sometimes you would like an object to take an action other than recomputing 
+its value.  For example, you might want to reset some values or clear some 
+state information.  For this reason, CenterStage provide the Button 
+directive.  Its format is
+
+	Button name [options]
+
+where "name" is the name of the variable associated with the button, and 
+"options" are taken from the standard ones.  There are no additional options 
+for buttons, but the most common one is -command, which causes the button 
+to be linked to a script that is executed when it is pressed.  Without this 
+option, pressing the button will cause the object to be recomputed, and in 
+this case, the named variable will have the value 1 (it will have the 
+value 0 any other time the object is computed) so you can tell that the 
+recompute was caused by the button press.
+
+
+THE TYPEOUT WIDGET CLASS:
+
+Sometimes it is useful to be able to see the value of a variable that is 
+used by an object during its computations.  For this reason, CenterStage 
+provides the TypeOut directive, whose format is
+
+	TypeOut name [options]
+
+where "name" is the name of the variable whose value is to be displayed, 
+and "options" are from the standard list or the following:
+
+	-format string
+	    This specifies an sprintf-style string that indicates how the
+	    result should be displayed.  The default is "%s" which means
+	    use the value verbatim.  You can use the format, for example,
+	    to insert other text as in -format "%s meters", or to adjust the 
+	    number of digits displayed, as in "%.3f".
+
+        -width n
+            This specifies the width of the type-out area, in case you
+            need a larger one than the default.
+
+        -lines n
+            This specifies the number of lines to use for the type-out.
+            The default is to use one, but you can have a multi-line
+            type-out by specifying some larger number of lines.  In
+            this case, the type-out will have a scroll bar for vertical
+            scrolling.
+
+	-titlewidth n
+            This specifies the width (in characters) of the title area for 
+            the widget when a widget appears in a custom window (using -in).
+            TypeOuts appearing in the default type-out window have their 
+            title widths adjusted automatically so that they line up 
+            nicely, but for type-outs that you place within your own 
+            windows, you may need to adjust this width by hand to get the 
+            type-out areas to line up.
+
+A type-out looks exactly the same as a type-in, but the text area will not 
+be editable.  It will be selectable, however, so you can copy the contents 
+of a type-out and past it somewhere else.
+
+
+THE EVOLVE WIDGET CLASS:
+
+CenterStage provides two means of producing animation effects within 
+objects.  These are the Evolve and Animate directives.  The simpler of the 
+two is the Evolve directive, which has the form:
+
+        Evolve name [expression] [back-expression] [options]
+
+where "name" is the name of the variable associated with the evolver, 
+"expression" is a formula that is evaluated to move from one step in the 
+evolution to the next, "back-expression" is a formula that is evaluated to 
+move backward one step in the evolution, and "options" are as described below.
+
+An evolver has six buttons labelled "<<", "<", "||", ">", ">>" and "RESET". 
+The RESET button sets the evolver back to its initial state.  The ">"
+button causes evolver to move one step forward, while ">>" causes the
+evolver to step forward repeatedly until you press the "||" (stop) button. 
+The "<" and "<<" buttons are available only if a back-expression is
+specified or if the default (forward) expression is used.  These buttons
+cause the evolver to step backward once or repeatedly.
+
+The way an evolver steps forward is to evaluate the expression and assign 
+the result to the named variable, then recompute the object with the new 
+value.  This operation is repeated over and over if ">>" is pressed.
+
+The expression is evaluated as though it were in a "let" statement.  If not 
+given explicitly, the expression defaults to adding one to the current 
+value of the variable.  You can provide a more complicated expression, or 
+you can have the expression call a procedure to produce its value, as 
+in the following example:
+
+        proc Next {n} {
+          let n = n^2
+          return $n
+        }
+
+        Evolve n {Next(n)}
+
+You can use a function like this to set other variables or do more
+complicated processing at each step of the evolution (the Setup directive
+can also be used for this purpose, but note that the Setup script is run
+every time anything changes in the object, while the Evolve expression is
+executed only when the evolver is running.
+
+The default expression is equivalent to "Evolve n {n+1}".
+
+The evolver steps backward in a similar fashion: the back-expression is
+evaluated and its result assigned to the variable, then the object is
+recomputed.  This occurs repeatedly if "<<" is pressed.  If no (forward)
+expression is given, the default is to reduce the value of the variable by
+one.  If a forward expression is given, the step-backward options are only
+available if back-expression is given explicitly.
+
+In addition to the standard options, the Evolve directive allows:
+
+        -reset expression
+            This specifies an expression whose result is the value to be
+            used when the RESET button is pressed.  By default, this is 0.
+
+        -step seconds
+            This specifies the minimum length of time between steps of the 
+            evolution.  If the object's recomputation takes less than this
+            amount of time, the evolver will pause before doing the next
+            computation for the remainder of the time.  If an evolver runs
+            too fast, you can change the step time to slow it down, or to 
+            smooth out the time between steps when some values of the 
+            evolver compute faster than others.  The number of seconds 
+            can be given as a decimal number.
+
+If ">>" or "<<" is used, the evolver will run forever until you stop it. 
+Note that you have to hold down the "||" button until it becomes active, 
+and during intensive computation, this may take a moment, so be patient.
+
+
+THE ANIMATE WIDGET CLASS:
+
+The Animate directive can be used to make a variables (or series of
+variables) move from one value to another through a series of intermediate
+values.  The process can be made to loop or to loop back and forth between
+the two extreme values.  The variables can be associated sliders or
+type-ins, or can be simple variables unassigned to other input widgets.
+
+The format for the Animate directive is:
+
+        Animate name steps [variable-list] [options]
+
+where "name" is a variable that counts the steps as they are performed,
+"steps" is the total number of steps to use for the animation,
+"variable-list" is a list of values to be animated (as described below) and
+"options" are selected from the standard one or:
+
+        -[no]loop
+            This specifies whether the animation should loop when it
+            reaches the end.  If -loop is specified, then the animation
+            will repeat over and over again.  If -bounce is specified, the
+            animation count will first increment and then decrement before
+            repeating if -nobounce is specified (the default), the
+            animation counter will be reset to 0 before the loop continues. 
+            The default is -noloop
+
+        -[no]bounce
+            This option effects how the -loop option performs the loops. 
+            If -bounce is specified, the counter will first increment to
+            its maximum value and then will decrement back to 0.  With
+            -nobounce, when the counter reaches the maximum, it is reset to
+            0 and the loop starts over from the beginning.  Note that
+            -bounce has no effect if -noloop is specified.  The default is
+            -nobounce.
+
+        -step expression
+            This specifies the formula to be used when incrementing the
+            loop counter.  The default is to increment by one.  Note that
+            the loop count always goes from 0 to the number of steps that
+            are specified by "steps" above, so your expression should take
+            this into account.
+
+        -back expression
+            This specifies the formula to be used when decrementing the
+            loop counter.  The default is to decrement by one.
+
+        -step seconds
+            This specifies the minimum length of time between steps of the 
+            animator.  If the object's recomputation takes less than this
+            amount of time, the animator will pause before doing the next
+            computation for the remainder of the time.  If an animation runs
+            too fast, you can change the step time to slow it down, or to 
+            smooth out the time between steps when some values of the 
+            animator compute faster than others.  The number of seconds 
+            can be given as a decimal number.
+
+
+An animator has a slider, three buttons and two check-boxes.  The buttons
+are START, PAUSE, and RESET, and the check-boxes are LOOP and BACK AND
+FORTH.  The check-boxes correspond the -loop and -bounce options described
+above and are initialized by them, but the user can change their settings
+(even when the animation is running).
+
+The START button causes the animation to run, either until the maximum
+count is reached (in the case of -noloop) or until the PAUSE button is
+pressed.  Note that you have to hold down the PAUSE button until it becomes
+active (it will not do so until the object computations are complete), so
+be patient.
+
+The RESET button causes the loop to go back to the starting position.
+
+The slider indicates the current position of the animation, and can be 
+adjusted by the user (even while the animation is running).  The slider 
+can be dragged to a new location to set it, or the arrows can be used to 
+move the animation in either direction (this also sets the current 
+direction of motion for the animation).  Clicking to the left or right of 
+the slider's handle also moves the animation to the left or right one step.
+
+The "variable-list" specifies the values that should be animated and what 
+their minimum and maximum values are.  For example:
+
+        Animate n 10 {a 0 1}
+
+will cause the value of a to go between 0 and 1 in 10 steps, while
+
+        Animate n 10 {{Slider b 1 5} {Slider c} {TypeIn f -1 1}}
+
+will animate three values (all at the same time): the first is slider "b",
+which will move between the values 1 and 5, the second is slider "c", which
+will move from its minimum to its maximum values (whatever they are), and
+the third is the type-in "f" which will go from -1 to 1.  All three values
+will change before the object is updated, and the animation will perform 10
+iterations (plus one initialization).
+
+Note that the Animate directive does not create the sliders and type-ins 
+itself; they must already exist before the Animate directive is issued.  
+Similarly, any variables that will be animated should also be set already.  
+For example:
+
+        set a 0; Slider b 0 1
+        Animate n 10 {{a -1 1} {Slider b}}
+
+would be one way to set up an animation.
+
+It is possible to animate sliders, type-ins and variables in objects other
+than the one containing the Animate directive.  To do so, put the name of
+the object before the Slider, TypeIn or variable name.  For example, if
+there is an object called "Curve" contained in a group called "Scene" then
+the group can contain the directive
+
+        Animate n 10 {Curve Slider a}
+
+or even
+
+        Animate n 10 {Scene/Curve Slider a}
+
+If an object is linked to another object, you can specify
+
+        Animate n 100 {Object Slider a}
+
+to animate a slider in the reference object without having to know its 
+name specifically.
+
+
+THE WINDOW AND FRAME WIDGET CLASSES:
+
+By default, each kind of widget appears in its own window.  This makes it
+fast and easy to set up an object with several input widgets, but the
+number of windows can get confusing and awkward if there are many 
+different kinds of widgets.  To overcome this, CenterStage allows you to 
+create your own custom windows in which to place your widgets via the 
+Window directive:
+
+	Window name [options]
+
+where "name" is the name by which this window will be identified (for use 
+by other widgets with the -in option), and "options" is a list of options 
+taken from the standard set, plus the following:
+
+	-geometry geom
+            This specifies the initial geometry for the window, where
+            "geom" is a standard x-windows-type geometry specification of
+            the form "WxH+X+Y" (W and H give the width and height of the
+            window, while X and Y give the location of the top left-hand
+            corner of the window).  "WxH" can be used to give just the size
+            of the window (the window will be centered), or "+X+Y" can be 
+            used to give just the position of the window (it will have its 
+            natural size).
+
+	-rows row-list
+            This specifies how the rows will respond to resizing of the 
+            window.  The row list is a list of integers that give the 
+            relative "weights" of the rows.  A zero means the row will not 
+            stretch when the window is resized, a 1 means the row will 
+            stretch and all the rows with a 1 will get the same amount of 
+            extra space, a 2 means it will stretch twice as much as a 1, 
+            etc.  For example, -rows {0 1 0 1} means that the first and 
+            third rows won't stretch, but the second and fourth will 
+            stretch equally to fill up the extra space.
+
+	    It is also possible to specify a width along with the
+	    stretchability by using a list of the form {s w} where "s" is
+	    the stretch factor, and "w" is the minimum width (in pixels) of the 
+	    row.  For example, -rows {{0 10} 1 {0 10} 1 {0 10}} would put 
+	    10-pixel spaces between two stretchable columns.  This can be used to 
+	    provide extra spacing between rows for better-looking layouts.
+
+            By default, a window's row list is assumed to be all zeros.
+
+	-columns column-list
+	    This is analogous to -rows above, but handles the columns instead.
+
+To put widgets into a specific window, use the -in and -at options when you 
+define the widgets.  The -in option specifies which window to use, and -at 
+the placement within the window.   The -at option gives the column and row 
+where the widget will be placed (the first column and row are numbered 0, 
+not 1), and optionally the width and height (in columns and rows) of the 
+widget.  Objects will expand to fill their entire grid position, so for 
+example if a slider appears just above a button, the column will be as 
+wide as the slider and the button will expand to be just as wide.  Using 
+the width and height specifications in -at can sometimes be used to avoid 
+making some objects too wide.  For example, the slider could have been 
+placed so that it spanned three columns and the button could be placed in 
+the central column; with no other widgets present and with -columns {1 0 1} 
+(so that the outer columns get all the extra space), the button would then 
+be centered at its natural width below the slider:
+
+	Window controls -columns {1 0 1}
+	Slider a 0 1 -in controls -at {0 0 3 1}
+	Button b -title "Hit me" -in controls -at {1 1}
+
+Using -columns {1 1 1} would cause the button to be one third as wide as 
+the slider rather than its natural width (unless its natural width were 
+already wider than that); -columns {0 0 1} would cause the button to be 
+left justified below the slider, while -columns {1 1 0} would make it 
+right justified and half the width of the slider.
+
+(Actually, "half" and "one third" are not quite accurate here; they are 
+really half or one third of the width with the natural width of the button 
+subtracted.  To get exactly half or one third, you'd need to specify 
+the minimum widths of the unused stretchable columns to be the same as the 
+natural width of the button; e.g., -rows {{1 54} {1 54} 0}.)
+
+Subtle placements of this kind can be painful to set up, and it is often 
+easier to subdivide one area of a window rather than specify widgets that 
+span multiple columns and rows.  For this reason, CenterStage provides the 
+Frame directive, which allows you to specify what is essentially a 
+subwindow of a window that has its own set of rows and columns within it.
+The format is:
+
+	Frame name -in window -at {x y [w] [h]} [options]
+
+where "name" is the name of the frame (for use with -in options for other 
+widgets), "window" is the name of the window in which the frame appears, 
+"x y [w] [h]" gives the position of the frame in that window, and "options" 
+are taken from the standard list plus the following:
+
+	-rows row-list
+	-columns column-list
+	    These have the same effect as the corresponding options of the
+	    Window directive, but they operate within the frame.
+
+	-relief style
+            This specifies the outline style for the frame, where "style" 
+            is one of the standard TCL/TK styles:  raised, sunken, flat, 
+            ridge, groove or solid.  The default is flat, but raised is a 
+            useful choice when you want to group a set of related widgets 
+            together and make the grouping visually apparent.  Also, 
+            several of the standard widgets (Sliders, Buttons, Evolvers and 
+            Animators) have raised borders, so raising the borders on a 
+            frame can help make the frame balance the other widgets better.
+
+	-bd n
+	-borderwidth n
+            These two options are equivalent and specify the size of the 
+            border to draw.  A border of "-relief raised -bd 2" is 
+            equivalent to the borders for the Slider and other raised 
+            widgets.  A border of "-flat -bd 10" would put 10 pixels of 
+            space around the widgets contained in the frame.
+
+Frames can be used to make specific placement of widgets within a layout 
+more accurate (using the -row and -column directives to control the spacing 
+within the frames, as discussed for the Window directive above).  For 
+example, the Slider/Button example above could be handled as follows:
+
+	Window controls
+	Slider a 0 1 -in controls -at {0 0}
+	Frame f -in controls -at {0 1}
+	Button b -title "Hit me" -in f -at {0 0}
+
+Here, the button will be its natural size (because it is in a frame with no 
+other widgets, its column has width the same as the natural width of the 
+button, and since it is in an unstrechable column, the button won't 
+enlarge) and centered under the slider (the Frame stretches out to the width 
+of the slider, but since there is only one column and it has no 
+stretchability, this column is centered within the frame).  The -column 
+specification for the Frame can be used in conjunction with the -at option 
+of the Button to left- or -right justify the button within the frame in a 
+fashion similar to that discussed above.
+
+Frames can be used to make different areas of the window have different
+background colors without having to specify every widget's color
+explicitly (widgets obtain their colors from the containing window or
+frame by default).
+
+Finally, Frames can give raised borders to CheckBoxes and other widgets
+that don't usually have them.  To do so, simply by making a frame with a
+raised border that contains a single widget; e.g.
+
+	Window test
+	Frame cb -in test -at {0 0} -relief raised -bd 2
+	CheckBox a -title "Hit me" -in cb -at {0 0}
+
+Windows can appear at any level of a hierarchical object, but they are 
+commonly specified in the top-most group object.  This is because children 
+can put widgets into their parent's windows, but not vice versa.
+
+Only those windows belonging to the selected object and its children (or 
+the objects linked by any of these) will be shown; other windows will be 
+hidden until their objects are selected.
+
+
+OTHER DIRECTIVES AVAILABLE FOR ALL OBJECTS:
+
+The objects you define are controlled not only by the menu settings, but 
+by commands that you type into the definition window the object.  These 
+commands are called "directives".
+
+The following directives can be specified for any object:
+
+    Axes {names}
+
+        This directive specifies the number and names of the
+        coordinates for the object being defined.  If not specified,
+        objects inherit their axes from their parent object or the
+        system default of {x y z}.  You can name the axes anything you
+        want, and you can have as many as you need.  For example, to
+        specify an object in four dimensions, use
+
+                Axes {x y z w}
+
+        CenterStage will automatically switch to Geomview's ND mode
+        for viewing the object, showing the first three axes.
+
+        The names of the axes determine the variables that you need to
+        set when defining an object.  For example, to specify a 4D
+        surface using the axes listed above, you need to give values
+        for x, y, z, and w.  For example:
+
+                Domain {{-1 1 10} {-1 1 10}}
+
+                Function {x y} {
+                  let Z = (x,y)
+                  let (z,w) = Z^2 + Z
+                }
+
+                Axes {x y z w}
+
+        This uses x and y as the parameters for the surface, and
+        creates z and w as the result of a complex polynomial.
+
+        The Axes directive also has a second form, which provides a means
+        of specifying a projection that will occur before the object is
+        displayed in Geomview.  This is done by following the axes by "->"
+        and a second list of axes, which are the ones to use in the
+        display.  For example:
+
+                Axes {x y z w} -> {x y w}
+
+        would provide computations in 4-space with results shown in 3-space
+        via the projection along the z-axis.  Without this, geomview would
+        display the 4-dimensional data using its ND-viewing mode. 
+        Unfortunately, there are some problems with this mode, in
+        particular, on some platforms, no shading is done on the object, so
+        all objects appear as though they used SHADING/CONSTANT or
+        SHADING/CSMOOTH, which is not as effective visually.  Forcing the
+        object into 3D mode with the projection above causes a much more
+        pleasing result (the disadvantage is that the object can't be
+        manipulated as a 4D object within geomview, and would need to be
+        recomputed if you wanted to rotate to view it from another
+        direction).  Another problem with geomview's ND mode is that it
+        doesn't normalize objects correctly, while the 3D mode does. 
+        Finally, the ND-mode projection is always orthographic, while it is
+        possible to as CenterStage to do a stereographic projection.
+
+        To obtain a stereographic projection, use the following form:
+
+                Axes {x y z w} -> {x y z} -stereo distance
+
+        where "distance" is a formula (or constant) that specifies the
+        height of the projection point for the stereographic projection. 
+        The projection is from this distance along the axis that is missing
+        from the second set of axes, in this case the "w" axis.  If 
+        distance is zero, then the projection will be orthographic.
+
+        If you use the form
+
+                Axes {x y z w} -stereo distance
+
+        then CenterStage will assume the projection is along the last axis
+        listed.
+
+
+    Appearance appearance
+
+        This lets you specify arbitrary Geomview appearance characteristics
+        for your object (specifically those that are not available in the
+        APPEARANCE menu, such as material and lighting effects).
+
+
+    ColorFunction name function
+
+        This lets you specify a color function which you can select in the
+        COLOR/BY FUNCTION menu.  The name is what will be used in the menu,
+        and the function is what computes the color for the different
+        points on the surface.  This should be a single equation that
+        returns either a single value (which is the index into the color
+        table for this point) or a triple of numbers (which is the RGB
+        values for the color).  See CHANGING COLORS above for more
+        information about color functions.
+
+
+    Setup script
+
+        This lets you specify a TCL script that should be run just before
+        the object is computed.  This lets you set up values or variables
+        that are needed by the rest of the object.  For example, you can
+        set up needed values for a surface:
+
+            Domain {{-1 1 10} {-1 1 10}}
+
+            Function {u v} {
+              let (x,y,z) = (u,v,u v) + V
+            }
+
+            Setup {
+              let V = (p,q,0)
+            }
+
+            Slider p -1 1
+            Slider q -1 1
+
+
+    ShowMe boolean
+
+        This specifies whether the current object should be displayed in
+        Geomview (if its OBJECT/SHOW menu allows it).  The main idea for
+        this directive is to allow the object to use a check-box or other
+        computation to determine whether it should be displayed.  For
+        example:
+
+                CheckBox show
+                ShowMe show
+
+        will control the visibility of the object through a checkbox; the
+        object will not be showing initially (since the check-box is
+        unchecked by default) but will be computed and displayed when the
+        check-box becomes selected.
+
+
+    Transform transform-list
+
+        This lets you specify a collection of transformations that are to
+        be performed on the final object before it is displayed.  For
+        example, you can specify rotations, scalings, translations, etc. 
+        Moreover, these can depend on values like the ones from sliders or
+        computed values set within the Setup script; for example, you can
+        have a rotation that depends on the value of a slider.
+
+        The available transformations can be chosen from among the
+        following ones:
+
+            XY(a)       Rotate in the xy-plane by an angle of "a" radians
+            XZ(a)       Rotate in the xz-plane by an angle of "a" radians
+            XW(a)       Rotate in the xw-plane by an angle of "a" radians
+            YZ(a)       Rotate in the yz-plane by an angle of "a" radians
+            YW(a)       Rotate in the yw-plane by an angle of "a" radians
+            ZW(a)       Rotate in the zw-plane by an angle of "a" radians
+
+            AxisRotate("X","Y",a)
+                        Rotate in the plane of the axes given by "X" and
+                        "Y" in angle of "a" radians.  Here "X" and "Y" can
+                        either be the name of the axis (as specified in the
+                        "Axes" directive) or the numeric index of the axis
+                        within the list of axes (where the first axis is
+                        number 1, etc).  E.g., AxisRotate(0,1,pi)
+                        represents a rotation of 180 degrees in the
+                        xy-plane.
+
+            Rotate(U,V,a)
+                        Rotate in the plane specified by the two vectors
+                        U and V by an angle of "a" radians.
+
+            Spin3D(U,a) 
+                        Rotate around the vector U an angle of "a" degrees
+                        (for objects in 3D only).
+
+            Scale(s)    Scale the object by the given amount, where "s"
+                        gives a scaling factor (1.0 means stay the same, 
+                        > 1.0 means enlarge and < 1.0 means shrink).  If "s"
+                        is a vector, then it specifies a separate scaling
+                        factor for each axis.
+
+            Translate(V)    Translate the object by the given vector.
+
+            ReflectX    Reflect the object by negating its x-coordinates.
+            ReflectY    Reflect the object by negating its y-coordinates.
+            ReflectZ    Reflect the object by negating its z-coordinates.
+            ReflectW    Reflect the object by negating its w-coordinates.
+
+            AxisReflect("X")
+                        Reflect across the specified axis (either the name
+                        of the axis (in quotes) as given in the Axes
+                        directive, or the numeric index of the axis, where
+                        the first is 1).
+
+            Reflect(V)  Reflect along the direction given by the vector V (so
+                        that V becomes -V).
+
+        Note:  all the transforms above can have an optional point specified
+        as well, which indicates the center for the operation.  For example, 
+        XY(a,p) would rotate in the xy-plane around the point "p" (which is in 
+        the dimension of the full ambient space, not just 2 coordinates).
+
+
+            Roll(n)     Rotate the coordinates of the points right by "n"
+                        positions (ones that move off the right are rotated
+                        back in on the left).  If "n" is negative, then the
+                        rotation is to the left.  For example, if the
+                        object includes the vertex (1,2,3), then Roll(1)
+                        will transform it to (3,1,2) (as will Roll(-2)),
+                        while Roll(2) will transform it to (2,3,1) (as will
+                        Roll(-1)).
+
+            Exchange("X","Y")
+                        Interchanges the two coordinates specified (either
+                        as the names of the axes, in quotes, as given in
+                        the Axes directive, or by as numeric indices of the
+                        axes).
+
+            Project("X Y Z")
+                        Specifies an orthographic projection onto the
+                        indicated axes (given either as names or indices). 
+                        This does not actually change the dimension of the
+                        result, it merely puts zeros into the other
+                        coordinates of the points.
+
+            {Stereo d ["X"]}
+                        Specifies stereographic projection from a distance
+                        "d" along the specified axis (if no axis is given,
+                        the right-most axis from the Axes directive is
+                        assumed).  As with Project above, this does not
+                        actually change the dimension of the result as the
+                        coordinate in the position of the projection axis
+                        is set to zero.  Note that this transformation must 
+                        be enclosed in braces, with no parentheses.  If d 
+                        is zero, then the projection will be orthographic.
+
+        The "transform-list" can be a list of these transforms, each
+        enclosed in braces.  The object is mapped through all the
+        transforms, from right to left (as in function composition) before
+        it is displayed.  For example,
+
+                Transform  Scale(2) XY(pi)
+
+        would do a rotation of 180 degrees then a scaling by a factor of 2
+        (note that the braces are really only needed if there are spaces
+        within one of the transformation specifications.
+
+        There are several additional types of transforms that can be
+        specified within a transformation list:
+
+            {Matrix M}  Specifies a transformation matrix that should be
+                        used to transform the objects.  Note that the
+                        transformations are performed in homogeneous
+                        projective coordinates, so the matrix should really
+                        be in one dimension higher than the object itself
+                        (this makes it possible to specify a translation in
+                        matrix form, for example; in fact, all the
+                        transforms listed above other that stereographic
+                        projection are represented internally as matrix
+                        operations).  An extra column and row are added to
+                        M if the dimension is too small.
+
+            {Map expr}  Specifies an expression that represents the
+                        transformed point, using the axis variables to
+                        indicate the values of the coordinates.  For
+                        example {Map (y,x,w,z)} would interchange x with y
+                        and z with w (if the axes were given with "Axes {x
+                        y z w}"), while {Map (x+y,x-y,z)} would perform a
+                        more complicated transformation.
+
+            {Apply f [args]}
+                        Calls the function "f" with the coordinates of the
+                        point to be transformed (followed by any additional
+                        arguments specified) and uses its return value for
+                        the transformed vertex.  For example,
+
+                                proc Flip {x y z w} {
+                                  let P = (y,x,w,z)
+                                  return $P
+                                }
+
+                                Transform {Apply Flip}
+
+                        would interchange x with y and z with w.
+
+            {vApply f [args]}
+                        Calls the function "f" with the point to be
+                        transformed as a single list rather than separate
+                        coordinates, followed by any additional arguments
+                        specified.  For example,
+
+                                proc Cross {v x y z} {
+                                  let w = v >< (x,y,z)
+                                  return $w
+                                }
+
+                                Slider t 0 1
+                                Transform {vApply Cross (1,0,t)}
+
+                        would adjust each point in the object by crossing
+                        it with the vector (1,0,t), where the value of t is
+                        given by a slider.
+
+            {fApply f [args]}
+                        For polyhedral objects, this calls the function "f"
+                        with each face of the polyhedron (rather than each
+                        vertex).  The return value of "f" should also be a
+                        face.  For example:
+
+                                proc Shrink {f s} {
+                                  let (p0,p1,p2) = f
+                                  let p = (p0+p1+p2) / 3
+                                  let M = Scale(s,p)
+                                  let f = (M p0, M p1, M p2)
+                                  return $f
+                                }
+
+                                Transform {fApply Shrink .9}
+
+                        will take every face of the polyhedron and shrink
+                        it toward the center of each face by 10% (here all
+                        the faces are assumed to be triangles; a more
+                        sophisticated routine could be used to handle
+                        arbitrary faces).
+
+            {lApply f [args]}
+                        Calls the function "f" on the complete list of
+                        faces or vertices for the object.  One reason to
+                        use this transform is if you want to change the
+                        number of faces in a polyhedron.
+
+            {Copy [-noidentity] transform-list}
+            {Copies [-noidentity] transform-list}
+                        This transform produces DUPLICATES of the object,
+                        one for each transform in the list.  For example,
+                        you can use this method to generate a complete
+                        polyhedron using its symmetries and a small number
+                        of faces.  E.g.
+
+                                Transform {Copy ReflectZ} \
+                                          {Copy ReflectY} \
+                                          {Copy ReflectX}
+
+                        would generate an object with three planes of
+                        mirror symmetry.  Eight copies of the original
+                        object would be produced (if the original were in
+                        the first octant, then the copies would be one in
+                        each of the eight octants).
+
+                        Note that 
+
+                                Transform {Copies ReflectZ ReflectY ReflectX}
+
+                        is quite different, since it means four objects are
+                        produced (three copies and the original) rather
+                        than the eight of the previous example.
+
+                        The -noidentity flag prevents the original object
+                        from being retained, only the copies are included
+                        in the final object.  The two words "Copy" and
+                        "Copies" produce exactly the same result, and are
+                        included only for readability.
+
+            {Compose transform-list}
+                        This transforms the object by the composition (from
+                        right to left) of the specified transformations. 
+                        It is useful mainly within Copies lists, where one
+                        of the copies requires several transformations.
+
+            {if expr transforms [else transforms]}
+                        This performs a given set of transforms only when 
+                        the condition specified by "expr" is true.  If 
+                        false, the second set of transforms are 
+                        performed (if any are given).  For example
+
+			    Transform {if {doScale} Scale(.5) Translate(1,0,0)}
+			or
+			    Transform {if {ortho} {Project("x y")} else {Stereo 1}}
+
+        Transformation lists provide a powerful tool for manipulating
+        objects, particularly ones that are easily defined in one
+        coordinate system but need to be displayed in another.
+
+In addition to these directives, you can also perform arbitrary TCL
+commands within the script of an object.  For example, you can use the
+"proc", "set", "let", "global", "if" , etc.  commands to do more
+complicated processing while the object is being defined.  Note that
+variables and procedures are local to their defining object, but that
+children inherit variables and procedures from their parent groups.  This
+includes values of sliders, check-boxes, etc.  Thus you can specify a
+function in a group's definition that will be available to all its
+children.
+
+
+
+EXPRESSIONS AND THE "LET" STATEMENT:
+
+CenterStage uses TCL as its underlying language, so when you specify
+functions while defining CenterStage objects, you use TCL scripts.  This
+gives you powerful programming constructs, like if-then statements,
+for-loops, user-defined procedures, and more.  But it also means you are
+limited to some of TCL's peculiar syntax.  In particular, TCL does not
+evaluate expressions unless you explicitly request it, and its expression
+syntax is not very mathematical, especially where variables are concerned.
+
+CenterStage tries hard to remedy this situation in two ways:  first, it 
+attempts to evaluate expressions automatically whenever this would be 
+appropriate, so you will rarely need to use the TCL "expr" command.  For 
+example, if you specify a Vertex directive in a Polyhedron object, you can 
+include expressions to compute the coordinates of the points and they will 
+be evaluated automatically.
+
+Second, CenterStage provides a replacement for the "expr" command that has 
+a more mathematical syntax, and also implements complex numbers and vector 
+arithmetic.  Normally in TCL, to set a variable equal to the result of an 
+expression you must do something like "set x [expr $y+2*$z]".  This seems 
+needlessly complex, so CenterStage provides an easier alternative via the 
+"let" command:
+
+    let x = y + 2z
+
+The format for this command is:
+
+    let var = expr
+    
+where "var" is a variable name and "expr" is an expression.  The equal sign
+is required, unlike in the TCL "set" command, where it is absent.  In a
+"let" command, the expression is evaluated using the new expression
+evaluator and the result is assigned to the variable on the left.
+
+Note that in the expression, dollar signs are not needed in front of
+variable names, and multiplication is implied by concatenation.  This
+should follow natural mathematical notation much more closely than the
+standard TCL "expr" command.
+
+Vectors and matrices are implemented though TCL lists, which can be
+specified in the standard TCL form by using braces, as in
+
+    let X = {1+t t^2}
+
+or through a more mathematical notation using parentheses and commas:
+
+    let X = (1+t,t^2)
+    
+Vectors can be used just like scalar values.  They can be assigned to
+variables, added and subtracted, multiplied and divided by scalars, etc. 
+There are also some special operations and functions for vectors, such as
+vector cross- and dot-products and vector norm (see below).
+
+Vectors of length two are treated as complex numbers and can be multiplied
+and divided and raised to a scalar power.  There are also complex functions 
+such as sine, cosine, log, exp, etc.  (see below).
+
+CenterStage provides matrix-vector and matrix-matrix multiplication for
+square matrices.  A matrix is represented as a vector that is of length
+equal to a perfect square.  If such a matrix is multiplied by a vector of
+the same length, this is done as matrix-matrix multiplication.  If a vector
+of length n*n is multiplied by a vector of length n, then matrix-vector
+multiplication is performed.  For example,
+
+    let V = { (cos(t), -sin(t),
+               sin(t),  cos(t)) * (x,y)}
+
+will perform matrix-vector multiplication using the rotation matrix on the
+left and the 2-vector (x,y) on the right.  Basically, it tries hard to do
+the right thing when it sees multiplication.
+
+
+IMPLIED MULTIPLICATION AND FUNCTION CALLS:
+
+Multiplication and function calls are implied by concatenation.  For
+example
+
+    let x = 2y
+
+sets x equal to twice the value of y, while
+
+    let x = sin y
+
+sets x equal to the value of the sine of y.  Function-apply has slightly
+higher precedence than implied multiplication, so
+
+    let x = sin y cos z
+
+sets x to sin(x)*cos(z).  This has the drawback that
+
+    let z = sin x y
+
+sets z to (sin x)*y rather than sin(xy).  On the other hand, explicit
+multiplication has higher precedence than implied function calls, so
+
+    let z = sin x*y
+
+sets z to sin(x*y).
+
+
+OPERATORS, PRECEDENCE AND FUNCTIONS:
+
+The operators available are:
+
+    +      addition of scalars, vectors or matrices
+    -      subtraction of scalars, vectors or matrices
+    *      multiplication of scalars complex numbers, or scalar-vector, 
+             scalar-matrix, matrix-vector or matrix-matrix multiplication.  
+             * is implied by concatenation, except within braces when a 
+             space is used as a separator in a list
+    /      division of scalars, complex numbers, or vector by a scalar
+    %      remainder after division of integers
+    ^      exponentiation of scalars or complex numbers
+    ><     vector cross product (for 3-vectors only)
+    .      vector dot product
+    @      vector element extraction, e.g., (3,2,5)@0 is 3, (3,2,5)@(1,2) 
+            is (2,5), etc.
+    ::     vector concatenation, e.g., (3,2,5)::(1,2) is (3,2,5,1,2), 
+            and (3,2,5)::0 is (3,2,5,0)
+    _      array subscripting, e.g., a_0 corresponds to the TCL variable 
+            a(0) while a_(x+1) corresponds to a(3) if x is 2.
+    <      scalar comparison for less-than
+    >      scalar comparison for greater-than
+    ==     scalar, vector, matrix, string comparison for exact equality
+    ===    scalar, vector, matrix comparison for near equality
+    <=     scalar comparison for less-than-or-equal
+    >=     scalar comparison for great-than-or-equal
+    !=     scalar, vector, matrix, string comparison for not equal
+    !==    scalar, vector, matrix comparison for not nearly equal
+    =      assignment operator
+    &      boolean AND
+    |      boolean OR
+    ^^     boolean XOR
+    !      boolean NOT
+    &&     bitwise AND
+    ||     bitwise OR
+    ~      bitwise NOT
+    <<     integer shift left, e.g., 1<<2 is 4, or vector rotate left, e.g.
+             (1,2,3) << 1 is (2,3,1)
+    >>     integer shift right e.g., 4>>1 is 2, or vector rotate right,
+             e.g., (1,2,3) >> 1 is (3,1,2)
+
+The operators grouped by precedence (highest to lowest) are:
+
+     _
+     !   ~
+     @   ::
+     ^
+     *   /   %   ><   .
+     implied function calls, e.g., sin x
+     implied multiplication, e.g., 2 x
+     +   -
+     <<  >>
+     <   >   <=   >=
+     ==  !=  ===  !==
+     &
+     ^^
+     |
+     &&
+     ||
+     =
+
+The built-in functions are the following:
+
+     cos, sin, tan     (standard trig functions for real and complex numbers)
+     acos, asin, atan  (standard inverse trig functions)
+     atan2             (atan2(x,y) returns the signed angle formed by the 
+                        positive x-axis and the ray from the origin through 
+                        the point (x,y))
+     cosh, sinh, tanh  (the hyperbolic trig functions)
+     hypot             (hypot(x,y) is sqrt(x^2+y^2))
+     exp, ln, log,     (real and complex exponential, and logarithm; both
+                        ln and log are the natural log)
+     log10             (real logarithm base 10)
+     pow               (pow(x,y) is x^y, for compatibility)
+     sqrt              (real and complex square root)
+     abs               (absolute value of scalars and vector norm)
+     ceil, floor       (least-integer and greatest-integer functions)
+     round             (nearest integer)
+     int               (integer part of)
+     double            (convert to real)
+     fmod              (fmod(x,y) is the real remainder of x divided by y)
+     rand, srand       (random number generators, see TCL manuals)
+
+     Sgn               (Sgn(x) is -1 if x<0, 1 if x>0 and 0 if x==0)
+     Norm              (vector norm)
+     Unit              (Unit(x) is a unit vector in the direction of X)
+     Conj              (complex conjugate)
+     Arg, Mod          (complex argument and modulus)
+     Re, Im            (real and imaginary parts)
+     Max, Min          (largest or smallest element in a list)
+
+
+You can also provide your own functions that will be called automatically
+from within the expression evaluator.  To do so, simply use the TCL "proc"
+command to define a function and be sure that it returns a scalar value,
+then call it in an expression just as though it were one of TCL's built-in
+functions.  For example:
+
+        proc F {x} {
+          upvar a a
+          let y = x^2 - 2x + a
+          return $y
+        }
+
+        let z = F(x) + F(x-1)
+
+Here, the procedure F is defined to evaluate a polynomial (that depends on
+the value of the variable a, which could be tied to a slider, or to a value
+defined in a Setup script).  The last statement then defines z as the value
+of this polynomial at x plus the value of the polynomial at x-1.
+
+You can pass more than one argument to a function as follows:
+
+        proc F {x y} {
+          let n = (x,y) . (x,y)
+          return $n
+        }
+
+        let z = F(x,y)
+
+        let X = (x,y)
+        let z = F(X)
+
+        let z = F(X + (1,0))
+
+Here, the function expects two arguments and these can either be passed
+explicitly (as in the first definition of z) or as a vector (as in the
+second case).  The final case performs a vector computation and passes the
+result to F.
+
+Note that if a vector-valued quantity is passed to a function, it is broken 
+into its components and each one is passed as a separate argument to the 
+function.  If you really want the vector passed as a vector, use the 
+special parentheses "(:" and ":)"
+
+	proc F {v} {
+	  let n = v.v
+	  return $n
+        }
+
+	let X = (x,y)
+	let z = F(:X:)
+
+	let z = F(:x,y:)
+
+Here the vector X is passed as a vector rather than two components, and so 
+is the vector (x,y).
+
+You can define a vector-valued function (one that returns a vector result) 
+by using the "vproc" command:
+
+        vproc F {x y} {
+          let X = (y,x)
+          return $X
+        }
+
+        let (a,b) = F(X)
+
+Here, the function F switches its two arguments, so if X is (1,2) then the 
+result of the final statement will be to assign 2 to a and 1 to b.
+
+
+SOME ISSUES OF SPACING:
+
+TCL uses spaces to separate items in a list so there is ambiguity about an 
+expression like "{1 -t t^2}"; does it mean "(1,-t,t^2)" or "(1-t,t^2)"?  
+It turns out to be the former, which seems to make sense.
+
+On the other hand, while the parenthetic form is not ambiguous even if
+spaces are inserted, the fact that TCL uses spaces to separate items in a
+list makes it difficult to use the parenthetic form in situations where TCL
+expects a list (as in Domain directives).  In these cases you may find it
+more convenient to use the braced form.
+
+Also, since TCL ends a command at a line break, it is sometimes necessary 
+to enclose the entire expression in braces:
+
+    let X = {(1+t^2,
+              sin(t)-cos(2t),
+              log(t^2+1))}
+
+In general, you do have to be a careful about spaces and line breaks.
+
+
+EXPRESSIONS OUTSIDE OF THE "LET" COMMAND:
+
+The new expression evaluator in CenterStage only operates within the "let"
+command and within object directives, but not within standard TCL commands. 
+For example, if you write a script for a Function directive and want to use
+an if-then statement, the if expression uses the standard TCL expression
+syntax, not the enhanced one defined above.
+
+There are two ways around this problem:  either use a "let" command prior 
+to the if-then to obtain the result of the expression using the enhanced 
+mathematics, as in
+
+        let result = ((x,y,z) == (1,0,0))
+        if {$result} { (do what you need to do) }
+
+or use the "Math" command, which works like the "expr" command, but with 
+the new expression evaluator, as in
+
+        if {[Math (x,y,z) == (1,0,0)]} { (do what you need to do) }
+
+This is not necessary in most directives that take numeric arguments, as 
+these are processed by the "Math" command automatically.  You should only 
+need to use this if you are writing TCL scripts like those used in the 
+Function and Setup directives.
+
+
+DECOMPOSING A VECTOR:
+
+In a "let" command, the variable on the left can actually be a list of 
+variables, as in
+
+     let (x,y,z) = (t,t^2,t^3)
+
+Here, the result on the right is a vector, and x is assigned the value of
+the first component of the result, y the value of the second component, and
+z the value of the third component.  This is especially useful when the
+right-hand side is the result of a vector computation, as in
+
+     let (x,y,z) = (t,t^2,t^3) >< (1,2t,3t^2)
+
+When the "let" command is used in this way, both the list on the left and 
+the result on the right must have the same number of components.
+
+
+LISTS WITH ONLY ONE ITEM:
+
+Standard mathematical notation uses parentheses to indicate lists of
+coordinates, as in "the origin is at (0,0,0)" as well as grouping within
+expressions, as in "(x + 4) / 3".  This notation is ambiguous in the sense
+that since "(0,0,0)" and "(0,0)" are lists with 3 and 2 items, "(0)" should
+be a list with one item, but we don't want the "(x + 4)" in "(x + 4) / 3"
+to be thought of as a list.
+
+CenterStage resolves this ambiguity by assuming that parentheses ALWAYS
+mean grouping (lists are constructed by the commas, not the parentheses). 
+This means "(0)" is the same as the number 0, and so is "((0))", or any
+number of parentheses around a zero.  Moreover, "((3,1))" is just the
+vector (3,1) (not the vector of length one containing the vector (3,1) as
+its only entry), and if X is the vector (3,1), then "(X)" is just the
+vector (3,2) (not the vector of length one containing the vector X).  In
+fact, the standard notation does not provide an unambiguous method of
+specifying a vector of length one.  CenterStage solves this by using a
+special set of parentheses specifically for constructing length-one
+vectors.  These are "(:" and ":)", so "(:X:)" is the vector containing the
+vector (3,1) as its only element, and so is (:3,1:).
+
+An alternative is to use "list(X)" or "list(3,1)" both of which return the 
+list of the vector (3,1).  In TCL notation, this is {{3 1}}.
+
+The need for this notation is rare, but one case where it is important is 
+in passing values to user-defined functions (see OPERATORS, PRECEDENCE AND 
+FUNCTIONS above).  Another is in constructing lists of vectors when you 
+want a list with just one vector in it.
+
+
+FUTURE ENHANCEMENTS:
+
+There are still quite a few object classes that need to be written.
+
+The color editor needs improvement.
+The library mechanism is pretty dismal.
+Font handling could be improved.
+
+The script window should have more keybindings and more sophisticated 
+editing features (find and replace, smart indenting, etc).
+
+There should be a way to copy and paste entire objects (right now you have 
+to export and import them).
+
+Linked objects should be able to inherit colors from their target objects.
+
+There needs to be a mechanism for getting click events from Geomview as a 
+means of input to CenterStage objects.  This can be done via Geomview's 
+interest and pick commands.  It might also be useful to have a 2D input 
+device analogous to the slider (some sort of draggable cross-hair thing).
+
+Everything needs to be optimized for speed.
+
+Error reporting relies too much on TCL's error mechanism, so some errors 
+are pretty cryptic when they occur.
+
+Group transformations currently are handled by having the child object 
+append the transforms onto its own list.  This means that objects linked to 
+the child object will get data that includes the group transform, which is 
+not what one would expect.  This mechanism needs to be improved.
+
+When a group object is selected, all its children and their linked objects
+are scanned for widgets that need to be included in its windows.  A caching
+scheme should be worked out to reduce the overhead involved in selecting an
+object.
+
+Currently there are redundant or unneeded commands being sent to Geomview.  
+This I/O is time-consuming and should be reduced.
+
+There need to be instructions for users to create their own object classes.
+
+
+BUG REPORTS AND COMMENTS:
+
+Please send bug reports and comments to <mailto:dpvc@union.edu>.

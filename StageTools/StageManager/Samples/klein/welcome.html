@@ -1,0 +1,136 @@
+<html>
+<head>
+<title>StageTools (StageManager/Samples/Klein):  The Klein Bottle</title>
+<!-- Copyright (c) 1996-2006 by Davide P. Cervone.  All rights reserved. -->
+<!-- *Document-Format:  StageTools -->
+<!-- *Navigation-Data:
+  ^ ../welcome.html
+  - ../torus/torus-4.html
+  + ../Zn/welcome.html
+-->
+</head>
+<body>
+<!-- *Navigation-links -->
+<table width="100%" border="1" cellpadding="2" cellspacing="1">
+<tr><td bgcolor="#B8B8B8"><table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr><td width="20%" align="LEFT" nowrap><!--
+--></td>
+<td align="CENTER" width="60%"><!--
+--><nobr><b><small><a href="../../../welcome.html">StageTools</a> - Documentation<a></a> (StageManager/Samples/Klein)</small></b></nobr><!--
+--></td>
+<td align="RIGHT" width="20%" height="25" nowrap><!--
+--><a href="../torus/torus-4.html"><!--
+--><img src="../../../img/prev.gif" alt="[Prev]" border="0" width="25" height="25"></a><!--
+--><a href="../welcome.html"><!--
+--><img src="../../../img/up.gif" alt="[Up]" border="0" width="25" height="25"></a><!--
+--><a href="../Zn/welcome.html"><!--
+--><img src="../../../img/next.gif" alt="[Next]" border="0" width="25" height="25"></a><!--
+--></td></tr></table>
+</td></tr></table>
+<p>
+<!--BR-->
+<!-- *Begin-Document-Body -->
+<blockquote>
+<h1><a href="klein.gif"><img src="klein.jpg" align="MIDDLE"></a>
+The Klein Bottle in StageManager:</h1>
+The following StageManager script uses <a href="../../../CenterStage/welcome.html">CenterStage</a> to generate and
+manipulate a parametrized Klein bottle.
+<p>
+The script asks CenterStage to start and load the file containing the Klein 
+bottle (this file follows the script below), then select the "Klein" object 
+in that file.  The next four lines set up the background color and the 
+initial viewpoint.  The <code>Loop</code> command causes the main action 
+for the script: a value between .15 and 1 is computed (depending linearly 
+on the iteration count of the loop), and CenterStage is asked to set its 
+slider to that value (the <code>w</code> slider controls how much of the 
+surface to show).  A frame is taken automatically at the end of each 
+iteration of the loop.
+<p>
+<h2><hr size="5"><a href="Klein.sm">Klein.sm</a><hr></h2>
+<pre>
+   CenterStage Start
+   CenterStage File "Klein.cs"
+   CenterStage ::cs::GUI Display "Klein"
+
+   Background {0.855 0.855 0.855}
+   Transform {Scale .8}
+   Transform {Translate {-.2 0 0}}
+   Transform {XZ $pi/4}
+
+   Loop 35 {
+     set n [Percent .15 1]
+     CenterStage Klein Slider w Set $n
+   }
+</pre>
+<hr><p>
+<h2><hr size="5"><a href="Klein.cs">Klein.cs</a><hr></h2>
+<h3>Script:</h3>
+<pre>
+   Domain {{pi/4 w*9pi/4 int(20w)+1} {-pi pi 10}}
+
+   Function {t u} {
+     if {$t &lt; 5*$pi/4} {
+       let X = ( cos t, a (sin(2t) - 1) / 2, 0)
+       let V = (-sin t, a cos(2t), 0)
+       let U = B &gt;&lt; Unit(V)
+       let (x,y,z) = X + c cos(u) U + c sin(u) B
+     } else {
+       let r = c + a (1 + sin(2t - 3pi))/2
+       let (x,y,z) = (cos t, r cos u, r sin u)
+     }
+   }
+
+   let B = (0,0,1)
+
+   ColorFunction NormalizedT {(t-pi/4)/(2pi)}
+
+   Slider a 0 1 .5
+   Slider c 0 1 .15
+   Slider w .1 1
+</pre>
+<h3>Menus Settings:</h3>
+<ul>
+<li><b>Domain</b> should be </b>Patch</b> with <b>Wrap / u</b> checked,
+<li><b>Color</b> should be <b>By Function / NormalizedT</b>,
+<li><b>Color / Normalize</b> should be unchecked, and <b>Color / Wrap 
+Colors</b> should be checked,
+<li><b>Appearance</b> should have <b>Shading / Smooth</b> checked.
+</ul>
+<p>
+This piecewise parameterization of the Klein bottle is due to
+<a href="http://www.math.brown.edu/~banchoff">Thomas Banchoff</a>.
+</blockquote>
+<!-- *End-Document-Body -->
+<!-- *StageTools-Common-Footer -->
+<!--BR--><p>
+<hr size="3">
+<table border="0" cellpadding="0" cellspacing="0" width="98%" align="CENTER">
+<tr valign="MIDDLE"><td bgcolor="#B8B8B8" width="50%">
+<table border="0" cellpadding="0" cellspacing="8" align="CENTER">
+<tr valign="MIDDLE">
+<td><a href="../../../welcome.html"><img src="../../../img/home.gif" alt="[HOME]" border="1" width="40" height="40" hspace="5"></a></td>
+<td><small>StageTools Documentation web pages<br>
+Created:  03 Jun 1996<br>
+<!-- hhmts start -->
+Last modified:  Nov 6, 2006 6:40:26 AM
+<!-- hhmts end -->
+<br>
+Comments to:  <a href="mailto:dpvc@union.edu"><code>dpvc@union.edu</code></a><br>
+</small></td>
+</tr></table></td>
+<td width="1%"></td><td width="0%">
+<!-- *Navigation-Links -->
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td width="5" rowspan="10"></td><td></td><td width="5" rowspan="10"></td></tr>
+<tr><td><a href="../Zn/welcome.html"><img src="../../../img/next.gif" alt="[Next]" border="0" width="25" height="25"></a></td>
+<td><i><a href="../Zn/welcome.html">Objects in 4-Space</a></i><br></td></tr>
+<tr><td><a href="../welcome.html"><img src="../../../img/up.gif" alt="[Up]" border="0" width="25" height="25"></a></td>
+<td><i><a href="../welcome.html">Sample StageManager Files</a></i><br></td></tr>
+<tr><td><a href="../torus/torus-4.html"><img src="../../../img/prev.gif" alt="[Prev]" border="0" width="25" height="25"></a></td>
+<td><i><a href="../torus/torus-4.html">Transforming Several Objects at Once</a></i><br></td></tr>
+</table>
+</td><td width="2%" bgcolor="#B8B8B8">&nbsp;</td>
+</tr></table>
+<hr size="3">
+</body>
+</html>

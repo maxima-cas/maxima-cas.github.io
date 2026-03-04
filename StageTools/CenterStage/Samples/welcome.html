@@ -1,0 +1,213 @@
+<html>
+<head>
+<title>StageTools (CenterStage/Samples):  Sample CenterStage Files</title>
+<!-- Copyright (c) 1996-2006 by Davide P. Cervone.  All rights reserved. -->
+<!-- *Document-Format:  StageTools -->
+<!-- *Navigation-Data:
+  ^ ../welcome.html
+-->
+</head>
+<body>
+<!-- *Navigation-links -->
+<table width="100%" border="1" cellpadding="2" cellspacing="1">
+<tr><td bgcolor="#B8B8B8"><table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr><td width="20%" align="LEFT" nowrap><!--
+--></td>
+<td align="CENTER" width="60%"><!--
+--><nobr><b><small><a href="../../welcome.html">StageTools</a> - Documentation<a></a> (CenterStage/Samples)</small></b></nobr><!--
+--></td>
+<td align="RIGHT" width="20%" height="25" nowrap><!--
+--><a href="../welcome.html"><!--
+--><img src="../../img/up.gif" alt="[Up]" border="0" width="25" height="25"></a><!--
+--></td></tr></table>
+</td></tr></table>
+<p>
+<!--BR-->
+<!-- *Begin-Document-Body -->
+<blockquote>
+<h1>Sample StageManager Files:</h1>
+The following CenterStage samples are available.  Each file contains 
+several samples, and each illustrates some aspect of CenterStage's 
+operation.  The files include comments that explain what they do and how.
+[More HTML documentation needs to be written for these.]
+<p>
+The files can be found in the 
+<code>StageTools/doc/CenterStage/Samples</code> directory of the StageTools 
+distribution.  They are listed here in order of increasing complexity.
+<p>
+<ul>
+<li><a href="Curves.cs"><b><code>Curves.cs</code></b></a>
+<p>
+This file contains simple examples of how to create curves in 2D and 3D, 
+curves with axes, curves dependent on sliders and type-ins, etc.
+<p>
+<br>
+<li><a href="Surfaces.cs"><b><code>Surfaces.cs</code></b></a>
+<p>
+This file contains simple examples of how to create surfaces in 3D as 
+parametric surfaces or function graphs, in polar or rectangular 
+coordinates, with several domain patches, with various appearance 
+characteristics.  Some examples include dependencies on sliders, type-ins 
+or animator widgets.
+<p>
+<br>
+<li><a href="Tubes.cs"><b><code>Tubes.cs</code></b></a>
+<p>
+This file includes samples of how to create tubes around various types of 
+curves via linked objects.  Some examples include sliders that affect the 
+tube or the original curve, or involve links that include several objects 
+(like a tube around a torus knot).
+<p>
+<br>
+<li><a href="Links-Part1.cs"><b><code>Links-Part1.cs</code></b></a>
+<p>
+
+This file includes examples of many of the object classes that require 
+links to other objects.  It includes offset curves and other curves or 
+surfaces generated in relation to a curves, and vectors related to curves 
+(e.g. the Frenet frame).
+<p>
+<br>
+<li><a href="Links-Part2.cs"><b><code>Links-Part2.cs</code></b></a>
+<p>
+This file includes additional examples of linked objects, mostly ones 
+generated from surfaces.  For example, it includes offset surfaces, curves 
+on surfaces, vectors related to points on a surface, and some more surfaces 
+that come from curves.
+<p>
+<br>
+<li><a href="OtherSurfaces.cs"><b><code>OtherSurfaces.cs</code></b></a>
+<p>
+This file includes samples of several other object classes that generate 
+surfaces, including surfaces of revolution, and some "tricks" that can be 
+done with surface objects.
+<p>
+<br>
+<li><a href="Polyhedra-Part1.cs"><b><code>Polyhedra-Part1.cs</code></b></a>
+<p>
+This file contains several different ways to work with polyhedral objects. 
+All the example form the same basic object, but in a variety of ways. Some 
+samples show how to use the <code>Transform</code>, others show how to 
+create control panels using the <code>Window</code> command.
+<p>
+<br>
+<li><a href="Polyhedra-Part2.cs"><b><code>Polyhedra-Part2.cs</code></b></a>
+<p>
+This file includes more polyhedral examples, most showing how to use 
+<code>Transform</code> commands to do some special effects by 
+post-processing the faces of the polyhedra.
+<p>
+<br>
+<li><a href="Levels-Part1.cs"><b><code>Levels-Part1.cs</code></b></a>
+<p>
+This file contains several basic examples of how to use the 
+<code>Levels</code> object class to slice an object, in this case a 
+polyhedron.  Included are single levels, multiple levels, chunks between 
+two levels, multiple height functions, etc.  It also shows how to use an 
+animator widget, a window-based control panel, and an interesting use of 
+<code>Group</code> objects.
+<p>
+<br>
+<li><a href="Levels-Part2.cs"><b><code>Levels-Part2.cs</code></b></a>
+<p>
+This file contains more examples of the <code>Levels</code> object class, 
+this time slicing a surface.  It shows how to make multiple levels, a 
+banded surface, and a contour plot.  It uses more complicated height 
+functions, projections, and complex groups.
+<p>
+<br>
+<li><a href="Levels-Part3.cs"><b><code>Levels-Part3.cs</code></b></a>
+<p>
+This file shows how to slice a parametric surface and display the preimage 
+of the slice in the domain of the map.  It includes examples of custom 
+control panels, and also the <code>ColorFunction</code> directive.
+<p>
+<br>
+<li><a href="Animation.cs"><b><code>Animation.cs</code></b></a>
+<p>
+This file shows several examples of the <code>Evolve</code> and 
+<code>Animate</code> directives.  It includes some fractal computations, 
+illustrations of iterative root-finding techniques, a sample of how a 
+truncated Taylor series improves with more terms, and an example of how to 
+generate a series of OOGL files automatically.
+<p>
+<br>
+<li><a href="Calculus-Part1.cs"><b><code>Calculus-Part1.cs</code></b></a>
+<p>
+This file contains a series of examples appropriate for a multi-variable 
+differential calculus course.   They could be used in-class by the 
+instructor as a demonstration, or as a lab exploration for students.  They 
+all include custom control panels and sophisticated linking of objects. 
+Provided are examples for velocity and acceleration vectors for a plane or 
+space curve, the graph of a function of two variables, the xz- and 
+yz-traces of such a function, level sets for such a function, and a 
+exploration of a pathological discontinuous function.
+<p>
+<br>
+<li><a href="Calculus-Part2.cs"><b><code>Calculus-Part2.cs</code></b></a>
+<p>
+This file contains more multi-variable calculus examples.  These illustrate 
+the ideas behind the directional derivative, partial derivatives, and the 
+tangent plane.
+<p>
+<br>
+<li><a href="Calculus-Part3.cs"><b><code>Calculus-Part3.cs</code></b></a>
+<p>
+This file has several more multi-variable calculus examples.  These explore 
+the relationship between the gradient vector field and the level sets of a 
+function, and show how the extrema of a function along the boundary of a 
+region can be evaluated using two different methods (one of which leads to 
+Lagrange multipliers).
+<p>
+<br>
+<li><a href="Miscellaneous.cs"><b><code>Miscellaneous.cs</code></b></a>
+<p>
+This file contains a few examples that didn't fit anywhere else.  There are 
+ones including computations involving the bounding box of an object, a 
+sample of how to make help screens for a demonstration, and a sample of how 
+to make widgets visible and invisible.
+<p>
+<br>
+<li><a href="4D.cs"><b><code>4D.cs</code></b></a>
+<p>
+This file contains the most sophisticated examples.  These involve complex 
+custom control panels, with sophisticated interactions between the various 
+widgets, some more extensive programming within objects themselves, plus 
+four-dimensional data and projections to three-space.  Included are samples 
+involving stereographic and orthographic projections, projections of the 
+hypercube, graphs of complex functions viewed as surfaces in space, and 
+slicing sequences of the hypercube.
+<p>
+</ul>
+</blockquote>
+<br>
+<!-- *End-Document-Body -->
+<!-- *StageTools-Common-Footer -->
+<!--BR--><p>
+<hr size="3">
+<table border="0" cellpadding="0" cellspacing="0" width="98%" align="CENTER">
+<tr valign="MIDDLE"><td bgcolor="#B8B8B8" width="50%">
+<table border="0" cellpadding="0" cellspacing="8" align="CENTER">
+<tr valign="MIDDLE">
+<td><a href="../../welcome.html"><img src="../../img/home.gif" alt="[HOME]" border="1" width="40" height="40" hspace="5"></a></td>
+<td><small>StageTools Documentation web pages<br>
+Created:  03 Jun 1996<br>
+<!-- hhmts start -->
+Last modified:  17 Aug 2006 09:39:22
+<!-- hhmts end -->
+<br>
+Comments to:  <a href="mailto:dpvc@union.edu"><code>dpvc@union.edu</code></a><br>
+</small></td>
+</tr></table></td>
+<td width="1%"></td><td width="0%">
+<!-- *Navigation-Links -->
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td width="5" rowspan="10"></td><td></td><td width="5" rowspan="10"></td></tr>
+<tr><td><a href="../welcome.html"><img src="../../img/up.gif" alt="[Up]" border="0" width="25" height="25"></a></td>
+<td><i><a href="../welcome.html">CenterStage Home Page</a></i><br></td></tr>
+</table>
+</td><td width="2%" bgcolor="#B8B8B8">&nbsp;</td>
+</tr></table>
+<hr size="3">
+</body>
+</html>

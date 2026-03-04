@@ -1,0 +1,73 @@
+<html>
+<head>
+<title>StageTools (StageManager/Samples/simple):  Rotating Cube</title>
+<!-- Copyright (c) 1996-1999 by Davide P. Cervone.  All rights reserved. -->
+<!-- *Document-format: StageTools -->
+<!-- *Navigation-data:
+  ^ ../welcome.html
+  + ../parent/welcome.html
+-->
+</head>
+<body>
+<!-- *Navigation-links -->
+<table width="100%" border="1" cellpadding="2" cellspacing="0" bgcolor="#AAAAAA">
+<tr><td><table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr><td width="20%"><!--
+--></td>
+<td align="CENTER" width="60%"><!--
+--><nobr><b><small><a href="../../../welcome.html">StageTools</a> - Documentation (StageManager/Samples/simple)</small></b></nobr><!--
+--></td>
+<td align="RIGHT" width="20%"><!--
+--><a href="../welcome.html"><!--
+--><img src="../../../img/up.gif" alt="[Up]" border="0" width="25" height="25"></a><!--
+--><a href="../parent/welcome.html"><!--
+--><img src="../../../img/next.gif" alt="[Next]" border="0" width="25" height="25"></a><!--
+--></td></tr></table>
+</td></tr></table>
+<p>
+<!-- *Begin-Document-Body -->
+<h1><a href="cube.gif"><img src="cube.jpg" align="MIDDLE"></a>
+Rotating Cube:</h1>
+This examples shows how to load an object into Geomview and set its
+initial view (via the <code>Transform</code> commands).  Finally, it
+shows how to perform a simple action in the movie:  a rotation about
+the <nobr><i>z</i> axis</nobr>.
+<p>
+The <code><a href="cube">cube</a></code> file used in this script is a
+standard one that comes with Geomview.
+<p>
+<h2><hr size="5"><a href="cube.sm">cube.sm</a><hr></h2>
+<pre>
+   Load cube
+   Transform {YZ -$pi/3}
+   Transform {XY -$pi/6}
+
+   Sequence {XY 2*$pi} 30
+</pre>
+<!-- *End-Document-Body -->
+<!-- *Navigation-Links -->
+<p>
+<hr>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td><a href="../parent/welcome.html"><img src="../../../img/next.gif" alt="[Next]" border="0" hspace="5" width="25" height="25"></a></td>
+<td><i><a href="../parent/welcome.html">Frames of Reference</a></i><br></td></tr>
+<tr><td><a href="../welcome.html"><img src="../../../img/up.gif" alt="[Up]" border="0" hspace="5" width="25" height="25"></a></td>
+<td><i><a href="../welcome.html">Sample StageManager Files</a></i><br></td></tr>
+</table>
+<!-- *StageTools-Common-Footer -->
+<hr size="4">
+<table border="0" cellpadding="0" cellspacing="0">
+<tr valign="TOP">
+<td><a href="../../../welcome.html"><img src="../../../img/home.gif" alt="[HOME]" align="LEFT" border="1"></a><br></td>
+<td width="5"></td>
+<td><small>StageTools Documentation (StageManager/Samples/simple)<br>
+Created:  03 Jun 1996 ---
+<!-- hhmts start -->
+Last modified:  Nov 23, 1999 3:52:08 PM
+<!-- hhmts end -->
+<br>
+Comments to:  <a href="mailto:dpvc@union.edu"><code>dpvc@union.edu</code></a><br>
+</small></td></tr></table>
+</body>
+</html>
+<

@@ -1,0 +1,68 @@
+CenterStage Object Class:  Curve
+Subclass of the Root class
+
+The Curve class is one of the basic classes in CenterStage.  It allows
+you to create parametric curves and specify their domains,
+colorations, etc.
+
+In addition to the basic directives, the Curve class supports the
+following:
+
+    Function param func
+
+	This directive defines the function that gives the curve
+	parametrically.  The "param" argument names the parameter to
+	be used in the function, and the "func" gives a TCL script
+	that is used to compute the value of the function for any
+	given value of the parameter.  For example
+
+		Function {t} {
+		   let (x,y,z) = (t,t^2,t^3)
+		}
+
+	defines the twisted cubic curve in three-space.  The script
+	should use the value of the parameter (a TCL variable that
+	will be set to the correct value before the script is
+	executed) to compute values for each of the variables listed
+	in the Axes directive (which are {x y z} by default).
+
+	The script can compute its values in any way it wants, either
+	individually, as in
+
+		Function {x} {
+		   let y = x^2
+		   let z = x^3
+		}
+
+	or as a triple (as in the example above).  The
+	script can use any TCL commands, including if-then, loops,
+	even procedure calls.  The script has access to all the
+	variables defined by the Setup script, and to the variables
+	that are bound to sliders, type-ins, check-boxes and pop-up menus.
+
+
+    Domain {min max divs}
+
+	This specifies the range for the parameter and how many
+	divisions to make for the interval.  The function will be
+	evaluated at the endpoints of each of the subdivisions of the
+	interval, and a straight line segment will be used to
+	interpolate between the results of the function at these
+	points.  The curve is assumed to be continuous.
+
+	You can specify several domains at once using the form:
+
+	    Domain {{min1 max1 divs1} {min2 max2 divs2} ...}
+
+	You can specify a different domain style for each domain by
+	using the following form:
+
+	    Domain { {{m1 M1 n1} style1} {{m2 M2 n2} style2} ... }
+
+	where "style1", "style2", etc. are each one of Solid,
+	Dashes, or Dots.  For example:
+
+	    Domain { {0 pi/2 10} {{pi 3pi/2 10} Dashes} }
+
+	will use the Domain menu to select the style of the first
+	interval, and will use dashes for the second interval.

@@ -1,0 +1,32 @@
+##############################
+#
+#  File:     parent.sm
+#  Created:  Tue Nov 23 17:57:49 EST 1999
+#  By:       StageManager v2.5
+#
+
+_smVersion 2.5 geomview 1.0
+
+Movie Parent {
+Geometry build cube \{\{< cube\} \{< xyz.vect\}\}
+Load xyz.vect
+
+Transform \{Scale .75\}
+Transform \{Product \{YZ -$pi/3\} \{XY -$pi/6\}\}
+
+Transform \{Translate \{0 1 0\}\} cube
+
+Pause 3
+Sequence \{XY $pi/2\} 8 cube
+Pause 3
+Sequence \{XY $pi/2\} 8 cube -parent
+Pause 3
+Sequence \{XY $pi/2 \{-1 0 0\}\} 8 cube
+Pause 3
+Sequence \{XY $pi/2 \{0 -1 0\}\} 8 cube -parent
+Pause 5
+} {
+  {{6 forever {}} {1 1 1} {8 6 10 Cross2 Logarithmic 1 IPPPPP Full 10 1} {0 end 0 1}}
+  {1 0}
+  {{{scene-0 1}} {400 400 200 200 200x200 2 gif 256 90 1 ppm}}
+}

@@ -1,0 +1,38 @@
+##############################
+#
+#  File:     Zn.sm
+#  Created:  Tue Nov 23 17:09:50 EST 1999
+#  By:       StageManager v2.5
+#
+
+_smVersion 2.5 geomview 1.0
+
+Movie Z2 {
+Dimension 4
+
+Load Z2.oogl
+Load Hypercube.oogl
+Transform \{Scale .75\}
+Projection Orthographic
+
+Sequence \{Product \{XW $pi/2\} \{YZ $pi/2\}\} 20
+} {
+  {{6 forever {}} {1 1 1} {8 6 10 Cross2 Logarithmic 1 IPPPPP Full 10 1} {0 end 0 1}}
+  {1 0}
+  {{{scene-0 1}} {400 400 200 200 200x200 2 gif 256 90 1 ppm}}
+}
+
+Movie Z3 {
+Dimension 4
+
+Load Z3.oogl
+Load Hypercube.oogl
+Transform \{Scale .75\}
+Projection Orthographic
+
+Sequence \{Product \{XW $pi/2\} \{YZ $pi/2\}\} 20
+} {
+  {{6 forever {}} {1 1 1} {8 6 10 Cross2 Logarithmic 1 IPPPPP Full 10 1} {0 end 0 1}}
+  {1 0}
+  {{{scene-0 1}} {400 400 200 200 200x200 2 gif 256 90 1 ppm}}
+}

@@ -1,0 +1,75 @@
+CenterStage Object Class:  Tube
+Subclass of:  SurfaceFormCurve
+Requires reference to a Curve object
+
+The Tube class lets you create a tube around an existing Curve object.  By 
+default, the tube is circular of constant radius, but you can make it any 
+shape you want, and the radius can vary along the curve.
+
+The second parameter for the surface is used as the parameter along the 
+reference curve, while the first parameter of the surface is used to 
+generate the shape for the tube.  This tube shape is expressed in the 
+Frenet frame of the reference curve, in absolute coordinates.
+
+The Tube class supports all the directives of the SurfaceFromCurve class 
+(except for the Function directive), plus the following:
+
+    Tube param func [-frame | -absolute]
+    
+        Here "param" specifies the parameter that forms the shape of the 
+        tube, and the "func" is an expression that returns the coordinates 
+        of a point on the tube, relative to a point on the reference 
+        curve.  If -frame is specified (the default), then "func" should 
+        produce an ordered pair that represents a position in the 
+        normal-binormal plane.  If -absolute is specified, then the 
+        function should produce a point in absolute coordinates (with the 
+        point on the curve as the origin).
+        
+        For example:
+        
+                Tube {theta} {(2cos(theta), sin(theta))}
+        
+        produces an oval tube using the Frenet frame, while
+        
+                Tube {s} {(cos(s),sin(s),0)} -absolute
+        
+        produces a circular tube, but the circles all lie parallel to
+        the xy-plane.
+        
+        Note that "func" is not a TCL script, but an expression.  If you 
+        need to do more complicated computations, you can call a TCL 
+        procedure as follows:
+        
+                Tube {s} {myTube(s)} -absolute
+                
+                vproc myTube {s} {
+                  if {$s < $pi} {let P = (2s,0,s^2)} \
+                    else {let P = (s,s,2s)}
+                  return $P
+                }
+        
+        While the tube shape usually is independent of the position along 
+        the curve, you may want to make your tube depend on the curve's 
+        parameter as well.  In this case, you can specify two parameters, 
+        and the second is the one used by the curve:
+        
+                Tube {s t} { (cos(t),-sin(t),
+                              sin(t), cos(t)) * (sin(2s),cos(s)) }
+        
+        This example forms a figure-8 tube that rotates as it moves along 
+        the curve.
+
+
+    Radius r
+    
+        This directive specifies the radius of the tube.  After the tube 
+        function is computed, it is multiplied by this value in order to 
+        obtain the final tube position.
+        
+        You can use an expression for the radius, and the expression can 
+        include the parameter for the curve.  For example:
+        
+                Radius {sqrt(1+t^2)}
+        
+        where t is the parameter listed in the Function directive of the 
+        reference curve.

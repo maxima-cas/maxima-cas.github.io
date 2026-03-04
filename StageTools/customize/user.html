@@ -1,0 +1,123 @@
+<html>
+<head>
+<title>StageTools (Customize):  Customization using Initialization Files</title>
+<!-- Copyright (c) 1997-2006 by Davide P. Cervone.  All rights reserved. -->
+<!-- *Document-Format:  StageTools -->
+<!-- *Navigation-Data:
+  ^ welcome.html
+  ++ ../start.html
+  + config.html
+  - x-resources.html
+-->
+</head>
+<body>
+<!-- *Navigation-links -->
+<table width="100%" border="1" cellpadding="2" cellspacing="1">
+<tr><td bgcolor="#B8B8B8"><table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr><td width="20%" align="LEFT" nowrap><!--
+--></td>
+<td align="CENTER" width="60%"><!--
+--><nobr><b><small><a href="../welcome.html">StageTools</a> - Documentation<a></a> (Customize)</small></b></nobr><!--
+--></td>
+<td align="RIGHT" width="20%" height="25" nowrap><!--
+--><a href="x-resources.html"><!--
+--><img src="../img/prev.gif" alt="[Prev]" border="0" width="25" height="25"></a><!--
+--><a href="welcome.html"><!--
+--><img src="../img/up.gif" alt="[Up]" border="0" width="25" height="25"></a><!--
+--><a href="../start.html"><!--
+--><img src="../img/skip.gif" alt="[Skip]" border="0" width="25" height="25"></a><!--
+--><a href="config.html"><!--
+--><img src="../img/next.gif" alt="[Next]" border="0" width="25" height="25"></a><!--
+--></td></tr></table>
+</td></tr></table>
+<p>
+<!--BR-->
+<!-- *Begin-Document-Body -->
+<blockquote>
+<h1>Customization using Initialization Files:</h1>
+Whenever one of the StageTools modules starts up, it looks for a "dot file" 
+in your home directory.  The file has the same name as the module being 
+started, but preceded by a dot.  For example, CenterStage looks for 
+<code>.CenterStage</code> in your home directory.  If it exists, the file 
+should contain TCL commands to execute at startup.  Usually, this file will 
+define procedures whose names are of the form <code>_user(name)</code> (or 
+<code>_user::name</code> for CenterStage) where "name" is one of a set of 
+predefined names that are called at specified times by the StageTool 
+module.  [A list of these names and when they are called needs to be 
+given].
+<p>
+The most common name to define is <code>_user(Ready)</code>, which is 
+executed just before the module starts accepting user input.  This routine 
+can perform any customization that is required by the module.  For example, 
+it could load additional object definitions into CenterStage, or could 
+redefine the image conversion commands within BackStage.
+<p>
+An example of the latter would be to create <code>.BackStage</code> in 
+your home directory so that it contains:
+<p>
+<pre>
+    proc _user(Ready) {} {
+      proc _cmd(Convert) {old new type w h colors dither} {
+        set options "-geometry ${w}x${h} +comment"
+        if {$colors != ""} {
+          if {$dither} {append options " -dither"} else {append options " +dither"}
+          append options " -colors $colors"
+        }
+        switch $type {
+          jpg {append options " -quality $::_image(quality)"}
+          tiff {return "convert $options $old PPM:$old 2&gt;&amp;1 &amp;&amp; ppm2tiff $old $new"}
+          gif {return \
+            "convert $options -quality 100 $old jpg:- | djpeg -gif -outfile $new"}
+        }
+        return "convert $options $old $type:$new" 
+      }
+    }
+</pre>
+<p>
+In this example, the _cmd(Convert) routine is replaced by one that handles 
+TIFF and GIF files using tools other than ImageMagick's 
+<code>convert</code> command for their final processing.
+<p>
+
+The startup files can perform virtually any commands, but that means you 
+have to be careful about what you have them do, as you can cause serious 
+errors as well.
+<p>
+<i>[More examples need to go here.]</i>
+</blockquote>
+<!-- *End-Document-Body -->
+<!-- *StageTools-Common-Footer -->
+<!--BR--><p>
+<hr size="3">
+<table border="0" cellpadding="0" cellspacing="0" width="98%" align="CENTER">
+<tr valign="MIDDLE"><td bgcolor="#B8B8B8" width="50%">
+<table border="0" cellpadding="0" cellspacing="8" align="CENTER">
+<tr valign="MIDDLE">
+<td><a href="/../welcome.html"><img src="../img/home.gif" alt="[HOME]" border="1" width="40" height="40" hspace="5"></a></td>
+<td><small>StageTools Documentation web pages<br>
+Created:  20 Aug 1997<br>
+<!-- hhmts start -->
+Last modified:  Aug 17, 2006 9:44:05 AM
+<!-- hhmts end -->
+<br>
+Comments to:  <a href="mailto:dpvc@union.edu"><code>dpvc@union.edu</code></a><br>
+</small></td>
+</tr></table></td>
+<td width="1%"></td><td width="0%">
+<!-- *Navigation-Links -->
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td width="5" rowspan="10"></td><td></td><td width="5" rowspan="10"></td></tr>
+<tr><td><a href="config.html"><img src="../img/next.gif" alt="[Next]" border="0" width="25" height="25"></a></td>
+<td><i><a href="config.html">Customization using config files</a></i><br></td></tr>
+<tr><td><a href="../start.html"><img src="../img/skip.gif" alt="[Skip]" border="0" width="25" height="25"></a></td>
+<td><i><a href="../start.html">Getting Started with StageTools</a></i><br></td></tr>
+<tr><td><a href="welcome.html"><img src="../img/up.gif" alt="[Up]" border="0" width="25" height="25"></a></td>
+<td><i><a href="welcome.html">Customization Instructions</a></i><br></td></tr>
+<tr><td><a href="x-resources.html"><img src="../img/prev.gif" alt="[Prev]" border="0" width="25" height="25"></a></td>
+<td><i><a href="x-resources.html">Customization using X Resources</a></i><br></td></tr>
+</table>
+</td><td width="2%" bgcolor="#B8B8B8">&nbsp;</td>
+</tr></table>
+<hr size="3">
+/body>
+</html>

@@ -1,0 +1,74 @@
+OVERVIEW:
+
+StageHand is a companion program to StageManager that lets you perform
+StageManager commands interactively (rather than as a script).  This
+is useful when you want to test out actions before putting them into
+your movie (you don't have to keep rerunning the complete movie to see
+how a particular command will look).  It also lets you issue Geomview
+commands directly, so it can also serve as a replacement for the
+Geomview commands panel (it provides better command history and
+editing features, and allows multi-line commands).
+
+
+STARTING STAGEHAND:
+
+Once geomview is running, select StageHand from the modules panel.
+This will load StageHand.  (StageHand actually starts a second module,
+called StageDoor and then exits, so you will see the StageHand module
+appear, then disappear, and then the StageHand window will appear;
+this is normal.)
+
+
+THE STAGEHAND PANEL:
+
+StageHand provides a large input area and several buttons.  The input
+area is where you type commands (either StageManager-style commands,
+or Geomview commands).  The three buttons perform the following
+functions:
+
+	CLEAR		Clears the input area and issues a new prompt
+
+	CONTROLS	Brings up the execution control panel that
+			lets you pause execution, kill BackStage, etc.
+			Normally you will not need to use this panel,
+			but, for example, you may want to step through
+			a Sequence command, or use the Print command
+			to obtain some output in this window.
+
+	QUIT		Closes the StageHand window and exits the
+			program.
+
+
+KEYBINDINGS:
+
+The editing keys are modeled after EMACS, but you can also use mouse
+dragging and X-window style cut/paste.  The up and down arrow keys can
+be used to move through the command history, and CTRL-R or ESCAPE-P
+can be used to recall previous commands that match what you have typed
+so far.  If you press the RETURN key, the command you have typed will
+be performed if it is complete; otherwise, you will be able to
+continue the command on a new line.  Once the command is complete,
+To execute a multi-line command, press RETURN at the end of the
+command, or ENTER anywhere within the command.
+
+
+GEOMVIEW VS. STAGEMANAGER COMMANDS:
+
+StageHand allows you to issue commands either to Geomview or to
+BackStage (the program that StageManager uses to actually execute
+scripts).  Since Geomview commands are always enclosed in parentheses,
+StageHand can tell which type of command you are giving by whether it
+begins with a parenthesis.  If so, StageHand ships the command to
+Geomview, otherwise it sends it to BackStage.  For example, the
+command "(load cube)" will go directly to Geomview, whereas "Load
+cube" will be sent to BackStage for execution.
+
+
+KNOWN BUGS:
+
+None
+
+
+BUG REPORTS AND COMMENTS:
+
+Please send bug reports and comments to <mailto:dpvc@union.edu>.

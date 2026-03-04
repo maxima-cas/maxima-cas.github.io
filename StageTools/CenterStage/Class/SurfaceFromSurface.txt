@@ -1,0 +1,53 @@
+CenterStage Object Class:  SurfaceFromSurface
+Subclass of:  Surface
+Requires reference to a Surface object
+
+The SurfaceFromSurface lets you create a Surface object that relates to 
+another existing Surface object.  For each value of the domain grid, the 
+reference surface value is calculated, then the referring surface function 
+is evaluated and added to it, either in absolute coordinates, or in
+relation to a frame on the surface.  The frame is determined by the
+normal vector to the surface and the partial derivatives of the
+surface with respect to its parameters (note that this need not be an
+orthonormal basis).
+
+In addition to the standard Surface directives, SurfaceFromSurface supports
+the following:
+
+   Function params func [vfunc] [-frame | -absolute]
+
+	Here the "params", "func" and "vfunc" arguments are the same as for 
+	the standard Surface.  The -frame and -absolute options determine 
+	whether the result of the function is in the coordinate system of 
+	the linked surface's frame or in absolute coordinates (the 
+	default).  If -frame is provided, then both the surfaces must be in 
+	3-space, and the frame is computed numerically.  The x-coordinate 
+	of the result corresponds to the normal direction for the surface, 
+	the y-coordinate to the direction of the first partial derivative 
+	of the surface, and the z-coordinate to the direction of the second 
+	partial derivative.
+
+        For example:
+
+                Domain {Inherit}
+
+                Function {u v} {
+                  let (N,U,V) = (d,0,0)
+                } -frame
+
+                Axes {N U V}
+
+                Slider d 0 1 .1
+
+        produces a surface offset from the original one by a distance d 
+        along the surface normal.  The distance is given by the value of a 
+        slider, so the family of offset surfaces can be investigated this 
+        easily.
+
+
+    Domain {Inherit}
+        
+	This special form of the domain command can be used to inherit the 
+	domain of the original surface.  Standard Domain specifications can 
+	also be used to provide a domain other than the one of the linked 
+	surface.

@@ -1,0 +1,30 @@
+CenterStage Object Class:  SurfaceOfRevolution
+Subclass of:  Surface
+
+The SurfaceOfRevolution class allows you to generate surfaces of 
+revolution, where the rotation occurs in any coordinate plane and around 
+any point in that plane (in arbitrary dimension).  You specify the 
+function for the curve to be rotated, and the plane and point around which 
+the rotation occurs.
+
+In addition to the standard Surface directives, the SurfaceOfRevolution 
+supports the following:
+
+    Function param func
+    
+       The "param" and "func" arguments are the same as those for the Curve 
+       class.  Usually the curve is a planar curve, but that need not be 
+       the case.
+
+    Rotate {X Y} [point]
+    
+        Here "X" and "Y" specify the names of the two axes that span the 
+        plane where the rotation will occur.  For example, if you specify 
+        {x y} then the rotation will occur about the z axis.  The "point", 
+        if specified, gives the coordinates (in the specified plane) of the 
+        center of rotation.  For example:
+        
+            Rotate {x y} {1 0}
+        
+	will rotate the curve around the vertical axis through the point 
+	(1,0) in the xy plane.

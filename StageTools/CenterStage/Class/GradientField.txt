@@ -1,0 +1,14 @@
+CenterStage Object Class:  GradientField
+Subclass of:  Arrows
+Requires reference to a Surface object
+
+The GradientField class produces a collection of arrows that are the
+gradient arrows for a given Surface object.  To make sense, the
+surface object should be a function graph (i.e., of the form
+z=f(x,y)).  The gradient vectors lie in the xy-plane.  You may want to
+use the ArrowScale and ArrowMaxLen directives to make the results
+easier to view.
+
+The GradientField class supports all the standard directives, plus the
+ArrowHead, ArrowScale, and ArrowMaxLen directives of the Arrow class,
+plus the Domain directive of the SurfaceFromSurface class.

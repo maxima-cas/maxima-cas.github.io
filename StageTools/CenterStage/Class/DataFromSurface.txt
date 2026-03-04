@@ -1,0 +1,17 @@
+CenterStage Object Class:  DataFromSurface
+Subclass of:  Surface
+Requires a reference to a Surface object
+
+The DataFromSurface class provides a means of using the data already
+computed by another Surface object.  One reason to do this is to change the
+coloring or domain style without having to recompute the data.  Another is
+to make a ShowMe checkbox that can be used to turn the surface on and off
+without recomputing it (or any other objects linked to it).  To do this,
+make a Surface object that has its OBJECT/SHOW menu set to NEVER, and then
+create a DataFromSurface object that links to it and has the CheckBox and
+ShowMe directives.  When the DataFromSurface object is first shown, it will
+force the Surface object to compute the data, and then the DataFromSurface
+object will be able to use that data whenever it is shown, without
+recomputing it.
+
+The DataFromSurface object has no non-standard directives.

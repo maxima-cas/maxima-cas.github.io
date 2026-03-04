@@ -1,0 +1,96 @@
+CenterStage Object Class:  Surface
+Subclass of the Root class
+
+The Surface class is one of the basic classes in CenterStage.  It allows
+you to create parametric surfaces and specify their domains,
+colorations, etc.
+
+In addition to the basic directives, the Surface class supports the
+following:
+
+    Function params func [vfunc]
+
+        This directive defines the function that gives the surface 
+        parametrically.  The "params" argument is a list of the two 
+        parameters to be used in the function, and "func" gives a TCL 
+        script that is used to compute the value of the function for any 
+        given values of the parameters.  
+        
+        For example
+
+                Function {u v} {
+                   let (x,y,z) = (u,v,u^2-v^2)
+                }
+
+        defines a saddle surface in three-space.  The script
+        should use the values of the parameters (TCL variables that
+        will be set to the correct values before the script is
+        executed) to compute values for each of the variables listed
+        in the Axes directive (which are {x y z} by default).
+
+        The script can compute its values in any way it wants, either
+        individually, as in
+
+                Function {u v} {
+                   let x = u+v
+                   let y = x^2
+                   let z = x + y^3
+                }
+
+        or as a triple (as in the example above).  The
+        script can use any TCL commands, including if-then, loops,
+        even procedure calls.  The script has access to all the
+        variables defined by the Setup script, and to the variables
+        that are bound to sliders, type-ins and check-boxes.
+
+        CenterStage computes the values of the surface function on the 
+        domain grid by using two nested loops:  the outermost loop runs 
+        through the values of the second parameter and the innermost loop 
+        runs through the values of the first parameter.  If given, the 
+        "vfunc" argument specifies a script that should run every time the 
+        outermost loop changes value but before the innermost loop starts.
+        This allows you to perform computations that depend only on the 
+        second parameter once for each value of that parameter (rather than 
+        repeating the computation for every different value of the first 
+        parameter as well).  For example, if you are using the second 
+        parameter as the parameter of a curve and other parameter to build 
+        a surface over that curve using its Frenet frame, you can compute 
+        the frame in the "vfunc" script and save considerable computation 
+        time since it will only be computed when the position along the 
+        curve changes.
+        
+        
+    Domain {{umin umax udivs} {vmin vmax vdivs}}
+
+ patch will be used to 
+	interpolate between the results of the function at these points.  
+	The surface is assumed to be continuous.
+
+        You can specify several domains at once using the form:
+
+            Domain {
+              {{um1 uM1 un1} {vm1 vM1 vn1}}
+              {{um2 uM2 un2} {vm2 vM2 vn2}}
+              ...
+            }
+
+        You can specify a different domain style for each domain by
+        using the following form:
+
+            Domain { 
+              {{um1 uM1 un1} {vm1 vM1 vn1} style1}
+              {{um2 uM2 un2} {vm2 vM2 vn2} style2}
+              ...
+            }
+
+        where "style1", "style2", etc. are each one of Patch,
+        Grid, BandsU, BandsV, LinesU, LinesV, Dots, Checks, Spots or Weave.
+        For example:
+
+            Domain {
+              {{-pi/2 0 10} {-pi/2 0 10}}
+              {{0 pi/2 10} {0 pi/2 10} Spots}
+            }
+
+        specifies that the first patch will use the DOMAIN menu setting 
+        while the second will use the Spots domain style.

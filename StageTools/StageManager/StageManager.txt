@@ -1,0 +1,1810 @@
+OVERVIEW:
+
+StageManager is a Geomview module designed to ease the creation of
+MPEG movies, animated GIFs and videotapes using geomview.  It provides
+a uniform means of manipulating objects in geomview from a script, and
+then generating image files and the control files needed to make
+videotapes, MPEG movies and animated GIFs from these images.  It also
+provides a mechanism for generating GCL commands that can be read into
+geomview for taking real-time video off the screen, and for taking
+still images of any point within a movie.
+
+
+STARTING STAGEMANAGER:
+
+Once geomview is running, select StageManager from the modules panel.
+This will load StageManager.  (StageManager actually starts a second
+module, called StageDoor and then exits, so you will see the
+StageManager module appear, then disappear, and then the StageManager
+window will appear; this is normal.)
+
+You should begin by giving your movie file a name (using the FILE/SAVE
+AS menu) and giving your movie a name (via the MOVIE/RENAME menu).
+StageManager creates subdirectories for you where it will store the
+files it generates; this directory usually has the same name as the
+StageManager file (but without the .sm file type).  A file can contain
+several related movies (use the MOVIE/NEW or MOVIE/DUPLICATE menu
+items to create new movies), and StageManager keeps all the movies,
+frames, and related files in the subdirectory it creates.
+StageManager may create a directory whose name ends in "-frames" and
+one ending in "-snapshots" to store the video frames and image files,
+and it may also create other files that it uses to process your
+movies.  For example, the .param file that controls the mpeg_encode
+program is stored here, as is the resulting .mpg file.
+
+
+STAGEMANAGER MENUS:
+
+The FILE menu controls the file you are editing.  Each file can
+contain any number of movies.  By default, movie files have the
+extension ".sm".  The items in this menu are:
+
+    NEW Clears the contents of the script window and all the
+	    movies in the movie list.  Resets the settings to their
+	    defaults.  This is like starting StageManager from
+scratch.
+
+    OPEN Opens an existing StageManager file (.sm) and loads
+	    the movies it contains.
+
+    SAVE Save the current scripts and menu settings to the same
+	    file that they were read from.  You should do this
+	    periodically so that your edits are sure to be saved.
+
+    SAVE AS Save the movies and menu settings under a new name.
+	    A new file is created and it becomes the current file.
+	    The original file is not altered.
+
+    REVERT Rereads the movies and menu settings from the file,
+	    thus eliminating all edits that occurred since the last
+	    save.
+
+    CLEAN UP
+            This menu lets you delete the different kinds of files
+	    created by StageManager.  The FRAMES item will remove all
+	    the frames associated with the current movie; SNAPSHOTS
+	    will remove all images created by the Snapshot command in
+	    the current movie; The TEMPORARY FILES item will delete
+	    any temporary control files (like .param, etc) for the
+	    current movie; the OUTPUT FILES item will remove any
+	    output files (like .mpg, .gif, .gcl, etc.) files created
+	    for the current movie, the ALL FILES item will delete all
+	    the files associated with the current movie; and finally,
+	    the ALL MOVIES item will delete all the files associated
+	    with every movie in the current file.  The files created
+	    by StageManager are not removed unless you delete them
+	    explicitly with one of these commands.
+
+    QUIT Exits StageManager.
+
+The EDIT menu provides standard editing features, and lists their
+keyboard equivalents.  These commands operate on regions of text
+selected with the left mouse button, or by holding down the SHIFT key
+and using the arrow keys.  The standard X-windows selection mechanism
+also works for copying text from one window to another.
+
+The MOVIE menu controls the movies within a file.  By default each
+file has a movie called "Untitled", but you should rename that to some
+more meaningful name.  The menu items are:
+
+    NEW Create a new movie in the current file (you will be asked
+            to supply a name for the movie)
+
+    RENAME Changes the name of the current movie
+
+    DUPLICATE
+	    Makes a new copy of the current movie and gives it a
+	    unique name (based on the current movie's name).  This
+	    allows you to edit a movie in several different ways,
+	    and see which one you like without losing old
+	    versions.
+
+    DELETE Removes a movie from the file.
+
+    IMPORT Load a movie (or collection of movies) into the
+	    current file from some other file.  (This differs from
+	    the FILE/OPEN menu in that the FILE/OPEN menu forgets
+	    about the current file and starts using the new file,
+	    whereas MOVIE/IMPORT incorporates the contents of the
+	    new file into the current, making it larger.)
+
+    EXPORT Saves the current movie (and only the current movie)
+	    to a file.  (This differs from the FILE/SAVE AS menu
+	    item in that FILE/SAVE AS saves ALL the movies to the
+	    named file, and makes that file the current file,
+	    whereas MOVIE/EXPORT saves a single movie to a file, but
+	    does not change the current file.  Thus MOVIE/EXPORT and
+	    MOVIE/IMPORT provide a mechanism of copying movies from
+	    one file to another.)
+
+The SCENE menu contains the names of all the scenes in the current
+movie, and controls which scenes will be recorded when the movie is
+executed.  Scenes that are not selected will be executed quickly (by
+making all Sequence commands and Loop commands effectively have only
+one iteration) and no frames will be taken for these scenes.  The ALL
+menu item will cause all scenes to be selected, and NONE will unselect
+all scenes.  It is convenient to select only the scene that you are
+working on, so when you run the movie, you don't have to wait for all
+the earlier parts to be performed.  It also allows you to make short
+MPEG clips that are only part of a longer video tape, for example.
+The REMAKE LIST menu option scans the current movie for Scene
+commands, and rebuilds the scene list using this data.  (Normally the
+scenes are not updated until you execute the movie; since the script
+may issue Scene commands within procedures or use variables as part of
+the scene names, the REMAKE LIST command may improperly list these
+scenes, though they will be listed correctly after the movie is
+executed).
+
+The IMAGE menu controls the types of frames to be generated by
+StageManager for your movie.
+
+    SIZE Specifies the final size of the images generated:
+
+               VIDEO To set the window to 640 x 480 for video tapes.
+
+               MPEG To set the size to 288 x 288, appropriate to MPEG
+                       movies (there is no real significance to this
+		       size, it has simply proven to be a good
+		       compromise between file size and size of
+image).
+
+               OTHER Lets you specify the size of the window directly.
+
+               CURRENT SIZE
+                       Uses the current size of the Geomview window.
+
+    SCALE   Specifies the scaling ratio for the intermediate images.
+            You can frequently get better-quality images by producing
+	    the images at a large size and then scaling them to a
+            smaller size (in particular, anti-aliasing can be done).
+	    The scale factors specify the ratio between the
+            intermediate file and the final file.  For versions of
+            geomview before 1.6, the geomview window will be scaled to
+            the larger size; for 1.6 and later, the image is rendered
+            in a larger internal buffer and then saved to a file.  In
+	    both cases, the image is reduced automatically to the
+	    correct final size (as specified in SIZE above).  Note:
+	    for ratios other than 1:1, you may need to increase the
+	    linesize in the appearance of some objects, since Geomview
+	    does not scale this when a larger image is generated.
+
+    TYPE    Specifies the image file type to use.  TIFF files are best
+            for videotapes, but GIF files can be used for MPEGs.  You
+            can also obtain JPEG files, PNM files, Postscript files,
+	    or Renderman RIB files.  The quality setting for JPEG
+	    files is controlled by the OPTIONS/IMAGE PARAMETERS menu.
+	    If you select the IMAGE/SHADER/RENDERMAN option (see
+	    below), then any image type (other than postscript) will
+	    be rendered using Renderman and then converted to the
+	    proper type (i.e., you do not need to specify RIB format
+	    unless you actually want to keep the .rib files).
+
+    COLORS  Specifies the number of colors to save in the file.
+            Millions should be used for video tape, but 256 or fewer
+            are best for MPEG movies.  GIF format is restricted to 256
+	    colors, but TIFF, PNM and JPEG can use millions.  The
+	    DITHER option lets you specify whether colors should be
+	    dithered when reducing an image to fewer colors.
+
+    SHADER  Specifies the renderer to be used in generating the image.
+	    SOFTWARE refers to the Geomview internal renderer, and is
+	    the default.  HARDWARE is available in the SGI version,
+	    and in this case a snapshot will be taken directly from
+	    the screen (the window size will also be changed to
+	    reflect the SCALE factor from above).  If you have
+	    Renderman installed, the RENDERMAN option will mean that
+	    an intermediate .rib file will be created and Renderman
+	    called to generate the image; the resulting TIFF file will
+	    be converted to the desired type and size automatically.
+
+    SNAPSHOT
+	    This menu item lets you take a snapshot of the current
+            Geomview window.  You will be asked for a file name for
+            the image:  the file type (.gif, .tiff, etc.) controls the
+            format of the resulting file.  This is a more convenient
+            means of obtaining an image file from Geomview than the
+            Geomview snapshot mechanism.  The SCALE and SHADER
+	    settings are used when creating the final image.
+
+    RESCALE IMAGE
+	    This menu item lets you select an image to be scaled, and
+            a size for the image (in the form "w x h" in pixels).
+	    
+
+The OPTIONS menu controls global settings for the current movie.  The
+FRAMES PARAMETERS menu item let you specify the speed, pause and
+resolution values used by the script: PAUSE is how many (video or
+MPEG) frames to hold each image generated by a SaveFrame, Sequence or
+Loop command; SPEED is a decimal number that multiplies all the pauses
+and other timed events within the script (i.e., Pause and Fade
+commands, and the pauses for SaveFrame and Sequence commands);
+RESOLUTION is a decimal number that multiplies all Sequence and Loop
+counts so that more or fewer frames will be generated in the final
+movie.
+
+The IMAGE PARAMETERS menu item allows you to specify the JPEG quality
+setting (it is only used the JPEG files are created).
+
+The MPEG PARAMETERS menu item lets you specify parameters that are
+passed to the mpeg_encode program.  They control the compression and
+algorithms used.  See the mpeg_encode documentation for more
+information.
+
+The ANIMATED GIF PARAMETERS menu item provides a means of specifying
+the GIF loop count (a number or the word "FOREVER"), the frame delay
+(in 100ths of a second), and the transparent color (in the form
+"R,G,B", where R, G and B are numbers between 0 and 255 specifying the
+red, green and blue components of the color that should be
+transparent; for example "0,0,0" is black while "255,255,0" is yellow).
+
+Other items in the SETTINGS menu are:
+
+    STOP AT Specifies that StageManager should pause after every
+	    frame, sequence or scene, or only at the end of the
+	    script.  It is usually easier, however, to use the
+	    Stop command within your scripts to stop exactly where
+	    you want.
+
+    RESET GEOMVIEW
+	    Determines whether StageManager will attempt to put
+	    Geomview back to its reset state before executing the
+	    script.
+
+    KILL MODULES
+	    Determines whether StageManager will kill external
+	    modules that are running before it executes the
+	    script.  (This can be useful if the script starts
+	    external modules itself.)
+
+    FRAME PAUSES
+	    When checked, this causes StageManager to pause after each
+	    SaveFrame in an attempt to make the timing of the
+	    executing script be as close as possible to what it would
+	    be if the movie were on video tape (normally StageManager
+	    will run the script as fast as possible).  This is useful
+	    when saving GCL files, as this allows for more consistent
+	    timing of events.
+
+
+The TOOLS menu lets you start some other useful tools:
+
+    EXECUTION WINDOW
+	    Brings up the execution window (in case you have closed
+	    it).
+
+    MPEG VIEWER
+	    Launches an MPEG viewer on the .mpg file you specify.
+	    The viewer can be customized by setting the X resource for
+	    StageManager.viewer(mpeg) in your .Xdefaults file.  The
+	    default is set in the Stage/lib/commands.tcl file.
+
+    IMAGE VIEWER
+	    Launches an image viewer such as xv or display on a
+	    specified image file.  The viewer can be customized by
+	    setting the X resource for StageManager.viewer(image) in
+	    your .Xdefaults file.  The default is set in the
+	    Stage/lib/commands.tcl file.
+
+    ANIMATED GIF VIEWER
+	    Launches an viewer for animated GIF files.  Currently this
+	    is set to Netscape (which is overkill, but I couldn't find
+	    a simple viewer for these).  The viewer can be customized
+	    by setting the X resource for StageManager.viewer(animGIF)
+	    in your .Xdefaults file.  The default is set in the
+	    Stage/lib/commands.tcl file.
+
+    WEB BROWSER
+	   Launches a web browser.  The browser can be customized by
+	    setting the X resource for StageManager.viewer(web) in
+	    your .Xdefaults file.  The default is set in the
+	    Stage/lib/commands.tcl file.
+
+    STAGEHAND
+	    Launches the StageHand Geomview module (a command-line
+	    interface to Geomview with command history and editing).
+
+    CENTERSTAGE
+	    Launches the CenterStage Geomview module (a tool for
+	    creating objects in Geomview; it can create parametric
+	    surfaces and curves, polyhedra, hierarchical objects,
+	    objects in arbitrary dimensions, and objects based on
+	    other objects; see the CenterStage documentation for more
+	    information).
+
+    RUN GCL
+	    This lets you select a file of GCL commands and loads them
+	    into Geomview.  It provides a convenient way for you to
+	    test files created with the ACTION/SAVE GCL menu.
+
+The ACTIONS menu lets you specify what actions will be performed when
+the movie is executed.  By default, the movie is in preview mode,
+which means that no frames are saved and no files are created.
+
+    SAVE FRAME
+	    Causes the SaveFrame, Sequence and Loop commands to save 
+	    frames in the movie's "frames" directory.  Once frames
+	    have been saved, you can try out different MPEG settings,
+	    for example, without needing to save the frames again.
+	    Once you are done with the frames, however, you will need
+	    to remove them manually.
+
+    SAVE SNAPSHOTS
+	    Indicates that the Snapshot command will cause images to
+	    be saved in the movie's "snapshots" directory.
+
+    SAVE GCL
+	    When the movie is run, all the Geomview commands will be
+	    saved in a file.  This file can then be run via the
+	    TOOLS/RUN GCL menu.  A GCL file is typically used when you
+	    want to create a video live from the screen.  You should
+	    select the OPTIONS/FRAME PAUSES menu in this case.
+
+    RENDER RIB
+            If the IMAGE/SHADER has been set to RENDERMAN, this menu
+	    will cause the frames to be rendered (you still need to
+	    use SAVE FRAMES first).  The SAVE FRAMES option just saves
+	    the .rib files.
+
+    MAKE MPEG
+	    Causes the frames to be put together into an MPEG movie.
+	    You can select both SAVE FRAMES and MAKE MPEG concurrently
+	    if you wish, or you can use the frames that were saved
+	    during a previous run.
+
+    MAKE ANIMATED GIF
+	    Causes the frames to be put together into an animated GIF
+	    file.  You can select both SAVE FRAMES and MAKE ANIMATED
+	    GIF concurrently, or you can use the frames that were
+	    saved during a previous run.
+
+    MAKE VIDEO
+	    Cause a control file to be build for the unix 'heave'
+	    command that can be used to put the frames onto video
+	    tape.
+
+Note that you can tear off the ACTION menu (or any of the menus) by
+selecting the dashed line at the top of the menu.  This provides a
+convenient set of buttons rather than menus.
+
+
+STAGEMANAGER BUTTONS:
+
+The QUIT button will cause StageManager to exit.  The EXECUTE button
+will cause it to perform the movie that you are editing; the EXECUTION
+PANEL will be opened, and details about the script will appear in the
+text area of of the Execution Panel.  The panel contains buttons that
+allow you to PAUSE the script (you will be able to CONTINUE the script
+afterwards, or STEP the script, which means run the script until the
+next frame is saved), or to CANCEL the script (which kills it).  You
+can CLOSE the Execution Panel at any time; this does NOT stop the
+movie from running, but just gets the window out of the way.  The KILL
+button will kill the BackStage process (the one that is executing the
+script); this usually is not needed, but if BackStage is acting up, it
+may need to be killed.
+
+To make MPEG movies, you should first select the SAVE FRAMES item of
+the ACTIONS menu and execute the movie (be sure to select the MPEG
+size in the SIZE menu).  This will create the frames for your movie
+and save them to disk.  Next, select the MAKE MPEG item in the ACTIONS
+menu and execute the movie again.  This will create the MPEG movie
+itself.  You can view the movie using the TOOLS/MPEG VIEWER menu.  You
+can do both at once by selecting both checkboxes and running the
+moving once.  The reason that these actions are separated is that
+taking the frames usually take a long time, so you might want to take
+the frames one scene at a time; or you may want to change the MPEG
+parameters and remake the movie to see if you can get better quality
+or better compression.  You will not need to resave the frames each
+time you try out new MPEG settings.
+
+To make an animated GIF file, select the SAVE FRAMES and MAKE ANIMATED
+GIF items in the ACTIONS menu and execute the movie.  This will create
+the .gif file on disk.  You can view it using the TOOLS/ANIMATED GIF
+VIEWER menu item.
+
+To make a live video movie, first select VIDEO from the SIZE menu,
+then select the ACTIONS/SAVE GCL menu and execute the movie.  This
+will create a .gcl file in the movie's subdirectory that contains all
+the commands used in the movie.  You can load this file into Geomview
+(using the TOOLS/RUN GCL menu item) to play back the movie, and can
+record the movie directly onto tape as it plays.  Usually, you should
+include a Pause command at the beginning of the movie in order to
+allow you to get the tape started once the movie has begun.  You may
+also want to select the OPTIONS/FRAME PAUSES checkbox to improve the
+timing of the movie.
+
+To make frame-by-frame movies, first select VIDEO from the size menu,
+then select the SAVE FRAME item in the ACTIONS menu and execute the
+movie.  This will save the frames to disk.  Then select the MAKE VIDEO
+item in the ACTIONS menu, and execute the movie again.  This will
+create several files used by the video recording equipment to record
+your film.  The file ending with .heave lists all the frames to put on
+tape, and the one ending .record is an executable script that you can
+run to attempt to put the frames on the tape.  [This needs to be
+documented further.]  As with making an MPEG movie, you can do both
+operations at once by selecting both checkboxes and executing the
+movie one time.
+
+If you have selected an image type of RIB or the IMAGE/SHADER is set
+to RENDERMAN, then you will need to select the RENDER RIB menu item in
+the ACTIONS menu and execute the movie in order to generate the actual
+image files from the .rib files before you can put the images together
+into an mpeg or onto video tape.  This is another reason that the SAVE
+FRAMES action is separate from the MAKE MPEG or MAKE VIDEO actions.
+You can specify the final image format using the IMAGE/TYPE menu.
+
+
+KEYBOARD SHORTCUTS:
+
+Most of the menu items and buttons have keyboard shortcuts.  These are
+indicated by the underlined characters in the names of the menus or
+buttons.  To activate the menu or button, press ALT and the underlined
+character.  Once a menu is opened in this way, you can use the arrow
+keys to move among the menu items and press return to select the item
+you want; or you can press the underlined letter to select a specific
+item.  See the TCL/TK manual for more information on how to select
+menus by keyboard shortcuts.
+
+
+COMMANDS CONTROLLING THE STAGEMANAGER SCRIPTS:
+
+You control Geomview via StageManager by writing scripts (in the large
+typein area of the StageManager panel).  These scripts are written in
+the TCL language (see the manuals for more details).  Commands are
+made up of a command keyword followed by a series of strings
+(separated by spaces).  The strings are delimited by quotation marks
+(") or braces ({ }).  The difference is that braces can contain
+line-breaks and they suppress the substitution of variables (see the
+manual).  For our purposes, it usually doesn't matter which you use.
+
+The commands that are defined by StageManager (as opposed to the ones
+that are part of TCL by default) all start with capital letters (with
+very few exceptions).  They fall into several categories:
+movie-control commands, Geomview commands, flow-control commands,
+mathematical commands, and communication commands.
+
+In the descriptions below, optional items are enclosed in brackets
+(unless otherwise indicated).
+
+
+MOVIE-CONTROL COMMANDS:
+
+  Scene ["title"]
+
+     Specifies the start of a new scene.  The frames are numbered by
+     scene, and the scene number increments automatically for each
+     Scene command.  The titles are used to allow you to select
+     individual scenes to record or preview.
+
+	examples:
+
+		Scene "Z-Rotate"
+
+
+  SaveFrame
+
+     Saves the current geomview picture as an image file, and
+     increments the frame counter.  This command is issued
+     automatically by some commands (like Sequence and Loop), but
+     may sometimes be needed when you want to save the initial frame,
+     or when you want to exercise more precise control over the
+     action in a movie.  In order for the frames to actually be saved
+     to disk, you must be sure the SAVE FRAMES menu item is selected
+     in the ACTIONS menu.
+
+
+  Snapshot name [w] [h]
+
+     Saves the current geomview window as an image.  The file name
+     specifies the format of the image (.gif, .tiff, etc.).  The
+     images are stored in the "snapshots" subdirectory of the movie
+     directory.  In order for the snapshots to actually be saved
+     to disk, you must be sure the SAVE SNAPSHOTS menu is checked.
+     You can specify a width and height for the image and the final
+     result will be scaled to the specified size.
+
+	examples:
+
+		Snapshot "Torus.gif"
+		Snapshot "Torus.gif" 100 100
+
+  Pause n
+
+     Pauses for n frames (there are 30 frames per second on
+     videotape).  For video, the most recent frame is repeated for
+     this long on the tape.  For MPEG and animated GIF files, the
+     frame is repeated this many times in the MPEG or GIF file.  (For
+     this reason, you should probably set the SPEED to some large
+     number in order to reduce the number of frames for these movies).
+
+	example:
+
+		Pause 30	# pause for 1 second
+
+
+  Fade n
+
+     Performs a fade from the last frame to the next frame in n frames
+     (i.e., n 30th of a second.  This has no effect on MPEG or
+     animated GIF movies.
+
+	example:
+
+		Fade 45		# fade between frames in 1 and 1/2 seconds
+
+
+
+
+GEOMVIEW COMMANDS:
+
+  Load oogl-file
+
+     Loads a file of geomview commands or data.  This file can include
+     initialization that is required for a movie or scene.  You can
+     specify more than one file to load.
+
+	examples:
+
+		Load "NDview/geom/4daxes"
+		Load cube xyz.vect
+
+  Delete object
+
+     Deletes a geomview object, given its name as it appears in the
+     Geomview main panel.  You can specify more than one object to
+     delete.
+
+	examples:
+
+		Delete g1
+		Delete "cube"
+		Delete world
+		Delete cube xyz.vect
+
+
+  Transform matrix [object] [-parent]
+
+     Performs a transformation on an object.  If no object is given,
+     the whole world is transformed.  If the last parameter is
+     "-parent" then the rotation is performed in the coordinates of
+     the object's parent (e.g., the world if an object is specified, or
+     the window if the object is the world), otherwise it is in
+     relation to the object's coordinates.
+
+     You can specify a list of objects to transform by enclosing the
+     names in braces.
+
+     Note:  this command does not perform a SaveFrame.  It only
+     performs the transformation.  The transformation occurs in one
+     step.  Use Sequence if you want to have the transformation occur
+     over several frames.
+
+     The matrix is in projective coordinates.  You can generate
+     matrices using the following commands (here r is an angle in
+     radians, p is a point in space, s, x, y, z are scalers):
+
+	  {XY r [p]}	  	  rotate in the xy-plane about p by r radians
+	  {XZ r [p]}		  rotate in the xz-plane about p by r radians
+	  {YZ r [p]}		  rotate in the yz-plane about p by r radians
+	  {XW r [p]}		  rotate in the xw-plane about p by r radians
+	  {YW r [p]}		  rotate in the yw-plane about p by r radians
+	  {ZW r [p]}		  rotate in the zw-plane about p by r radians
+	  {Scale {x y z} [p]}	  scale each axis by the given amount
+	  {Scale s [p]}	  	  scale each axis by s about point p
+	  {Translate {x y z}}	  translate by the given vector
+	  {AxesRotate a b r [p]}  rotate axis a toward axis b by r radians
+				    (axes are numbered from 0; you can
+     				     also use X,Y,Z,W,U,V to specify axes)
+	  {Rotate U V r [p]}	  rotate in the UV-plane about p by r radians
+	  {Spin3D {x y z} r [p]}  rotate about the axis in the direction
+				    of {x y z} about p by r radians
+          {Matrix {...}}	  Use the given matrix
+
+          {Product {T1} {T2} ...} Take the product of the given transforms
+                                  (T1 is done first, then T2, etc.).
+
+
+	examples:
+
+		Transform {XY $pi/3}
+		Transform {Scale .5} -parent
+		Transform {ZW $pi} g1 -parent
+		Transform {AxesRotate Y X [Degrees 90]} g1
+		Transform {XW $pi/2 {1 0 1 1}} g1
+		Transform {XZ $pi} {g1 g2 g3}
+		Transform {Rotate {1 1 0} {0 0 1} $pi/3}
+		Transform {Spin3D {1 1 1} $pi/2}
+                Transform {Product {XY $pi/2} {Scale 1.5}}
+
+
+  Sequence matrix n [object] [-parent] [-[no]zero]
+
+     Perform a transformation in n steps, with a SaveFrame after each
+     step.  The parameters are the same as for Transform above.
+
+     Note: the initial position is not saved by this operation unless
+     the Geomview scene has changed since the last SaveFrame.  You can
+     force a SaveFrame of the initial position by including the -zero
+     flag.  You can prevent a SaveFrame of the initial position by
+     including -nozero.
+
+     You can specify a list of objects to transform by enclosing their
+     names in braces.
+
+     Note:  if the matrix is given by Matrix, then this matrix is
+     applied  n  times; in all other cases, an increment is applied
+     each step so that the total change after  n  steps is the given
+     matrix.
+
+	examples:
+
+		Sequence {XW $pi/2} 60
+		Sequence {Translate {1 0 2}} 10 -parent
+		Sequence {Scale .5} 10 g1
+		Sequence {Scale .5} 10 {g1 g2}
+
+
+  Path path [object] [-parent] [-[no]zero]
+
+     NOTE:  This command is obsolete and should not be used.  Instead,
+     use a series of Sequence commands with Product transformations.
+
+     Perform a series of transforms that combine translations,
+     rotations and scalings.  You can specify a list of objects by
+     placing their names within braces.  The -parent flag indicates
+     that the transformations are in the coordinate system of the
+     containing object (usually the world or the window).
+
+     The path itself is a list of path elements, each of the form
+
+	{n offset [rotation] [scaling]}
+
+     where "n" is the number of frames for this path element, "offset"
+     is a vector that indicates the direction and distance traveled
+     in this step, "rotation" is a rotation matrix (in the form
+     described under Transform above) that indicates the rotation for
+     the object as it moves along this path element, and "scaling" is
+     either a number (for a uniform scaling by this factor) or a
+     vector (for scaling each axis by a different amount) that
+     represents the scaling to perform along this path element.
+
+     Note: the initial position is not saved by this operation unless
+     the Geomview scene has changed since the last SaveFrame.  You can
+     force a SaveFrame of the initial position by including the -zero
+     flag.  You can prevent a SaveFrame of the initial position by
+     including -nozero.
+
+	examples:
+
+		Path {
+		  {10 {1 0 0}}
+		  {5 {.3 .1 0} {XY $pi/2}}
+		  {5 {0 0 0} {} .5}
+		  {10 {1 0 0} {YZ $pi}}
+                } cube
+
+  To matrix [object]
+
+     This command breaks down a matrix into a product of a
+     translation, a scaling and one or more rotations.  If an object
+     is specified, the product will be for the matrix needed to go
+     from the object's current transformation matrix to the specified
+     one.  The result of this command is a string of the form
+     "Product {Translate ...} {Scale ...} {Rotate ...} ..." which can 
+     then be passed to Sequence.  Note that the To command should be
+     enclosed in square brackets, not braces, since it's RESULT is the
+     set of transformations that should be passed to Sequence.
+
+     The matrix can be generated by the standard transform commands,
+     or can be specified explicitly as a sequence of space-separated
+     numbers (i.e., the identity matrix in 3-space can be specified
+     as:  {1 0 0 0  0 1 0 0  0 0 1 0  0 0 0 1}).  One convenient way
+     of obtaining such matrices is to use Geomview to interactively
+     position an object and then write out the object's transformation
+     matrix and use that matrix.  Note, however, that Geomview uses
+     the transpose of the matrix required here; you may find the
+     Transpose command useful for these matrices.
+
+     You can use the command "_transform(Get) object" to get the
+     current transformation (already transposed) of any object.  This
+     can help you obtain the matrices after hand-positioning an
+     object, and is particularly useful in StageHand.
+
+	examples:
+
+		Sequence [To {XY $pi/2} cube] 10 cube
+		Sequence [To [Transpose {(matrix from GV)} cube] 10 cube
+
+                Print [_transform(Get) cube]
+
+  Between matrix1 matrix2
+
+     This command determines the matrix necessary to transform matrix2
+     into matrix1 and then breaks it down into a translation, scaling
+     and one or more rotations (see To above).  The To command
+     actually calls this command, passing it the matrix of the
+     specified object as matrix2 (or the identity if no object is
+     specified).  The result of this command is a string in the same
+     form as the result of the To command.
+
+
+  Geometry action ...
+
+     The Geometry command allows you to create and manipulate
+     hierarchical objects within Geomview.  The OOGL specification
+     used by Geomview provides for a wide range of nested objects, but
+     Geomview does not have a means of manipulating them directly.
+     StageManager provides this mechanism through the Geometry
+     command.  Note:  the Geometry command is only useful in dimension
+     0 (Geomview's default 3-dimensional format) since the INST format
+     in OOGL does not provide a means of specifying a transform in
+     arbitrary dimensions.
+
+     The action argument determines what type of action should be taken:
+
+	Geometry build name {definition} [flags]
+
+	  This command creates a Geomview compound object whose
+	  components can be manipulated individually or as a group.
+	  For example, if you are modeling a robot arm, you might have
+	  a compound object that is made from an arm piece plus a
+	  second object that is a group of two more objects: another
+	  arm piece and another group consisting of two claw pieces.
+	  You could move the complete arm, or just the forearm and
+	  claw, or just the claw, or just one part of the claw.
+
+	  The possible flags are:
+
+		-transform T
+		-appearance {app}
+
+	  where "T" specifies a transform as described in the
+	  Transform command, and {app} is an appearance as in the
+	  Appearance command below.  The transform is the initial
+	  transform for the complete object (this can be manipulated
+	  via Transform and Sequence commands).  The appearance is the
+	  base appearance for the object, and is inherited by all the
+	  sub-objects as their default appearance.  This can be
+	  manipulated by the Appearance command below.
+
+	  The {definition} is a list of one or more parts, each having
+	  one of the following forms:
+
+		{[name] < file [flags]}
+		{[name] : object [flags]}
+		{[name] = oogl [flags]}
+		{[name] {parts} [flags]}
+
+          where "name" is the name of the part within the hierarchy
+	  (the names at a particular level of a hierarchy must be
+	  unique, but they can be the same as names in other objects
+	  or at other levels of the hierarchy).  If no name is given,
+	  then the name defaults to the (numeric) index of the the
+	  item in the list of parts at this level of the hierarchy.
+	  Here "flags" are either or both of the -transform and
+	  -appearance flags are described above.
+
+	  In the first form, the geometry for the part is taken from
+	  an OOGL file read from disk, and treated as a single object
+	  in the hierarchy (i.e., if the OOGL file contains a compound
+	  object itself, then StageManager will not be able to
+	  manipulate its individual parts, but only the file as a
+	  whole).
+
+	  In the second form, the object is a geometry "handle"
+	  created by the "Geometry define" command described below.
+	  This is a useful way to generate several objects with the
+	  same geometry but different appearances or transformations.
+
+	  In the third case, the OOGL is given explicitly for creating
+	  the geometry.  For example, "oogl" could be
+          "QUAD -1 -1 0  1 -1 0  1 1 0  -1 1 0".
+
+	  In the fourth case, the part specifies another layer of the
+	  hierarchy.  The {parts} list is another list of parts that
+	  are grouped together as a single unit of the hierarchy at
+	  this level.
+
+	  Objects and object parts can be manipulated through the
+	  Transform and Sequence commands by specifying the name or
+	  part name as the object parameter for these commands.  A
+	  part name is of the form "name/part" where "name" is the
+	  name of the parent object.  For example, in the first sample
+	  given below, the object is called "Fred" and the two parts
+	  are "Fred/Tetra" and "Fred/Square".  In the second example,
+	  the parts are called "Arm/Upper", "Arm/Lower", "Arm/Lower/0",
+	  "Arm/Lower/Claw", "Arm/Lower/Claw/0" and "Arm/Lower/Claw/1".
+
+		examples:
+
+			Geometry build Fred {
+			  {Tetra < tetra.off}
+			  {Square = QUAD -1 -1 0  1 -1 0  1 1 0  -1 1 0}
+			}
+
+
+		    The following object is the robot arm described
+		    above. It has an upper arm and a lower arm that is a
+	            group consisting of an arm piece and a claw.  The 
+		    claw is a group consisting of two claw pieces, one
+	  	    of which is transformed as a reflection of the first.
+		    the claw is translated so that it is at the end of
+		    the arm piece, and the lower arm is translated
+		    so that it is at the end of the upper arm.	
+
+			Geometry build Arm {
+			  {Upper < arm1.off }
+			  {Lower {
+			      { < arm2.off}
+			      {Claw {
+			          { < claw.off}
+			          { < claw.off -transform {Scale {-1 1 1}}}
+			        } -transform {Translate {1 0 0}}
+			      }
+			    } -transform {Translate {1 0 0}}
+			  }
+			}
+
+
+	Geometry add name {definition}
+
+	  This command adds a new part to an existing compound object
+	  (created with "Geometry build").  The name is the name of
+	  the object or one of its parts (if the object is itself a
+	  collection of parts).  The definition is a list of parts as
+	  described above.
+
+		examples:
+
+			Geometry add Arm/Lower/Claw {
+			  {Thumb < claw.off -transform {
+				Product {Translate {0 .2 0}} {Scale .7}
+			  }}
+			}
+
+
+	Geometry change name {oogl}
+
+	  This command replaces the geometry for a given object part.
+	  it should only be used for parts created by one of the first
+	  three forms listed above.
+
+		examples:
+
+			Geometry change Fred/Square \
+			   {QUAD -1 -1 1  1 -1 1  2 1 -1  -2 1 -1}
+
+
+	Geometry appearance name [app]
+
+	  If the appearance is specified, this command replaces the
+	  appearance of a given object or object part.  Note that it
+	  does not add to the appearance, but rather replaces it.  If
+	  no appearance is given, then the appearance for the object
+	  is returned.  This is the appearance as specified in the
+	  Geometry command that created the object.
+
+		examples:
+
+			Geometry appearance Fred/Square {
+			  +*edge
+			  *linewidth 3
+			}
+
+	Geometry color name {R G B}
+
+	  Colors a part of an object using the equivalent of the
+	  command "Geometry appearance name {material {*ambient R G B
+	  *diffuse R G B}}".  Here, R, G, and B are the red, green and
+	  blue components of the color as decimals between 0 and 1.
+
+
+	Geometry delete name ...
+
+	  This command deletes one or more parts from an object, or
+	  the complete compound object.  You should use this rather
+	  than Delete to delete objects created with the Geometry
+	  command (StageManager keeps some internal information about
+	  Geometry objects and this would not be removed otherwise).
+
+		examples:
+
+			Geometry delete Fred/Square
+			Geometry delete Arm
+		
+
+	Geometry info name type
+
+	  This command returns information about a compound object.
+	  The "type" argument specifies the type of information
+	  returned.  It must be one of "children", "names" or
+	  "structure".  The "children" option gives the names of the
+	  parts of the object at the first level (you can get info for
+	  these objects to traverse the complete object tree).  The
+	  "names" option gives you a list of all the names of all the
+	  parts in the object (it is a flat tree with the fully
+	  qualified names of all the parts).  The "structure" option
+          is not yet implemented.
+
+		examples:
+
+			Geometry info Fred names
+			Geometry info Arm children
+			Geometry info Arm/Lower children
+
+
+	Geometry create name {oogl}
+
+	  This command creates a (non-hierarchical) OOGL object in
+	  Geomview.  It is equivalent to sending the command
+	  "(geometry name {oogl})" in geomview.
+
+		examples:
+
+			Geometry create Square \
+			   {QUAD -1 -1 0  1 -1 0  1 1 0  -1 1 0}
+
+
+	Geometry define name {oogl}
+
+	  This command defines a Geomview "handle" to a geometry.
+	  Such handles can be used later in "Geometry build" or
+	  "Geometry add" commands to create instances of the geometry
+	  with different appearances or transformations.  It is
+	  equivalent to the command "(read geometry { define G:name oogl})"
+          in geomview (StageManager always prepends "G:" to the name
+	  of a geometry handle generated in this way).
+
+		examples:
+
+			Geometry define Sphere { < sphere.oogl }
+			Geometry build Sphere1 {: Sphere} \
+			   -transform {Scale .5}
+			Geometry build Sphere2 {: Sphere} \
+			   -transform {Translate {1 0 0}}
+
+
+	Geometry transform name [transform]
+
+	  This command defines a geometry "handle" for a transform
+	  object and initializes it to the transform specified (or the
+	  identity if none is specified).  
+
+
+	Geometry capture id [name] [-parts namelist]
+
+	  If you read a hierarchical object that is stored in a file
+	  into Geomview using the Load command, StageManager will not
+	  be able to manipulate its parts (only the object as a
+	  whole).  Sometimes you may want to move individual parts,
+	  however, and you would rather not break up the file into
+	  separate pieces (or perhaps the file was created by an
+	  external module and this is not an option).  StageManager
+	  can "capture" such an object and turn it into a compound
+	  object that it can manipulate.  This is done with the
+	  "Geometry capture" command.  The "id" is the name of the
+	  object within Geomview.  The "name" is new name for the
+	  captured object.  The -parts option allows you to specify
+	  the names of the parts of the object.  If you do not specify
+	  the names, then the parts will be named by their indices in
+	  the hierarchy.  If the hierarchy has more than one level of
+	  nesting, you need to nest your names as well.
+
+		examples:
+
+			Load axes.list
+			Geometry capture axes.list
+
+			Load axes.list
+			Geometry capture axes.list Axes -parts {
+			  Labels {Axis x y z}
+			}
+			Geometry info axes.list names
+
+			   returns:
+                              {Axes Axes/Labels Axes/Axis
+                                  Axes/Axis/x Axes/Axis/y Axes/Axis/z}
+			
+
+
+        Geometry structure id
+
+	  This command is designed to help you understand the
+	  structure of existing Geomview objects (ones that you didn't
+	  create using "Geometry build").  It analyses the
+	  hierarchical structure of a Geomview object and returns a
+	  list that represents the types of data in the object.  The
+	  returned list may have sublists if the object has embedded
+	  LIST or INST objects.  You can use this information to help
+	  you provide names for the parts in a "Geometry capture"
+	  command.  This is particularly useful in StageHand.
+
+		examples:
+
+			Load axes.list
+			Geometry structure axes.list
+			Print [Geometry structure axes.list]
+
+			    returns:
+
+                         {LIST VECT {LIST {appearance INST T VECT} 
+                            {appearance INST T VECT} 
+                            {appearance INST T VECT}}}
+
+  Appearance object app
+
+     Merges the specified appearance with the one already in effect
+     for the specified object.  The appearance parameters should be
+     preceded by "*" to force them to override other appearance
+     parameters higher up in the object hierarchy.  You can specify a
+     list of objects to modify by enclosing their names in braces.
+     See the OOGL man pages for more information on appearances and how
+     to specify them.
+
+	examples:
+
+		Appearance Sphere {*shading smooth}
+		Appearance Sphere {*+edge}
+		Appearance Sphere {material {*alpha .5}}
+		Appearance {Sphere Cube} {*-face}
+
+  Color object {R G B}
+
+     Sets the color of an object using the equivalent of the command
+     "Appearance object {material {*ambient R G B *diffuse R G B}}".
+     Here, R, G, and B are the red, green and blue components of the
+     color as decimal numbers between 0 and 1.  The "object" parameter
+     can be a list of objects to be colored.
+
+
+  UpdateGV [camera]
+
+     While StageManager is executing a movie, the Geomview window will
+     not be updated until necessary (for a frame or snapshot to be
+     saved).  Thus if you load several objects and Transform them,
+     they should all appear at once and in their transformed
+     positions.  This makes the movie appear more like it will on
+     videotape or in an MPEG or animated GIF movie.  If you want to
+     force Geomview to update the window even though no frame needs to
+     be saved, use UpdateGV.
+
+
+  Dimension n
+
+     Sets the dimension used by Geomview to n.  By default, geomview
+     is in dimension 0, which means use dimension 3 in non-ND mode.
+     Dimension 3 means use ND-view in 3-dimensional mode, which is not
+     quite the same thing.  StageManager can handle either
+     3-dimensional mode, and all other dimensions (in ND mode).
+
+
+  Background {R G B} [camera]
+
+     Sets the background color for the specified camera window.  If no
+     camera is specified, the default camera is used.
+
+        examples:
+
+		Background {.5 .5 .5}
+		Background {.5 0 0}
+
+
+  Projection [ Perspective | Orthographic ] [camera]
+
+     Makes the camera window use Perspective or Orthographic
+     projection.
+
+	examples:
+
+		Projection Orthographic
+		Projection Perspective
+
+
+  MpegSize
+  VideoSize
+  WindowSize w h [x] [y]
+
+     Sets the size of the camera window to the given size and position
+
+	examples:
+
+		WindowSize 640 480
+		WindowSize 320 240 0 0
+
+
+  TellGV "(GCL-command)" ...
+
+     Send one or more commands directly to Geomview. 
+
+	example:
+
+		TellGV "(bbox-draw g1 no)"
+                TellGV "(bbox-draw g1 no)" "(bbox-draw g2 0)"
+
+  SyncGV ["(command)" ... ]
+
+     Issue some commands for Geomview to perform and wait for them to
+     be completed.  If none are specified, wait for Geomview to
+     complete whatever it is doing now.
+
+
+  ResetGV
+
+     Returns Geomview to its initial state (or as near as I can get
+     it).
+
+
+  ResetCamera [camera]
+
+     Resets the camera's window to look down the z-axis, and centers the
+     contents in the window.
+
+
+  Camera camera
+
+     Selects the named camera as the default window for StageManager.
+     This is the window that will be used for SaveFrame and Snapshot
+     operations.
+
+
+
+
+PROGRAM FLOW:
+
+You can use any TCL commands (if, while, for, etc.) to control
+program flow, and you can define subroutines and functions in the
+usual TCL fashion (see the TCL manual).  You can also use TCL
+commands to perform computations and set variables for later use.
+
+In addition there are the following functions:
+
+  Loop n [-[no]skip] [-[no]zero] [-[no]saveframes] body
+
+     Perform the body n times, and save a frame after each iteration.
+     You can do anything you want within the body of the loop (see the
+     examples below).  The number of iterations of the loop is
+     affected by the RESOLUTION setting, just as Sequences are, and if
+     the Scene containing the Loop command is not selected, the Loop
+     will be performed in one step (i.e., its n value will be set to
+     1) unless the "-noskip" flag is present, in which case the full
+     number of iterations will be performed.  If -nosaveframes is
+     present, then no SaveFrame will be performed at the end of the
+     loop (you should insert one yourself within the body of the
+     loop). 
+
+     If -zero is present, then the first iteration of the loop is the
+     "0th" iteration (the loop will be performed n+1 times), while if
+     -nozero is present, the first iteration is the "1st" time.  If
+     neither is specified, then the choice of -zero or -nozero will
+     depend on whether anything has changed in Geomview since the
+     last frame was changed.
+
+     Within the loop, you can use the following functions to access
+     the iteration count:
+
+	Percent m M [i]
+
+	    Returns a linear interpolation between  m  and  M  based on
+            the value of the iteration count.  The 0th time through
+	    the loop it is  m, and the last time it is  M; intermediate
+	    values are at equal intervals between these two.  If "i"
+	    is specified, then the iteration count is for the i-th Loop
+	    command outside the current loop.  If "i" begins with "#"
+	    then it is for the i-th loop as counted from the outermost
+	    loop.  I.e., 0 is the innermost loop and "#0" is the
+	    outermost.
+
+
+	Frac n [i]
+
+	    Returns  n  divided by the number of iterations for the
+            loop associated to the current loop (or the Loop specified
+	    by the "i" value; see Percent above);
+
+
+	Max [i]
+
+	    Returns the number of iterations associated to the given
+            Loop (see Percent above for the meaning of "i").  This is
+	    the "n" from the Loop command.
+
+
+	Count [i]
+
+	    Returns the current number of iterations for the specified
+	    loop.
+
+
+	examples:
+
+		# performs two rotations for each frame
+		Loop 10 {
+		   Transform "XW [Frac $pi/2]"
+		   Transform "YZ [Frac $pi/2]"
+		   SaveFrame
+		}
+
+		# performs an accelerating translation
+		Loop 10 {
+		   Transform "Translate {[Percent 0 1] 0 0}"
+		   SaveFrame
+		}
+
+		Loop 5 {Print [Count]} -nosaveframes
+
+		Loop 5 {Loop 3 {Print [Count] [Count 1]}} -zero
+
+  Stop
+
+     Tells StageManager to stop the script and wait for the user to
+     press the CONTINUE or STEP button on the execution panel.
+
+
+  Script ...
+
+     It is frequently desirable to have several objects moving
+     simultaneously during a movie.  The Script command allows you to
+     specify several actions to perform concurrently for different
+     objects, and will interleave these actions automatically.  You can
+     also specify "cues" so that one object will continue to do some
+     action until another one finishes doing something else.
+
+     The Script command has the following forms:
+
+	Script for object [script]
+
+	  This command adds actions to the script for a given object.
+	  The script is not performed at this time, but is held until
+	  a "Script action" command is issued.  You can provide
+	  several "Script for" commands to specify actions for
+	  different objects.  When the "Script action" command is
+	  given, all the scripts for the different objects will sun
+	  simultaneously.
+
+	  If no script is given, then the current script for the
+	  object is returned, otherwise the script is appended to the
+	  current script for the object (the scripts are cleared
+	  automatically after a "Script action" command).
+
+	  There are some limitations on what can appear in a script.
+	  Allowed commands are:  Sequence, Loop, Pause, SaveFrame and
+	  any command that does not cause frames to be saved (for
+	  example, Transform, Load, Delete, etc.)  The counts for
+	  Sequence, Loop and Pause commands must be able to be
+	  computed at the time the "Script for" command is issued
+	  (that is, they can not be computed as part of the script).
+	  Furthermore, Loops can not be nested in a Script (unless the
+	  inner ones have the -nosaveframes option).  You may need to
+	  specify -zero or -nozero on Loops and Sequences, as the
+	  automatic choice may be difficult to predict.
+
+          You should NOT call procedures or other commands that
+	  perform SaveFrame operations from within a script.  This
+	  applies to standard TCL flow control functions like "if" and
+	  "for" as well as procedures that you write yourself.  The
+	  flow of a script should be a simple, linear set of commands,
+	  possibly including Loop commands.  (You can, however, use
+	  several "Script for" commands for a single object to append
+	  several scripts together; some of these can be added
+	  conditionally by "if" statements, for example, so you can
+	  build parts of the script conditionally).
+
+	  During a script, the default object for Transform and
+	  Sequence commands is the object whose script is running, so
+	  you don't need to specify the object for each
+	  transformation.
+
+	  It is frequently desirable to have the action in one script
+	  be keyed to the activity in another.  For example, one
+	  object may want to pause while another object rotates, then
+	  they both move toward each other.  This type of action can
+	  be controlled through "cues" in the various scripts,
+	  specified by the "Cue" command.  This command is used to
+	  label a point in one script so that it can be referenced by
+	  another script (see the example below).  The Cue command
+	  has the following form:
+
+		Cue name [offset]
+
+	  where "name" is any string of non-space characters.  If
+	  present, "offset" indicates that the cue position should be
+	  adjusted by that many frames; for example, an offset of -2
+	  means the cue should be set so that it occurs two frames
+	  prior to where the Cue command occurred.  This is useful for
+	  starting one action just before some other action finishes,
+	  for example.
+
+	  Another script can refer to a cue using the "Until" command:
+
+		Until cue action
+
+	  where "cue" is the name of a cue that appears in some other
+	  script, and "action" is what to do until that cue occurs in
+	  the other script.  The action must be either "Pause" or a
+	  Sequence or Loop command without the frame count (the count
+	  will be supplied by calculating the number of frames between
+	  where the Until command occurs and the place where the
+	  corresponding Cue occurs).  See the examples below.
+
+
+	Script clear object
+
+	  This clears the script currently being built for the
+	  specified object.  The scripts are cleared automatically
+	  after a "Script action" command.
+
+
+        Script group name object ...
+
+	  This command creates a named group of objects for use in
+	  creating scripts (note that this is NOT the same as a
+	  compound object created via the Geometry command).  When the
+	  script for this group is run, any transformations that do
+	  not specify an explicit object will be applied to each of
+	  the objects in the group in turn.
+
+
+	Script action
+
+	  This causes all the scripts that have been specified to be
+	  run concurrently.  When the "Script action" command is
+	  issued, the scripts are scanned and the proper frame counts
+	  for all Until references are determined.  Then each script
+	  is run until a SaveFrame operation occurs (either explicitly
+	  through a SaveFrame command, or implicitly via Sequence or
+	  Loop).  Once all the scripts have reached their first frame
+	  position, the frame is saved.  Then the scripts are each run
+	  until each is ready for the next frame.  The process is
+	  repeated until all the scripts have finished (the scripts
+	  need not be exactly the same length; any scripts that finish
+	  early are treated as having a Pause at the end).
+
+	examples:
+
+		Script for cube {
+		  Sequence {XY $pi/2} 10
+		  Until StartCube Pause
+		  Sequence {YZ $pi/2} 10
+		}
+
+		Script for tetra {
+		  Pause 5
+		  Sequence {Product \
+                    Translate {1 1 1} {Spin3D {1 1 1} $pi}} 10
+		  Cue StartCube
+		  Sequence {Translate {1 1 1}} 10
+		}
+
+		Script action
+
+
+
+  Print string ...
+
+     Prints the associated string(s) in the execution window.
+
+	example:
+
+		Print "a = $a"
+
+
+MATHEMATICS COMMANDS:
+
+StageManager uses the TCL language for handling variables and
+expressions.  This means you have access to function like sin() and
+exp() (see the TCL manual for details on what functions are available;
+Note that "x raised to the y power" is specified as "pow(x,y)", which
+is the only unusual function).  In addition, StageManager provides
+several extensions, including some vector and matrix mathematics, and
+complex numbers, as described below.
+
+Normally in TCL, expressions are evaluated using the expr command;
+since expressions are very common in StageManager scripts, however,
+StageManager tries to minimize the need for you to use expr explicitly
+by performing expr automatically on most of the numeric parameters to
+the commands that it defines.  For example, the rotation angle in the
+transformation commands can be given as an expression as in:
+
+	Sequence {XY $pi/2} 10
+
+Note, however, that since spaces act as parameter separators in TCL,
+you can not have any spaces in the expression, so {XY $pi / 2} is an
+error.  If you want to use spaces, you must enclose the expression in
+braces or quotation marks, as in {XY "$pi / 2"}.
+
+
+Vectors and Matrices:
+
+Vectors in StageManager are implemented as TCL lists.  That is, they
+are a string of space-separated numbers.  For example, the unit vector
+in the direction of the positive x-axis is {1 0 0}.  Note that there
+are no commas used.  Usually vectors can be enclosed in braces as in
+the example above, but sometimes (particularly when you require
+variable substitution) you may need to use quotation marks as in
+"$u $v 1" rather than {$u $v 1} (sometimes it won't matter which form
+you use, but sometime it will).  Note that since components of a
+vector are separated by spaces, if a component is given by an
+expression, that expression can not contain spaces (or must be
+enclosed in braces or quotes).  For example, {$x+1 $y 0} and
+{{$x + 1} $y 0} are OK, but {$x + 1 $y 0} is not.
+
+Matrices in StageManager are implemented as a string of
+space-separated numbers, and are always assumed to be square.  For
+example:
+
+	set M {1 0 0 0
+               0 1 0 0
+               0 0 1 0
+               0 0 0 1}
+
+assigns M to be a 4-by-4 identity matrix.  The transformation commands
+(like XY and Spin3D) all generate matrices in this form.  Note that
+the same issues about spaces within components of a vector also apply
+to components of a matrix.
+
+
+Variables and Assignments:
+
+The value of a variable is obtained by preceding its name with a
+dollar sign, as in "Print $pi".  This is the usual TCL syntax (see the
+TCL manual for more about variables and expressions).
+
+An example of the usual syntax for assigning the result of an
+expression to a variable in TCL is "set x [expr 2+$y]", which seems
+needlessly cumbersome.  StageManager provides a more convenient
+assignment operation in the form of the "let" command:
+
+  let var expr
+  let var {expr expr ...}
+  let {var var ...} {expr expr ...}
+
+     The "let" command comes in several forms.  The basic use is to
+     assign the result of an expression to a variable.  The command
+     "let x $a+2" is equivalent to "set x [expr $a+2]".
+
+     This command can also be used to perform vector assignments in
+     its second form.  Here, each expression is evaluated separately
+     and the results are combined into a vector and assigned to the
+     variable.  For example, "let X {1 $a+2 $pi/2}" is equivalent to
+     "set X [list [expr 1] [expr $a+2] [expr $pi/2]]" and is much
+     more readable.  Note, however, that since the coordinates of
+     vectors are separated by spaces, the expressions can not
+     themselves contain spaces unless the expression itself is enclosed
+     in braces.  For example "let X {$a {$a + 2} {$a * 2}}".
+
+     The final form of the command performs several variable
+     assignments.  In a sense, it "deconstructs" vectors by assigning
+     each component to a separate variable.  For example,
+     "let {x y z} {1 2 3}" assigns 1 to x, 2 to y and 3 to z.  This
+     can be very convenient if the right hand side is a vector
+     expression, as in "let {x y z} [* [XY $pi/4] {1 2 0}]".
+     Here the vector {1 2 0} is transformed by the rotation matrix
+     and the resulting coordinates are assigned to x, y and z.
+
+     Normally you will use "let" when you want the right-hand side to
+     be evaluated (or are decomposing a vector) and "set" if the right-
+     hand side is a constant or the result that is already evaluated
+     (i.e., the right hand side is in square brackets).
+
+	examples:
+
+		let x $a+2
+		let X {1 $a+2 2*$a}
+		let X {1 {$a + 2} {2 * $a}}
+		set X [* [XY $pi/4] $V]
+		let {x y z} [>< [Norm $U] [Norm $V]]
+
+
+Vector Mathematics:
+
+StageManager has the ability to do vector and matrix manipulation, but
+not within the "expr" context.  Instead, you must use the following
+TCL commands to do the math.  Note that one effect of this is that
+your expressions are essentially put into prefix notation (where the
+operators come before their operands rather) than the more traditional
+infix notation used in standard mathematics; i.e., you do "[+ $a $b]"
+not "$a + $b".  In order to execute one of the commands, you must
+enclose the command and its operands within square brackets (see the
+TCL manual for more on the meaning of the square bracket).
+
+	examples:
+
+		[+ $a $b]                 (means "a + b")
+		[+ [* $a $U] [* $b $V]]   (means "a U + b V")
+		[* [XY $pi/3] $U]         (means apply matrix to U)
+		[Norm [>< $U $V]]         (means norm of a cross product)
+		[Exp [* $pi $i]]          (means "e to the pi i")
+		
+
+  + X Y
+  - X Y
+  - X
+
+     Add or subtract the two (vector) values.  Both vectors must be
+     the same length.  The unary form of minus causes each term of X
+     to be negated.
+
+	examples:
+
+		[+ $a $b]	yields a + b
+		[+ {1 0} $i]	yields {1 1}  (that is, 1 + i)
+		[- {1 0} $i]    yields {1 -1} (that is, 1 - i)
+		[- $i]          yields {0 -1} (that is, -i)
+
+
+  / X Y
+
+     If both X and Y are of length 2 then they are considered to be
+     complex numbers and are divided as complex numbers.  Otherwise, Y
+     must be a scalar and each component of X is divided by this
+     scalar.
+
+	examples:
+
+		[/ {1 2 3} 2]
+		[/ {2 1} $i]
+
+  * X Y
+
+     This command performs both vector and matrix multiplications.  If
+     one of the operands is a scalar, then the each term of the other
+     is multiplied by the scalar.  If both terms are of length 2, then
+     the operands are assumed to be complex numbers and are multiplied
+     as such.  If the the two are of the same length (and that is a
+     perfect square) then the two are multiplied as matrices.
+     Otherwise, if the length of the first is the square of the length
+     of the second, then the first is treated as a matrix and the
+     second a vector and they are multiplied.  Finally, if the length
+     of the first is the square of one more than the length of the
+     second, then a one is appended to the second and the two are
+     multiplied as a matrix and a vector and the last coordinate of
+     the result is dropped (this is because the transformation
+     matrices used by StageManager are in projective coordinates,
+     whereas most applications are in affine coordinates, so this
+     "projectivizes" the vector before it is multiplied and then
+     "unprojectivizes" the result).
+
+     The upshot is that multiplication works pretty much the way you
+     would expect it to.
+
+	examples:
+
+		[* 3 {1 2 3}]              (scalar multiplication)
+		[* {2 -3} $i]              (complex multiplication)
+		[* [XY $pi/3] {1 0 0}      (matrix-vector multiplication)
+		[* [XY $pi/2] [YZ $pi/4]]  (matrix-matrix multiplication)
+
+  Dot X Y
+
+     This command performs the dot product of two vectors.  They can
+     be of any length, as long as they both have the same length.
+
+	examples:
+
+		[Dot $U $V]
+		[Dot {1 2 3} {4 2 -1}]
+
+
+  >< X Y
+
+     This command performs the cross product of two 3-vectors.  The
+     command is only defined for 3-vectors.
+
+	examples:
+
+		[>< $U $V]
+		[>< {1 0 0} {0 1 0}]
+
+
+  Unit X
+
+     Returns a unit vector in the same direction as X (if X is not
+     the zero vector) or the zero vector (if X is the zero vector).
+     The vector can be any dimension
+
+	examples:
+
+		[Unit {2 1 1}]
+		[Unit [>< $U $V]]
+
+
+  Norm X
+
+     Returns the length of the given vector.  The vector can be of any
+     dimension.
+
+	examples:
+
+		[Norm {2 -3 1.5}]
+		[Norm [>< $U $V]]
+
+
+  == X Y
+  != X Y
+
+     Compare two vectors or matrices.  The first returns 1 if they are
+     equal and 0 otherwise, and the second returns 0 if they are equal
+     and 1 otherwise.
+
+  === X Y
+  !== X Y
+
+     Exact equality comparisons with real numbers is quite difficult
+     in general, as small round-off errors can cause two numbers to be
+     unequal that really should be equal.  For this reason, the ===
+     and !== operations are provided.  Here, two number are considered
+     equal if their difference is very small (how small is specified
+     by the variable _vector(epsilon) which defaults to 1.0e-6).  If
+     you want to do an exact (numeric) match, use == and != instead.
+
+	examples:
+
+		[=== $i {0 1}]			returns true
+		[=== {1 2 3} {1.0 2.0 3.0}] 	returns true
+		[=== {1 2 3} {1 2}]		returns false
+		[=== {1 2 3} {3 2 1}]		returns false
+		[=== {0 0} {1.0e-7 -1.0e-7}]    returns true
+		[== {0 0} {1.0e-7 -1.0e-7}]     returns false
+
+
+  Linear a X b Y
+
+     Performs the linear product a*X+b*Y, and is equivalent to
+     [+ [* $a $X] [* $b $Y]] but is easier to read.
+
+	examples:
+
+		[Linear $a $X $b $Y]
+		[Linear cos($t) $U sin(t) $V]
+
+
+  Transpose M
+
+     Transposes a (square) matrix.  This is convenient for putting the
+     matrices used in Geomview into their standard mathematical form.
+
+
+  Coord i X
+  Coord {i j ...} X
+
+     This command extracts one or more components from a vector.  The
+     i and j are indices into the matrix (the first is numbered 1, the
+     second 2, etc.).  You can also use "x" for 1, "y" for 2, and so
+     on.  The valid names and their indices are stored in the global
+     array _axis, so "set _axis(x) 1" means "x" corresponds to the
+     first component of X.  If more than one index is given, Coord
+     returns a vector made up of the selected components.
+
+	examples:
+
+		[Coord 1 {3 4 5}]	yields 3
+		[Coord x {3 4 5}]	yields 3
+		[Coord {x y} {3 4 5}]	yields {3 4}
+
+
+Complex Variables:
+
+Complex numbers are implemented simply as 2-vectors.  Addition and
+subtraction are done through + and -, and multiplication and division
+are handled as special cases by * and /.  Equality checking can be
+done via == and != or === and !== as vectors.  Other functions
+specifically designed for complex numbers (but that also work for
+scalar arguments) are the following.
+
+  ^ X Y
+
+     Perform complex exponentiation:  X raised to the Y power.  Y must
+     be a scalar.
+
+	examples:
+
+		[^ $i 2]
+		[^ {1 1} .5]
+
+  Exp X
+  Log X
+
+     Complex exp() and log() functions:  raise e to the complex power
+     X, or take complex log of X.
+
+	examples:
+
+		[Exp [* $pi $i]]
+		[Exp {1 0}]
+		[Log $i]
+
+
+  Sin X
+  Cos X
+
+     Complex sin() and cos() functions.
+
+	examples:
+
+		[Sin {$pi 1}]
+		[Cos [Exp $z]]
+
+
+  Re X
+  Im X
+
+     Returns the real or imaginary part of X (these are equivalent to
+     "[Coord 1 $X]" and "[Coord 2 $X]"; it is also possible to do
+     something like "let {R I} $X" to get both at once).
+
+	examples:
+
+		[Re $i]		returns 0
+		[Im $i]		returns 1
+
+
+  Conj X
+
+     Returns the complex conjugate of X.
+
+	examples:
+
+		[Conj $i]	returns {0 -1}
+
+
+  Mod X
+  Arg X
+
+     Returns the modulus or argument for the complex number X (the
+     modulus is in the range 0 to 2*$pi).  Mod is equivalent to Norm.
+
+  ArgMod X
+  ModArg X
+
+     Returns a vector consisting of the argument and the modulus, or
+     the modulus and the argument.  That is, represent the complex
+     number in polar form.
+
+
+Miscellaneous:
+
+  Degrees d
+
+     Converts a value in degrees into one in radians.
+
+	examples:
+
+		[Degrees 90]
+
+
+  $pi, $e, $i
+
+     The value of Pi (approximately), e (approximately) and the
+     complex number i.
+
+
+COMMUNICATION COMMANDS:
+
+
+  Send program script
+
+     Sends another TCL program a script to execute.  This only works
+     if the other program is written in TCL, but there are several
+     Geomview modules that are, so this may be useful.  It is best to
+     use this command rather than the standard TCL "send" command,
+     since Send will be skipped if the movie is not being previewed or
+     frames saved (e.g., when MAKE MPEG is the only action specified).
+
+	example:
+
+		Send pisces "Go AGrid"
+
+
+  CenterStage command [arguments]
+
+     This commands lets your scripts communicate with CenterStage.  The
+     command should be
+
+	Start		to start up CenterStage if it is not already running
+	Stop		to stop CenterStage
+        Sync		to wait for CenterStage to finish whatever it
+			  is doing
+	File name	to set CenterStage's file to the one named
+
+     any other command is sent directly to CenterStage for
+     execution.  See the CenterStage documentation for more
+     information on the commands it can receive.

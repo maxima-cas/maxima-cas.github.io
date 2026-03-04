@@ -1,0 +1,64 @@
+CenterStage Object Class:  CurveFromCurve
+Subclass of:  Curve
+Requires reference to a Curve object
+
+The CurveFromCurve class lets you create a Curve object that relates to
+another curve object.  The reference curve value is computed and is
+used as the origin for the referring object at each value of the
+parameter.  The CurveFromCurve's function is computed and the result
+is added to the original curve's value, either in absolute
+coordinates, or in relation to the curve's Frenet frame.
+
+In addition to the standard Curve directives, CurveFromCurve supports
+the following:
+
+   Function param func [-frame | -absolute | -sframe]
+
+	Here the "param" and "func" arguments are the same as for the
+	standard Curve.  The -frame, -sframe and -absolute options
+	determine whether the result of the function is in the coordinate
+	system of the Frenet frame for the linked curve, the surface frame
+	for the linked curve (if it is a CurveOnSurface object) or in
+	absolute coordinates (the default).  If -frame or -sframe is
+	specified, then both curves must be in 3-space, and the frame is
+	computed numerically.  For -frame, the x, y and z coordinates
+	correspond to the tangent, normal and binormal directions; for
+	-sframe, the x, y and z coordinates correspond to the surface
+	normal and the parametric directions with respect to the first
+	and second variables for the curve's linked surface.
+
+	For example:
+
+		Function {t} {
+		  let (T,N,B) = (0,d,0)
+		} -frame
+
+		Axes {T N B}
+
+		Slider d 0 2
+
+	produces a curve that is the offset curve to the original
+	along the normal direction.  The offset distance is given by a
+	slider, so a family of offset curves can be investigated.
+
+	If the linked object is a CurveOnSurface, then
+
+		Function {t} {
+		  let (N,U,V) = (d,0,0)
+		} -sframe
+
+		Axes {N U V}
+
+		Slider d 0 2
+
+	produces a curve that is the offset curve to the original
+	along the direction normal to the surface on which the curve lies
+	(which is not usually the same as the binormal vector for the curve
+	itself).
+
+    Domain {Inherit}
+	
+	This special form of the domain command can be used to inherit
+	the domain from the original curve.  Standard Domain
+	specifications can also be used to provide a domain other than
+	the one of the original curve.

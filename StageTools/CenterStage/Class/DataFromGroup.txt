@@ -1,0 +1,21 @@
+CenterStage Object Class:  DataFromGroup
+Subclass of:  Polyhedron
+Requires a reference to a Group object
+
+The DataFromGroup class provides a means of using the data already computed
+by another Group object.  One reason to do this is to make a
+ShowMe checkbox that can be used to turn the group on and off without
+recomputing it (or any other objects linked to it).  To do this, make a
+Group object that has its OBJECT/SHOW menu set to NEVER, and then create a
+DataFromGroup object that links to it and has the CheckBox and ShowMe
+directives.  When the DataFromGroup object is first shown, it will force
+the Group object to compute the data, and then the DataFromGroup object
+will be able to use that data whenever it is shown, without recomputing it.
+
+Unlike the other DataFrom... classes, the DataFromGroup object converts all 
+the data from Surface and Curve objects to polyhedral faces.  This can 
+affect some display attributes, such as smooth shading, since the surface 
+and curve objects take advantage of knowing the connectivity of the 
+objects, which the polyhedral form does not.
+
+The DataFromGroup object has no non-standard directives.

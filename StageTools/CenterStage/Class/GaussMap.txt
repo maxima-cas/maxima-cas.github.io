@@ -1,0 +1,14 @@
+CenterStage Object Class:  GaussMap
+Subclass of:  SufaceFromSurface
+Requires reference to a Surface object
+
+The GaussMap class produces the Gauss surface associated with any
+Surface object.  There are no special directives for the GaussMap
+class, except that the Domain directive has the additional form:
+
+    Domain {Inherit}
+	
+	This special form of the domain command can be used to inherit
+	the domain from the original surface.  Standard Domain
+	specifications can also be used to provide a domain other than
+	the one of the original surface.

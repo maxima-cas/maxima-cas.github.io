@@ -1,0 +1,115 @@
+<html>
+<head>
+<title>StageTools (StageManager/Samples/Parent):  Frames of Reference</title>
+<!-- Copyright (c) 1996-2006 by Davide P. Cervone.  All rights reserved. -->
+<!-- *Document-Format:  StageTools -->
+<!-- *Navigation-Data:
+  ^ ../welcome.html
+  + ../torus/torus-1.html
+  - ../simple/welcome.html
+-->
+</head>
+<body>
+<!-- *Navigation-links -->
+<table width="100%" border="1" cellpadding="2" cellspacing="1">
+<tr><td bgcolor="#B8B8B8"><table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr><td width="20%" align="LEFT" nowrap><!--
+--></td>
+<td align="CENTER" width="60%"><!--
+--><nobr><b><small><a href="../../../welcome.html">StageTools</a> - Documentation<a></a> (StageManager/Samples/Parent)</small></b></nobr><!--
+--></td>
+<td align="RIGHT" width="20%" height="25" nowrap><!--
+--><a href="../simple/welcome.html"><!--
+--><img src="../../../img/prev.gif" alt="[Prev]" border="0" width="25" height="25"></a><!--
+--><a href="../welcome.html"><!--
+--><img src="../../../img/up.gif" alt="[Up]" border="0" width="25" height="25"></a><!--
+--><a href="../torus/torus-1.html"><!--
+--><img src="../../../img/next.gif" alt="[Next]" border="0" width="25" height="25"></a><!--
+--></td></tr></table>
+</td></tr></table>
+<p>
+<!--BR-->
+<!-- *Begin-Document-Body -->
+<blockquote>
+<h1><a href="parent.gif"><img src="parent.jpg" align="MIDDLE"></a>
+Frames of Reference:</h1>
+Transformations on an object can be performed in one of two different 
+frames of reference:  the coordinate system of the object itself, or the 
+coordinate system of the object containing the transformed object.
+<p>
+This example shows the difference between these two methods.  First a
+compound object is created called <code>cube</code> that is made up of
+a cube together with some axes.  These axes mark the coordinate system
+of the cube.  A second set of axes are loaded; these mark the
+coordinate system of the parent, which is the <code>world</code>
+object in Geomview.
+<p>
+An initial configuration is set up using <code>Transform</code> that
+has the cube offset from the center of the world.
+<p>
+Note the difference between rotating the cube in its own coordinate
+system and rotating it in the world coordinate system in the first two
+<code>Sequence</code> commands.  The next two sequences show that you
+frequently can get the same effects by changing the centers of the
+transformations, done here by adding a second parameter to the
+<code>XY</code> command.
+<p>
+The <code><a href="cube">cube</a></code> and
+<code><a href="xyz.vect">xyz.vect</a></code>
+files are standard ones that come with Geomview.
+<p>
+<h2><hr size="5"><a href="parent.sm">parent.sm</a><hr></h2>
+<pre>
+   Geometry build cube {{&lt; cube} {&lt; xyz.vect}}
+   Load xyz.vect
+
+   Transform {Scale .75}
+   Transform {Product {YZ -$pi/3} {XY -$pi/6}}
+
+   Transform {Translate {0 1 0}} cube
+
+   Pause 3
+   Sequence {XY $pi/2} 8 cube
+   Pause 3
+   Sequence {XY $pi/2} 8 cube -parent
+   Pause 3
+   Sequence {XY $pi/2 {-1 0 0}} 8 cube
+   Pause 3
+   Sequence {XY $pi/2 {0 -1 0}} 8 cube -parent
+   Pause 5
+</pre>
+</blockquote>
+<!-- *End-Document-Body -->
+<!-- *StageTools-Common-Footer -->
+<!--BR--><p>
+<hr size="3">
+<table border="0" cellpadding="0" cellspacing="0" width="98%" align="CENTER">
+<tr valign="MIDDLE"><td bgcolor="#B8B8B8" width="50%">
+<table border="0" cellpadding="0" cellspacing="8" align="CENTER">
+<tr valign="MIDDLE">
+<td><a href="../../../welcome.html"><img src="../../../img/home.gif" alt="[HOME]" border="1" width="40" height="40" hspace="5"></a></td>
+<td><small>StageTools Documentation web pages<br>
+Created:  03 Jun 1996<br>
+<!-- hhmts start -->
+Last modified:  Aug 17, 2006 9:55:06 AM
+<!-- hhmts end -->
+<br>
+Comments to:  <a href="mailto:dpvc@union.edu"><code>dpvc@union.edu</code></a><br>
+</small></td>
+</tr></table></td>
+<td width="1%"></td><td width="0%">
+<!-- *Navigation-Links -->
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td width="5" rowspan="10"></td><td></td><td width="5" rowspan="10"></td></tr>
+<tr><td><a href="../torus/torus-1.html"><img src="../../../img/next.gif" alt="[Next]" border="0" width="25" height="25"></a></td>
+<td><i><a href="../torus/torus-1.html">Rotating a Torus</a></i><br></td></tr>
+<tr><td><a href="../welcome.html"><img src="../../../img/up.gif" alt="[Up]" border="0" width="25" height="25"></a></td>
+<td><i><a href="../welcome.html">Sample StageManager Files</a></i><br></td></tr>
+<tr><td><a href="../simple/welcome.html"><img src="../../../img/prev.gif" alt="[Prev]" border="0" width="25" height="25"></a></td>
+<td><i><a href="../simple/welcome.html">Rotating Cube</a></i><br></td></tr>
+</table>
+</td><td width="2%" bgcolor="#B8B8B8">&nbsp;</td>
+</tr></table>
+<hr size="3">
+</body>
+</html>

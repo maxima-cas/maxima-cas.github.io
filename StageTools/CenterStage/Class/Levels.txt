@@ -1,0 +1,79 @@
+CenterStage Object Class:  Levels
+Subclass of the Root class  
+Requires reference to another object
+
+The Levels class provides a sophisticated mechanism for slicing other 
+objects.  The slices can be based on any function involving the 
+coordinates of the other object.  Slices can be taken at a series of 
+values, or between pairs of values, or above or below specified values.  
+The values can be normalized to make it easier to compute slices without 
+needed to know the exact range of the slicing function.
+
+In addition to the basic directives, the Levels class supports the
+following:
+
+    Height function = height [-normalize]
+    Height function < height [-normalize]
+    Height function > height [-normalize]
+    Height function at heights [-normalize]
+    Height function within intervals [-normalize]
+
+	The Height directive can specify five different types of slices. 
+	Each takes a function on the left that can depend on the
+	coordinates of the sliced object.  For example, to get a level set
+	of a function at height 1, you might specify "Height z = 1".  The
+	form that uses "<" produces the portion of the object that is at or
+	below the given height, while the ">" form produces the portion
+	that is at or above the given height.  The "at" form allows you to
+	specify a list of heights at which to slice the object, while the
+	"within" form allows you to specify an interval or list of intervals that 
+	represent "chunks" to include of the surface.  For example, "Height z 
+	within (.4,.6)" would show all of the object that has z-coordinate 
+	between .4 and .6 inclusive.
+
+	The -normalize option determines whether the height is relative to
+	the range of heights computed over the complete object.  When
+	specified, the heights will be normalized to be between 0 and 1,
+	where the lowest actual height is mapped to 0 and the highest to
+	1.  This makes it easy to slice an object without needing to know the 
+	exact range of heights.
+
+        One can combine several slicing operations into a single Height 
+        directive using "and" and "or" to combine them.  For example, 
+        "Height z < 1 and x+y > 0" would produce only the portion of the 
+        object that satisfies both properties, while the command 
+        "Height z < -1 or z > 1" would produce two parts of the surface:
+        the part that is below height -1 and the part above height 1.  
+        The -normalize option can be added to either height specification 
+        individually; e.g., "Height z < 1 -normalize and x+y > 0".  Note, 
+        however, that with an "and" operation, normalization for the 
+        second operation occurs over whatever part of the surface satisfies 
+        the first condition, so care must be taken when selecting the 
+        cut-off value.
+
+        Unlike most directives, the Height directive can be issued more 
+        than once.  In this case, the slices are combined using the "or" 
+        operation on the two chunks.  Note that if overlaps occur between 
+        two parts, duplicate copies of the resulting faces will be 
+        produced.
+
+	The heights for the "at" condition can be listed explicitly by
+	hand, or can be created using the Points function.  For example,
+	"Height z at [Points {0 1} 10] -normalize" will cause the object to
+	be cut by ten equally spaced planes with heights between the top
+	and bottom of the object.  The first parameter to Points is the
+	interval that is to be subdivided, and the second parameter is the
+	number of divisions to use within that interval.
+
+	Similarly, for the "within" condition, the intervals can be listed
+	explicitly, or can be created by the Bands function.  For example,
+	"Height z within [Bands {0 1} 5] -normalize" would slice the object
+	into five equally spaced bands.  A third optional parameter
+	controls the width of the band (in comparison to the empty spaces
+	between bands).  For example, "[Bands {0 1} 5 .25]" will produce
+	intervals where the bands take up one quarter of the total space
+	between bands (i.e., the gaps will be three times the size of the
+	solid parts).  A similar function, UnBands will produce intervals
+	that represent the portions that are missing from the corresponding
+	Bands command.  That is, "[UnBands {0 1} 5 .25]" would produce
+	bands that exactly fill the gaps left by "[Bands {0 1} 5 .25]".

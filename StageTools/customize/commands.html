@@ -1,0 +1,157 @@
+<html>
+<head>
+<title>StageTools (Customize):  Customizing the External Commands</title>
+<!-- Copyright (c) 1997-2006 by Davide P. Cervone.  All rights reserved. -->
+<!-- *Document-Format:  StageTools -->
+<!-- *Navigation-Data:
+  ^ welcome.html
+  + ../start.html
+  - config.html
+-->
+</head>
+<body>
+<!-- *Navigation-links -->
+<table width="100%" border="1" cellpadding="2" cellspacing="1">
+<tr><td bgcolor="#B8B8B8"><table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr><td width="20%" align="LEFT" nowrap><!--
+--></td>
+<td align="CENTER" width="60%"><!--
+--><nobr><b><small><a href="../welcome.html">StageTools</a> - Documentation<a></a> (Customize)</small></b></nobr><!--
+--></td>
+<td align="RIGHT" width="20%" height="25" nowrap><!--
+--><a href="config.html"><!--
+--><img src="../img/prev.gif" alt="[Prev]" border="0" width="25" height="25"></a><!--
+--><a href="welcome.html"><!--
+--><img src="../img/up.gif" alt="[Up]" border="0" width="25" height="25"></a><!--
+--><a href="../start.html"><!--
+--><img src="../img/next.gif" alt="[Next]" border="0" width="25" height="25"></a><!--
+--></td></tr></table>
+</td></tr></table>
+<p>
+<!--BR-->
+<!-- *Begin-Document-Body -->
+<blockquote>
+<h1>Customizing the External Commands:</h1>
+The StageTools suite uses by default the <b>ImageMagick</b> package for 
+image conversions, <b>mpeg_encode</b> for making MPEG movies, and 
+<b>gifmerge</b> for creating animated GIFs.  Your site may not have all of 
+these installed, so you may need to change the commands that are used for 
+these functions.
+<p>
+We have already seen one way to modify these commands in the section on <a href="x-resources.html">X resources</a>.  Sometimes, more extensive 
+modification are needed, however.  Another way to customize these commands 
+is by editing the <code>StageTools/lib/commands.tcl</code> file; all the 
+modules look here to find out what commands to use for these functions.  
+The routines in this file each return a string that is the command to 
+perform for that function. For example, the command 
+<code>_viewer(Image)</code> should accept an optional file name and return 
+a string that contains the command to perform in order to view the file.  
+The other procedures in the file work the same way.  Several of these 
+commands look up X resources to find the command to use, so this provides 
+an easy way for users to customize the commands they want to use.  The 
+defaults are set in the <code>option</code> commands at the top of the 
+<code>commands.tcl</code> file.
+<p>
+You may want to edit either the option commands or the procedure
+definitions themselves.  For example, the ImageMagick package no
+longer produces compressed GIF files (in an attempt to avoid patent
+troubles), so the GIF files it produces are much larger than they need
+to be; you may want to substitute some other command for producing GIF
+files.  Here is one possible solution:
+<pre>
+    proc _cmd(Convert) {old new type w h colors dither} {
+      set options "-geometry ${w}x${h} +comment"
+      if {$colors != ""} {
+	if {$dither} {append options " -dither"} \
+                else {append options " +dither"}
+	append options " -colors $colors"
+      }
+      switch $type {
+        jpg {append options " -quality $::_image(quality)"}
+        gif {return "convert $options $old PNM:- | pnm2gif &gt; $new"}
+      }
+      return "convert $options $old $type:$new"
+    }
+</pre>
+Here, a <code>switch</code> statement has been added that uses an alternate
+command when <code>.gif</code> files are needed: <code>convert</code> is
+used first (to get the colors and size correct) but it produces a PNM
+image, which is passed to <code>pnm2gif</code> for conversion to
+<code>.gif</code> format.  If you do not have the <code>convert</code>
+program (part of ImageMagick), then you may need to use separate programs
+for the sizing and color reduction steps; you can string them into a single
+command using pipes or the "...  &amp;&amp; ..."  format.
+<p>
+The <code>_cmd(Convert)</code> procedure is used in two distinct ways: 1)
+to convert ppm files to other formats, and 2) to resize an existing image.
+If you do not have a program like <code>convert</code> that can read any
+input format and produce any output format, you may need to have a more
+complicated switch statement that takes into account both the input and the
+output formats.  Usually you can tell the format from the file extension,
+but this is not always the case.  You can make the following assumptions:
+the "type" variable always gives the type of the output file, and if the
+old name is not the same as the new name, then the file extension of the
+old name gives its type (if you don't recognize the type, assume it is
+PPM).
+<p>
+If you modify <code>_cmd(Convert)</code> to work with packages other than
+ImageMagick, please consider sending us a copy of your code so that we can
+share it with others who may also want to use the same package.  Send your
+modifications to
+<code><a href="../mail/customize.html">dpvc@union.edu</a></code>.
+<p>
+<i>[More examples are needed here]</i>
+<p>
+If you plan to change the MPEG encoder, you will also need to edit the
+<code>StageTools/module/BackStage/mpeg.tcl</code> file, as this file
+includes the procedures that write the <code>.param</code> file that is
+passed to <code>mpeg_encode</code>.  Since this command file is specific to
+<code>mpeg_encode</code>, if you want to substitute some other MPEG
+encoder, you will most likely need to modify the <code>.param</code> file
+format.  There are procedures in <code>mpeg.tcl</code> that are called to
+write the data at the beginning of the file, the data at the end of the
+file, and the data for individual frames of the file.  If you modify
+<code>mpeg.tcl</code> to work with some other MPEG encoder, please consider
+sending us a copy of your code so that we can share it with others who may
+also want to use the same encoder.  Send your modifications to
+<code><a href="../mail/customize.html">dpvc@union.edu</a></code>.
+<p>
+Similarly, if you want change the animated GIF encoder, you will need to 
+modify the file <code>StageTools/module/BackStage/animGIF.tcl</code>.  The 
+types of changes you will need to make are comparable to the ones for the 
+MPEG encoder discussed above.  Again, if you do this, please share your 
+modifications by sending them to <code><a href="../mail/customize.html">dpvc@union.edu</a></code>.
+</blockquote>
+<!-- *End-Document-Body -->
+<!-- *StageTools-Common-Footer -->
+<!--BR--><p>
+<hr size="3">
+<table border="0" cellpadding="0" cellspacing="0" width="98%" align="CENTER">
+<tr valign="MIDDLE"><td bgcolor="#B8B8B8" width="50%">
+<table border="0" cellpadding="0" cellspacing="8" align="CENTER">
+<tr valign="MIDDLE">
+<td><a href="../welcome.html"><img src="../img/home.gif" alt="[HOME]" border="1" width="40" height="40" hspace="5"></a></td>
+<td><small>StageTools Documentation web pages<br>
+Created:  20 Aug 1997<br>
+<!-- hhmts start -->
+Last modified:  17 Aug 2006 09:40:35
+<!-- hhmts end -->
+<br>
+Comments to:  <a href="mailto:dpvc@union.edu"><code>dpvc@union.edu</code></a><br>
+</small></td>
+</tr></table></td>
+<!-- *Navigation-Links -->
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td width="5" rowspan="10"></td><td></td><td width="5" rowspan="10"></td></tr>
+<tr><td><a href="../StageTools/start.html"><img src="../img/next.gif" alt="[Next]" border="0" width="25" height="25"></a></td>
+<td><i><a href="../start.html">Getting Started with StageTools</a></i><br></td></tr>
+<tr><td><a href="welcome.html"><img src="../img/up.gif" alt="[Up]" border="0" width="25" height="25"></a></td>
+<td><i><a href="welcome.html">Customization Instructions</a></i><br></td></tr>
+<tr><td><a href="config.html"><img src="../img/prev.gif" alt="[Prev]" border="0" width="25" height="25"></a></td>
+<td><i><a href="config.html">Customization using config files</a></i><br></td></tr>
+</table>
+</td><td width="2%" bgcolor="#B8B8B8">&nbsp;</td>
+</tr></table>
+<hr size="3">
+</body>
+</html>

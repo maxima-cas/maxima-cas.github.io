@@ -1,0 +1,64 @@
+##############################
+#
+#  File:     Arm.sm
+#  Created:  Tue Nov 23 17:49:06 EST 1999
+#  By:       StageManager v2.5
+#
+
+_smVersion 2.5 geomview 1.0
+
+Movie Robot {
+Geometry build Arm \{
+  \{Major < Arm1.oogl\}
+  \{Minor \{
+    \{ < Arm2.oogl\}
+    \{ < dodec.off -transform \{Scale .09\}
+          -appearance \{ material \{
+               *ambient 1 1 0
+               *diffuse 1 1 0
+          \}\}
+    \}
+    \{Claw \{
+      \{ < Claw.oogl\}
+      \{ < Claw.oogl
+          -transform \{Scale \{1 -1 1\}\} \}
+    \} -transform \{Translate \{0 0 1.5\}\} \}
+  \} -transform \{Translate \{0 0 2\}\} \}
+\} -appearance \{*shading smooth\}
+
+Transform \{Translate \{-.7 -.7 0\}\}
+Transform \{Scale .4\}
+Transform \{YZ -$pi/2\}
+Transform \{XY $pi/2\}
+
+Script for Arm \{
+  Pause 3
+  Until Done Sequence \{YZ $pi/3\}
+\}
+
+Script for Arm/Minor \{
+  Until Open Sequence \{YZ $pi/3\}
+  Until Done Sequence \{YZ -$pi/4\}
+\}
+
+Script group Claw \\
+  Arm/Minor/Claw/1 Arm/Minor/Claw/2
+
+Script for Claw \{
+  Sequence \{YZ $pi/6\} 8
+  Cue Open +4
+  Sequence \{XY $pi\} 8 Arm/Minor/Claw
+  Sequence \{YZ -$pi/6\} 8
+  Cue Done
+\}
+
+Pause 3
+Script action
+Pause 3
+Delete World
+Pause 5
+} {
+  {{6 forever {}} {1 1 1} {8 6 10 Cross2 Logarithmic 1 IPPPPP Full 10 1} {0 end 0 1}}
+  {1 0}
+  {{{scene-0 1}} {400 400 200 200 200x200 2 gif 256 90 1 ppm}}
+}

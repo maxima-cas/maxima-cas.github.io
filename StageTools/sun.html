@@ -1,0 +1,63 @@
+<html>
+<head>
+<title>StageTools:  Note for Users of Sun Workstations</title>
+<!-- Copyright (c) 1997-1999 by Davide P. Cervone.  All rights reserved. -->
+<!-- *Document-format: StageTools -->
+<!-- *Navigation-data:
+  ^ welcome.html
+-->
+</head>
+<body>
+<!-- *Navigation-links -->
+<table width="100%" border="1" cellpadding="2" cellspacing="0" bgcolor="#AAAAAA">
+<tr><td><table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr><td width="20%"><!--
+--></td>
+<td align="CENTER" width="60%"><!--
+--><nobr><b><small><a href="welcome.html">StageTools</a> - Documentation</small></b></nobr><!--
+--></td>
+<td align="RIGHT" width="20%"><!--
+--><a href="welcome.html"><!--
+--><img src="img/up.gif" alt="[Up]" border="0" width="25" height="25"></a><!--
+--></td></tr></table>
+</td></tr></table>
+<p>
+<!-- *Begin-Document-Body -->
+<h1>Note for Users of Sun Workstations:</h1>
+There is a strange interaction between Geomview and x-windows on a Sun 
+workstation:  Geomview does not always update the Camera window until a 
+change in the window focus occurs.  This has implications for users for 
+CenterStage and StageManager on Sun workstations.  For example, if you 
+press the Update button in CenterStage, nothing may seem to happen in the 
+Geomview window until you move the mouse over the Camera window.  Sometimes 
+Geomview will buffer several changes and show them one at a time when the 
+focus changes.  If updates don't seem to be occuring for you, try wiggling 
+the mouse over the edge of the Camera window several times and see if that 
+causes them to occur.
+<p>
+This is <i>not</i> a bug with StageTools, but a problem with Geomview 
+itself.  For instance, you can get the same effect when you issue 
+commands within Geomview's Commands panel; updates won't always occur 
+until you move the mouse into the Camera window.
+<p>
+When using a Sun workstation, you may want to get into the habit of moving 
+the mouse across the Camera window border when you think an update should 
+occur.
+<p>
+<!-- *End-Document-Body -->
+<!-- *StageTools-Common-Footer -->
+<hr size="4">
+<table border="0" cellpadding="0" cellspacing="0">
+<tr valign="TOP">
+<td><a href="welcome.html"><img src="img/home.gif" alt="[HOME]" align="LEFT" border="1"></a><br></td>
+<td width="5"></td>
+<td><small>StageTools Documentation<br>
+Created:  19 Aug 1997 ---
+<!-- hhmts start -->
+Last modified:  Dec 3, 1999 1:44:33 PM
+<!-- hhmts end -->
+<br>
+Comments to:  <a href="mailto:dpvc@union.edu"><code>dpvc@union.edu</code></a><br>
+</small></td></tr></table>
+</body>
+</html>

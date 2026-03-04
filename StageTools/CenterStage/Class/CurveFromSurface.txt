@@ -1,0 +1,45 @@
+CenterStage Object Class:  CurveFromSurface
+Subclass of:  Curve
+Requires reference to a Surface object
+
+The CurveFromSurface class lets you create a Curve object that relates to
+a Surface object.  You specify a parametric curve in the domain of the
+surface, and that curve is computed in space.  Then the second part of
+the curve function is computed, and its result is added to the value
+of the point on the surface, either in absolute coordinates, or in
+relation to a frame on the surface.  The frame is determined by the
+normal vector to the surface and the partial derivatives of the
+surface with respect to its parameters (note that this need not be an
+orthonormal basis).
+
+In addition to the standard Curve directives, CurveFromSurface supports
+the following:
+
+   Function param curve func [-frame | -absolute]
+
+	Here the "param" and "func" arguments are the same as for the
+	standard Curve.  The -frame and -absolute options determine
+	whether the result of the function is in the coordinate system
+	of the surface frame or in absolute coordinates (the default).
+	If -frame is provided, then the surface and curve must be in
+	3-space, and the frame is computed numerically.  The
+	x-coordinate of the result corresponds to the normal
+	direction for the surface, the y-coordinate to the direction
+	of the first partial derivative of the surface, and the
+	z-coordinate to the direction of the second partial
+	derivative.
+
+	The "curve" argument is a script that gives a curve within the
+	surface's domain parametrically.
+
+	For example:
+
+		Function {t} {
+		  let (x,y) = (t,t^2)
+                } {
+		  let (x,y,z) = (.1,0,0)
+		} -frame
+
+	produces a curve that is offset from the surface by .1 in the
+	normal direction along the curve that is the image of a
+	parabola in the domain of the surface.

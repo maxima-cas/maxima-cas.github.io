@@ -1,0 +1,23 @@
+CenterStage Object Class:  SurfaceVectors
+Subclass of:  Arrows
+Requires reference to a Surface object
+
+The SurfaceVectors class lets you generate different types of vectors 
+associated with a surface.  Arrows will be generated at the corners of each 
+subdivision of the surface domain (determined by the Domain directive).  
+The types of arrows are listed in the VECTOR menu, and you may select as 
+many as you want.  After selecting the vectors, press UPDATE to compute 
+them.  The VECTOR/UNIT menu means that the vectors will be normalized to 
+unit length.
+
+The types of vectors are:
+
+	Normal		The surface normal vector
+        Tangent U       The partial derivative vector with respect to the
+                          surface's first parameter
+        Tangent V       The partial derivative vector with respect to the
+                          surface's second parameter
+
+The SurfaceVectors class supports all the standard directives, together
+with the ArrowHead, ArrowScale and ArrowMaxLen directives of the Arrow
+class, and the Domain directive of the SurfaceFromSurface class.

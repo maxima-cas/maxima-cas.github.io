@@ -1,0 +1,119 @@
+CenterStage Object Class:  Polyhedron
+Subclass of the Root class
+
+The Polyhedron class is one of the basic classes in CenterStage.  It allows 
+you to specify polyhedra by giving the the vertices and faces that make up 
+the polyhedron.  You can create lists of vertices, with optional names to 
+use as a reference when creating the faces, and lists of faces constructed 
+from these vertices, or you can simply give faces as lists of points.  You 
+can specify colors and other characteristics on a face-by-face basis, or 
+for groups of faces.
+
+The Polyhedron class has two main directives:
+
+    Vertices {vertex list}
+
+	This specifies a list of vertices that you can use to define
+	your faces.  This is simply a list of vertices, and you refer
+	to them by index (the first index is 0).  Optionally, any
+	vertex can be preceded by an identifying name ending in a
+	colon.  For example
+
+		Vertices {
+		  (1,0,0) (0,1,0) (0,0,1) Origin: (0,0,0)
+ 		}
+
+	defines four vertices with indices 0, 1, 2, and 3, but the
+	final vertex can also be referred to as "Origin".
+
+	The vertices can include formulas or variables, for example:
+
+		Vertices {
+		  (1,t,0) (0,1,t) (t,0,1)
+		  (1+t,0,t) (1-t,t,0) (t-1,0,0)
+		}
+
+	Before the vertex list is parsed, CenterStage performs
+	variable substitution and command evaluation on it, so you can
+	compute the vertex list via a procedure if you wish:
+
+		Vertices {[myVertexList]}
+
+		proc myVertexList {} {
+		  (compute list here)
+		  return $vertices
+		}
+
+	Note that the braces around the square brackets are important
+	as they postpone the procedure evaluation until the vertex
+	list is actually needed.
+
+	You could also use the Setup script to compute the vertex list
+	and set the Vertices from a variable:
+
+		Vertices {$vertices}
+
+		Setup {
+		  set vertices {}
+		  foreach i {0 1 2} {
+		    let V = XY(i*pi/3) * (1,0,1)
+		    lappend vertices $V
+		  }
+		}
+
+	Here, the vertex list is created algorithmically: it consists of
+	three different rotations of the vector (1,0,1).  (The XY function
+	is built into CenterStage, anc can be called from any object).
+
+
+    Faces {face list}
+
+	The face list, in its simplest form, is a list of pairs of
+	indices into the vertex list, or names of vertices in the
+	list.  For example, given the points defined in the first
+        example above, you could specify faces as follow:
+
+		Faces {
+		  {Origin 0 1} {Origin 1 2} {Origin 0 2} {0 1 2}
+		}
+
+	This generates a tetrahedron using the four vertices.
+	
+	Note that faces can be made from any number of vertices.  A face 
+	that is a single vertex will be shown as a dot, a face made from 
+	two vertices will be shown as a line, and other faces will be shown as 
+	filled polygons.  For best results, all the vertices of a polygon should 
+	be coplanar.
+
+	You can also inter-mix actual points with the indices and
+	names, e.g.:
+
+		Faces {
+		  {Origin 0 (-1,0,0)} {1 (0,-1,0)} {(1,1,1) (-1,-1,-1) (1,2,3)}
+		}
+
+	Any face can be followed by "<-" and a list of attributes for
+	the face, as in
+
+		Faces {
+		  {0 1 2} <- {color {1 .5 0} outline}
+		}
+
+	or a list of faces can be followed by attributes:
+
+		Faces {
+		  {{0 1} {1 2} {2 3}} <- {color {0 0 0}}
+		  {{1 2 3} {0 2 3}} <- {outline}
+		}
+
+	The attributes include the following:
+
+            solid        polygonal faces should be filled in.
+            outline      polygonal faces should be shown as outlines only.
+	    width n      the width for the face outline
+            normalize    the face color should be included in the 
+                          color normalization process.
+            noadjust     the face color should not be normalized.
+            color c      specifies the color for the face: it is either an 
+                          index into the color table or an RGB color 
+                          specification.

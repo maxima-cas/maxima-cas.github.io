@@ -1,0 +1,9 @@
+CenterStage Object Class:  SurfaceNewDomain
+Subclass of:  Surface
+Requires reference to a Surface object
+
+The SurfaceNewDomain class lets you create an object that uses the same
+function as another Surface object, but a different domain.
+
+The directives for this class are the same as for the Surface object,
+but the Function directive is not allowed.

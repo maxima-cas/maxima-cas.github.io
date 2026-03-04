@@ -1,0 +1,9 @@
+CenterStage Object Class:  CurveNewDomain
+Subclass of:  Curve
+Requires reference to a Curve object
+
+The CurveNewDomain class lets you create an object that uses the same
+function as another Curve object, but a different domain.
+
+The directives for this class are the same as for the Curve object,
+but the Function directive is not allowed.

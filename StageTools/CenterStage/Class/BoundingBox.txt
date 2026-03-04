@@ -1,0 +1,18 @@
+CenterStage Object Class:  BoundingBox
+Subclass of:  Polyhedron
+Requires a reference to another object
+
+The BoundingBox class provides an easy way of generating a bounding box for 
+an object.  By default it will be colored black, but you can change that 
+in the Color menu.  
+
+In addition to the standard directives, the BoundingBox class has the
+following directives:
+
+    Padding amount
+    Padding {xamount yamount zamount ...}
+
+        The Padding directive tells how much extra space to place around 
+        the object within the bounding box; i.e., the actual bounding box 
+        is enlarged by this amount on all sides.  You can specify a 
+        different amount for each of the coordinate directions if you wish.
